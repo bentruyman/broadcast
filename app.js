@@ -1,6 +1,7 @@
 var express  = require('./node_modules/express'),
     faye     = require('./node_modules/faye'),
     mongoose = require('./node_modules/mongoose'),
+    nib      = require('./node_modules/nib'),
     stylus   = require('./node_modules/stylus');
 
 const BROADCAST_DIR = __dirname + '/lib/broadcast';
@@ -30,19 +31,25 @@ app.configure(function () {
   app.use(stylus.middleware({
     src: VIEWS_DIR,
     dest: PUBLIC_DIR,
-    compress: true
+    compile: function(str, path) {
+      return stylus(str).set('filename', path).set('compress', true).use(nib()).define('durl', stylus.url({
+        paths: [PUBLIC_DIR]
+      }));
+    }
   }));
+  
+  app.use(express['static'](PUBLIC_DIR));
 });
 
 // public routes
 
 // list all channel sets by label
 app.get('/', function (req, res) {
-  
+  res.render('index');
 });
 
 // retrieves a channel set and cylces through its channels
-app.get('/:slug', function (req, res) {
+app.get('/channel-sets/:slug', function (req, res) {
   
 });
 
@@ -50,7 +57,7 @@ app.get('/:slug', function (req, res) {
 
 // lists all channels and channel sets
 app.get('/admin', function (req, res) {
-  
+  res.render('admin/index', { layout: 'admin/layout' });
 });
 
 // lists all channel sets or a views single channel set
@@ -102,3 +109,6 @@ app.post('/admin/channels/update', function (req, res) {
 app.post('/admin/channels/delete', function (req, res) {
   
 });
+
+// listen for incoming connections
+app.listen(config.server.port);
