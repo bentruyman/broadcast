@@ -3,7 +3,8 @@ var express  = require('./node_modules/express'),
     faye     = require('./node_modules/faye'),
     mongoose = require('./node_modules/mongoose'),
     nib      = require('./node_modules/nib'),
-    stylus   = require('./node_modules/stylus');
+    stylus   = require('./node_modules/stylus'),
+    Q        = require('qq');
 
 const BROADCAST_DIR = __dirname + '/lib/broadcast';
 const CONFIG_DIR    = __dirname + '/config';
