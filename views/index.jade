@@ -1,1 +1,5 @@
-#channel
+ul#channel_sets
+  each set in channelSets
+    li
+      a(href="/channel-sets/" + set.slug)
+        = set.label

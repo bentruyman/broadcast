@@ -1,3 +1,4 @@
+// TODO: handle errors, especially mongo and "not found" errors
 var express  = require('./node_modules/express'),
     faye     = require('./node_modules/faye'),
     mongoose = require('./node_modules/mongoose'),
@@ -16,6 +17,11 @@ var config = require(CONFIG_DIR + '/base');
 mongoose.model('Channel'          , require(BROADCAST_DIR + '/domain/channel'));
 mongoose.model('ChannelSet'       , require(BROADCAST_DIR + '/domain/channel-set'));
 mongoose.model('ConfiguredChannel', require(BROADCAST_DIR + '/domain/configured-channel'));
+
+// get models
+var Channel = mongoose.model('Channel');
+var ChannelSet = mongoose.model('ChannelSet');
+var ConfiguredChannel = mongoose.model('ConfiguredChannel');
 
 // connect to the database
 mongoose.connect(config.database.host, config.database.name);
@@ -45,18 +51,32 @@ app.configure(function () {
 
 // list all channel sets by label
 app.get('/', function (req, res) {
-  res.render('index');
+  // retrieve all channel sets
+  ChannelSet.find(function (err, channelSets) {
+    if (!err) {
+      res.render('index', { channelSets: channelSets });
+    }
+  });
 });
 
 // retrieves a channel set and cylces through its channels
 app.get('/channel-sets/:slug', function (req, res) {
-  
+  // attempt to find a channel set by the slug parameter in the url
+  ChannelSet
+    .findOne({ slug: req.params.slug })
+    .populate('channels.channel')
+    .run(function (err, channelSet) {
+      if (!err) {
+        res.render('channel-set', { channelSet: channelSet });
+      }
+    });
 });
 
 // private routes
 
 // lists all channels and channel sets
 app.get('/admin', function (req, res) {
+  
   res.render('admin/index', { layout: 'admin/layout' });
 });
 
