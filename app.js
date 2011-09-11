@@ -35,6 +35,8 @@ app.configure(function () {
   app.set('views', VIEWS_DIR);
   app.set('view engine', 'jade');
   
+  app.use(express.bodyParser());
+  
   app.use(stylus.middleware({
     src: VIEWS_DIR,
     dest: PUBLIC_DIR,
@@ -82,53 +84,110 @@ app.get('/admin', function (req, res) {
 });
 
 // lists all channel sets or a views single channel set
-app.get('/admin/channel-sets', function (req, res) {
-  
+app.get('/admin/channel-sets/', function (req, res) {
+  ChannelSet.find(function (err, channelSets) {
+    res.render('admin/channel-sets/index', {
+      layout: 'admin/layout',
+      channelSets: channelSets
+    });
+  });
 });
 
 // creates a channel set
+app.get('/admin/channel-sets/create', function (req, res) {
+  
+});
 app.post('/admin/channel-sets/create', function (req, res) {
   
 });
 
 // removes a channel set
+app.get('/admin/channel-sets/remove', function (req, res) {
+  
+});
 app.post('/admin/channel-sets/remove', function (req, res) {
   
 });
 
 // updates a channel set
+app.get('/admin/channel-sets/update', function (req, res) {
+  
+});
 app.post('/admin/channel-sets/update', function (req, res) {
   
 });
 
-// deletes a channel set
-app.post('/admin/channel-sets/delete', function (req, res) {
-  
-});
-
 // lists all channels or a views single channel
-app.get('/admin/channels', function (req, res) {
-  
+app.get('/admin/channels/', function (req, res) {
+  Channel.find(function (err, channels) {
+    res.render('admin/channels/index', {
+      layout: 'admin/layout',
+      channels: channels
+    });
+  });
 });
 
 // creates a channel
-app.post('/admin/channels/create', function (req, res) {
+app.get('/admin/channels/create', function (req, res) {
   
+});
+app.post('/admin/channels/create', function (req, res) {
+  var input = req.body;
+  
+  // TODO: Validation!!!
+  Channel.create({
+    index: input.index,
+    label: input.label,
+    url: input.url,
+    type: input.type,
+    timeout: input.timeout
+  }, function (err) {
+    // redirect back to the listing page
+    res.redirect('/admin/channels/');
+  });
 });
 
 // removes a channel
+app.get('/admin/channels/remove', function (req, res) {
+  // TODO: handle invalid id, or lack thereof
+  Channel.findById(req.query.id, function (err, channel) {
+    channel.remove(function (err) {
+      res.redirect('/admin/channels/');
+    });
+  });
+});
 app.post('/admin/channels/remove', function (req, res) {
-  
+  // TODO: handle invalid id, or lack thereof
+  Channel.findById(req.body.id, function (err, channel) {
+    channel.remove(function (err) {
+      res.redirect('/admin/channels/');
+    });
+  });
 });
 
 // updates a channel
-app.post('/admin/channels/update', function (req, res) {
-  
+app.get('/admin/channels/update', function (req, res) {
+  // TODO: handle invalid id, or lack thereof
+  Channel.findById(req.query.id, function (err, channel) {
+    res.render('admin/channels/update', {
+      layout: 'admin/layout',
+      channel: channel
+    });
+  });
 });
-
-// deletes a channel
-app.post('/admin/channels/delete', function (req, res) {
+app.post('/admin/channels/update', function (req, res) {
+  var input = req.body;
   
+  // TODO: Validation!!!
+  Channel.update({ _id: input.id }, {
+    index: input.index,
+    label: input.label,
+    url: input.url,
+    type: input.type,
+    timeout: input.timeout
+  }, function (err) {
+    res.redirect('/admin/channels/');
+  });
 });
 
 // listen for incoming connections

@@ -1,0 +1,36 @@
+mixin form(action, channel)
+  form(action="/admin/channels/" + action, method="post")
+    if channel
+      input(type="hidden", name="id", value=channel._id)
+    ul
+      li
+        label= "Index"
+          if channel
+            input(name="index", type="number", value=channel.index)
+          else
+            input(name="index", type="number")
+      li
+        label= "Label"
+          if channel
+            input(name="label", value=channel.label)
+          else
+            input(name="label")
+      li
+        label= "URL"
+          if channel
+            input(name="url", value=channel.url)
+          else
+            input(name="url")
+      li
+        label= "Type"
+          select(name="type")
+            - var types = ["page", "image", "video"]
+            each type in types
+              option(value=type)= type
+      li
+        if channel
+          input(name="timeout", type="number", value=channel.timeout)
+        else
+          input(name="timeout", type="number")
+      li
+        input(type="submit")

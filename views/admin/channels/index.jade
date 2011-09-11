@@ -1,0 +1,11 @@
+include includes/form
+
+h2= "Current Channels"
+ul
+  each channel in channels
+    li= channel.label
+      a(href="/admin/channels/update?id=" + channel._id)= "[Edit]"
+      a(href="/admin/channels/remove?id=" + channel._id)= "[Delete]"
+
+h2= "Add a New Channel"
+mixin form('create')
