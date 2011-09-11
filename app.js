@@ -63,16 +63,19 @@ app.get('/', function (req, res) {
 });
 
 // retrieves a channel set and cylces through its channels
-app.get('/channel-sets/:slug', function (req, res) {
+app.get('/channel-sets/:slug.json', function (req, res) {
   // attempt to find a channel set by the slug parameter in the url
   ChannelSet
     .findOne({ slug: req.params.slug })
     .populate('channels.channel')
     .run(function (err, channelSet) {
       if (!err) {
-        res.render('channel-set', { channelSet: channelSet });
+        res.send(channelSet);
       }
     });
+});
+app.get('/channel-sets/:slug', function (req, res) {
+  res.render('channel-set');
 });
 
 // private routes
