@@ -1,9 +1,11 @@
 include includes/form
 
+a(href="/admin/")= "< Back"
+
 h2= "Current Channels"
 ul
   each channel in channels
-    li= channel.label
+    li= "(" + channel.index + ") " + channel.label
       a(href="/admin/channels/update?id=" + channel._id)= "[Edit]"
       a(href="/admin/channels/remove?id=" + channel._id)= "[Delete]"
 

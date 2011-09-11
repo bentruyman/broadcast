@@ -1,0 +1,46 @@
+mixin channels(channels, thisChannel)
+  if thisChannel
+    select(name="channels[]")
+      option(value="")= "None"
+      each channel in channels
+        if thisChannel.channel._id.toString() == channel._id.toString()
+          option(value=channel._id, selected)= channel.label
+        else
+          option(value=channel._id)= channel.label
+  else
+    select(name="channels[]")
+      option(value="")= "None"
+      each channel in channels
+        option(value=channel._id)= channel.label
+
+mixin form(action, set)
+  form(action="/admin/channel-sets/" + action, method="post")
+    if set
+      input(type="hidden", name="id", value=set._id)
+    ul
+      li
+        label= "Label"
+          if set
+            input(name="label", value=set.label)
+          else
+            input(name="label")
+      li
+        label= "Slug"
+          if set
+            input(name="slug", value=set.slug)
+          else
+            input(name="slug")
+      if set
+        li
+          label= "Current Channels"
+          ul
+            each channel in set.channels
+              li
+                mixin channels(channels, channel)
+                input(type="number", name="timeouts[]", value=channel.timeout)
+      li
+        label= "New Channel"
+        mixin channels(channels)
+        input(type="number", name="timeouts[]")
+      li
+        input(type="submit")

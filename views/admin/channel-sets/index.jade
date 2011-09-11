@@ -1,3 +1,13 @@
+include includes/form
+
+a(href="/admin/")= "< Back"
+
+h2= "Current Channel Sets"
 ul
   each set in channelSets
     li= set.label
+      a(href="/admin/channel-sets/update?id=" + set._id)= "[Edit]"
+      a(href="/admin/channel-sets/remove?id=" + set._id)= "[Delete]"
+
+h2= "Add a New Channel"
+mixin form('create')
