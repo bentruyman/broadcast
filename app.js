@@ -67,7 +67,7 @@ app.get('/channel-sets/:slug.json', function (req, res) {
   // attempt to find a channel set by the slug parameter in the url
   ChannelSet
     .findOne({ slug: req.params.slug })
-    .populate('channels.channel')
+    .populate('channels.ref')
     .run(function (err, channelSet) {
       if (!err) {
         res.send(channelSet);
@@ -101,17 +101,20 @@ app.get('/admin/channel-sets/', function (req, res) {
 
 // creates a channel set
 app.get('/admin/channel-sets/create', function (req, res) {
-  
+  Channel.find(function (err, channels) {
+    res.render('admin/channel-sets/create', {
+      layout: 'admin/layout',
+      channels: channels
+    });
+  });
 });
 app.post('/admin/channel-sets/create', function (req, res) {
   var input = req.body;
   
-  // TODO: throw error if ids length isn't equal to delays length
-  // create a new list of configured channels
   var channels = [];
   for (var i = 0, j = input.channels.length; i < j; i++) {
     channels.push({
-      channel: input.channels[i],
+      ref: input.channels[i],
       timeout: input.timeouts[i]
     });
   }
@@ -147,7 +150,7 @@ app.get('/admin/channel-sets/update', function (req, res) {
   Channel.find(function (err, channels) {
     ChannelSet
       .findById(req.query.id)
-      .populate('channels.channel')
+      .populate('channels.ref')
       .run(function (err, channelSet) {
         res.render('admin/channel-sets/update', {
           layout: 'admin/layout',
@@ -168,7 +171,7 @@ app.post('/admin/channel-sets/update', function (req, res) {
       thisChannel;
   for (var i = 0, j = input.channels.length; i < j; i++) {
     thisChannel = {
-      channel: input.channels[i],
+      ref: input.channels[i],
       timeout: input.timeouts[i]
     };
     
@@ -192,16 +195,16 @@ app.get('/admin/channels/', function (req, res) {
     .find()
     .sort('index', 1)
     .run(function (err, channels) {
-    res.render('admin/channels/index', {
-      layout: 'admin/layout',
-      channels: channels
+      res.render('admin/channels/index', {
+        layout: 'admin/layout',
+        channels: channels
+      });
     });
-  });
 });
 
 // creates a channel
 app.get('/admin/channels/create', function (req, res) {
-  
+  res.render('admin/channels/create', { layout: 'admin/layout' });
 });
 app.post('/admin/channels/create', function (req, res) {
   var input = req.body;
@@ -239,10 +242,6 @@ app.get('/admin/channels/update', function (req, res) {
 });
 app.post('/admin/channels/update', function (req, res) {
   var input = req.body;
-  
-  if (input.timeout === null) {
-    delete input.timeout;
-  }
   
   // TODO: Validation!!!
   Channel.update({ _id: input.id }, input, function (err) {

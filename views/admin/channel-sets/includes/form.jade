@@ -3,7 +3,7 @@ mixin channels(channels, thisChannel)
     select(name="channels[]")
       option(value="")= "None"
       each channel in channels
-        if thisChannel.channel._id.toString() == channel._id.toString()
+        if thisChannel.ref._id.toString() == channel._id.toString()
           option(value=channel._id, selected)= channel.label
         else
           option(value=channel._id)= channel.label

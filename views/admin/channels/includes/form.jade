@@ -25,8 +25,11 @@ mixin form(action, channel)
         label= "Type"
           select(name="type")
             - var types = ["page", "image", "video"]
-            each type in types
-              option(value=type)= type
+              each type in types
+                if channel && channel.type === type
+                  option(value=type, selected)= type
+                else
+                  option(value=type)= type
       li
         if channel
           input(name="timeout", type="number", value=channel.timeout)
