@@ -45,7 +45,9 @@
       video: function (channel, next) {
         var element = $('<video></video>')
           .attr('src', channel.ref.url)
-          .prop('autoplay', true);
+          .prop('autoplay', true)
+          .height('100%')
+          .width('100%');
         
         next(element);
       }
