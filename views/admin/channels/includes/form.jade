@@ -10,11 +10,11 @@ mixin form(action, channel)
           else
             input(name="index", type="number")
       li
-        label= "Label"
+        label= "Title"
           if channel
-            input(name="label", value=channel.label)
+            input(name="title", value=channel.title)
           else
-            input(name="label")
+            input(name="title")
       li
         label= "URL"
           if channel

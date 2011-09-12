@@ -52,7 +52,7 @@ app.configure(function () {
 
 // public routes
 
-// list all channel sets by label
+// list all channel sets by title
 app.get('/', function (req, res) {
   // retrieve all channel sets
   ChannelSet.find(function (err, channelSets) {
@@ -120,8 +120,7 @@ app.post('/admin/channel-sets/create', function (req, res) {
   }
   
   ChannelSet.create({
-    label: input.label,
-    slug: input.slug,
+    title: input.title,
     channels: channels
   }, function (err) {
     // redirect back to the listing page
@@ -179,8 +178,7 @@ app.post('/admin/channel-sets/update', function (req, res) {
   }
   
   ChannelSet.findById(input.id, function (err, channelSet) {
-    channelSet.label = input.label;
-    channelSet.slug  = input.slug;
+    channelSet.title = input.title;
     
     channelSet.updateChannels(channels, function (err) {
       res.redirect('/admin/channel-sets/update?id=' + input.id);
