@@ -24,8 +24,8 @@
       page: function (channel, next) {
         var element = $('<iframe></iframe>')
           .attr('src', channel.ref.url)
-          .attr('height', '100%')
-          .attr('width', '100%');
+          .height('100%')
+          .width('100%');
         
         next(element);
       },
@@ -43,7 +43,11 @@
         });
       },
       video: function (channel, next) {
+        var element = $('<video></video>')
+          .attr('src', channel.ref.url)
+          .prop('autoplay', true);
         
+        next(element);
       }
     };
     

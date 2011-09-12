@@ -6,4 +6,4 @@ caption,th,td{text-align:left;font-weight:normal;vertical-align:middle}
 a img{border:none}
 article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary{margin:0;padding:0;border:0;outline:0;display:block}
 html,body{height:100%;overflow:hidden}
-#channel{height:100%;width:100%}
+#channel{text-align:center;height:100%;width:100%}
