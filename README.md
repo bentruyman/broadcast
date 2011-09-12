@@ -26,6 +26,26 @@ For public channel set listing: [http://localhost:3000/](http://localhost:3000/)
 
 For administration: [http://localhost:3000/admin](http://localhost:3000/admin)
 
+## Domain Objects
+
+A Broadcast application consists of three main domain objects: Channels,
+Configured channels and Channel sets.
+
+    Channel:
+      index: Number # the channel's number
+      label: String # name of the channel
+      url: String # url of the channel's asset
+      type: String # image, video, page (default)
+      timeout: Number # the amount of time a channel should stay on screen (default, 30 seconds)
+    
+    ConfiguredChannel:
+      ref: Channel # reference to a channel
+      timeout: Number # (defaults to Channel timeout)
+    
+    ChannelSet:
+      label: String # name of the channel set
+      slug: String # slug to be used in url to point to this channel set
+      channels: [ConfiguredChannel] # list of configured channels
 
 ## License
 
