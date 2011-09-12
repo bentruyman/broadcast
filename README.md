@@ -33,7 +33,7 @@ Configured channels and Channel sets.
 
     Channel:
       index: Number # the channel's number
-      label: String # name of the channel
+      title: String # name of the channel
       url: String # url of the channel's asset
       type: String # image, video, page (default)
       timeout: Number # the amount of time a channel should stay on screen (default, 30 seconds)
@@ -43,7 +43,7 @@ Configured channels and Channel sets.
       timeout: Number # (defaults to Channel timeout)
     
     ChannelSet:
-      label: String # name of the channel set
+      title: String # name of the channel set
       slug: String # slug to be used in url to point to this channel set
       channels: [ConfiguredChannel] # list of configured channels
 
