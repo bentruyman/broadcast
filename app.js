@@ -1,4 +1,7 @@
 // TODO: handle errors, especially mongo and "not found" errors
+
+// import node modules
+////////////////////////////////////////////////////////////////////////////////
 var express  = require('./node_modules/express'),
     faye     = require('./node_modules/faye'),
     mongoose = require('./node_modules/mongoose'),
@@ -6,13 +9,24 @@ var express  = require('./node_modules/express'),
     stylus   = require('./node_modules/stylus'),
     Q        = require('qq');
 
+// declare constants
+////////////////////////////////////////////////////////////////////////////////
+
+// local directories
 const BROADCAST_DIR = __dirname + '/lib/broadcast';
 const CONFIG_DIR    = __dirname + '/config';
 const PUBLIC_DIR    = __dirname + '/public';
 const VIEWS_DIR     = __dirname + '/views';
 
+// route prefixes
+const ADMIN_PATH = '/admin';
+const API_PATH   = '/api';
+
 // get user config
 var config = require(CONFIG_DIR + '/base');
+
+// setup mongoose
+////////////////////////////////////////////////////////////////////////////////
 
 // set models
 mongoose.model('Channel'          , require(BROADCAST_DIR + '/domain/channel'));
@@ -24,13 +38,15 @@ var Channel           = mongoose.model('Channel');
 var ChannelSet        = mongoose.model('ChannelSet');
 var ConfiguredChannel = mongoose.model('ConfiguredChannel');
 
-// get api
-var api = require(BROADCAST_DIR + '/web/api')();
-
 // connect to the database
 mongoose.connect(config.database.host, config.database.name);
 
-// create the app server
+// initialize api
+////////////////////////////////////////////////////////////////////////////////
+var api = require(BROADCAST_DIR + '/web/api')();
+
+// setup the app server
+////////////////////////////////////////////////////////////////////////////////
 var app = express.createServer();
 
 // configure the app server
@@ -61,6 +77,7 @@ app.configure(function () {
 });
 
 // public routes
+////////////////////////////////////////////////////////////////////////////////
 
 // list all channel sets by title
 app.get('/', function (req, res) {
@@ -82,6 +99,7 @@ app.get('/channel-sets/:slug', function (req, res) {
 });
 
 // private routes
+////////////////////////////////////////////////////////////////////////////////
 
 // lists all channels and channel sets
 app.get('/admin', function (req, res) {
