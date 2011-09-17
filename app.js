@@ -131,13 +131,15 @@ app.post('/admin/channel-sets/create', function (req, res) {
 // removes a channel set
 app.get('/admin/channel-sets/remove', function (req, res) {
   // TODO: handle invalid id, or lack thereof
-  ChannelSet.remove({ _id: req.query.id }, function (err) {
+  ChannelSet.findOne({ _id: req.query.id }, function (err, set) {
+    set.remove();
     res.redirect('/admin/channel-sets/');
   });
 });
 app.post('/admin/channel-sets/remove', function (req, res) {
   // TODO: handle invalid id, or lack thereof
-  ChannelSet.remove({ _id: req.body.id }, function (err) {
+  ChannelSet.findOne({ _id: req.body.id }, function (err, set) {
+    set.remove();
     res.redirect('/admin/channel-sets/');
   });
 });
@@ -217,13 +219,15 @@ app.post('/admin/channels/create', function (req, res) {
 // removes a channel
 app.get('/admin/channels/remove', function (req, res) {
   // TODO: handle invalid id, or lack thereof
-  Channel.remove({ _id: req.query.id }, function (err) {
+  Channel.findOne({ _id: req.query.id }, function (err, channel) {
+    channel.remove();
     res.redirect('/admin/channels/');
   });
 });
 app.post('/admin/channels/remove', function (req, res) {
   // TODO: handle invalid id, or lack thereof
-  Channel.remove({ _id: req.body.id }, function (err) {
+  Channel.findOne({ _id: req.body.id }, function (err, channel) {
+    channel.remove();
     res.redirect('/admin/channels/');
   });
 });
