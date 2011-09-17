@@ -20,9 +20,12 @@ mongoose.model('ChannelSet'       , require(BROADCAST_DIR + '/domain/channel-set
 mongoose.model('ConfiguredChannel', require(BROADCAST_DIR + '/domain/configured-channel'));
 
 // get models
-var Channel = mongoose.model('Channel');
-var ChannelSet = mongoose.model('ChannelSet');
+var Channel           = mongoose.model('Channel');
+var ChannelSet        = mongoose.model('ChannelSet');
 var ConfiguredChannel = mongoose.model('ConfiguredChannel');
+
+// get api
+var api = require(BROADCAST_DIR + '/web/api')();
 
 // connect to the database
 mongoose.connect(config.database.host, config.database.name);
@@ -35,6 +38,13 @@ app.configure(function () {
   app.set('views', VIEWS_DIR);
   app.set('view engine', 'jade');
   
+  // handle cookies and sessions
+  app.use(express.cookieParser());
+  app.use(express.session({
+    secret: config.security.secretKey
+  }));
+  
+  // handle form bodies
   app.use(express.bodyParser());
   
   app.use(stylus.middleware({
@@ -55,24 +65,17 @@ app.configure(function () {
 // list all channel sets by title
 app.get('/', function (req, res) {
   // retrieve all channel sets
-  ChannelSet.find(function (err, channelSets) {
-    if (!err) {
-      res.render('index', { channelSets: channelSets });
-    }
+  api.channelSet.read(function (response) {
+    res.render('index', { channelSets: response.channelSets });
   });
 });
 
 // retrieves a channel set and cylces through its channels
 app.get('/channel-sets/:slug.json', function (req, res) {
   // attempt to find a channel set by the slug parameter in the url
-  ChannelSet
-    .findOne({ slug: req.params.slug })
-    .populate('channels.ref')
-    .run(function (err, channelSet) {
-      if (!err) {
-        res.send(channelSet);
-      }
-    });
+  api.channelSet.read({ slug: req.params.slug}, function (response) {
+    res.send(response.channelSet);
+  });
 });
 app.get('/channel-sets/:slug', function (req, res) {
   res.render('channel-set');
@@ -82,18 +85,21 @@ app.get('/channel-sets/:slug', function (req, res) {
 
 // lists all channels and channel sets
 app.get('/admin', function (req, res) {
-  
   res.render('admin/index', { layout: 'admin/layout' });
 });
 
 // lists all channel sets or a views single channel set
 app.get('/admin/channel-sets/', function (req, res) {
-  Channel.find(function (err, channels) {
-    ChannelSet.find(function (err, channelSets) {
-      res.render('admin/channel-sets/index', {
-        layout: 'admin/layout',
-        channelSets: channelSets,
-        channels: channels
+  api.channel.read(function (response) {
+    var channels = response.channels;
+    
+    api.channelSet.read(function (response) {
+      ChannelSet.find(function (err, channelSets) {
+        res.render('admin/channel-sets/index', {
+          layout: 'admin/layout',
+          channelSets: response.channelSets,
+          channels: channels
+        });
       });
     });
   });
@@ -101,16 +107,17 @@ app.get('/admin/channel-sets/', function (req, res) {
 
 // creates a channel set
 app.get('/admin/channel-sets/create', function (req, res) {
-  Channel.find(function (err, channels) {
+  api.channel.read(function (response) {
     res.render('admin/channel-sets/create', {
       layout: 'admin/layout',
-      channels: channels
+      channels: response.channels
     });
   });
 });
 app.post('/admin/channel-sets/create', function (req, res) {
   var input = req.body;
   
+  // format channels data into usable array
   var channels = [];
   for (var i = 0, j = input.channels.length; i < j; i++) {
     channels.push({
@@ -119,10 +126,10 @@ app.post('/admin/channel-sets/create', function (req, res) {
     });
   }
   
-  ChannelSet.create({
+  api.channelSet.create({
     title: input.title,
     channels: channels
-  }, function (err) {
+  }, function (response) {
     // redirect back to the listing page
     res.redirect('/admin/channel-sets/');
   });
@@ -130,41 +137,32 @@ app.post('/admin/channel-sets/create', function (req, res) {
 
 // removes a channel set
 app.get('/admin/channel-sets/remove', function (req, res) {
-  // TODO: handle invalid id, or lack thereof
-  ChannelSet.findOne({ _id: req.query.id }, function (err, set) {
-    set.remove();
+  api.channelSet.delete(req.query.id, function (response) {
     res.redirect('/admin/channel-sets/');
   });
 });
 app.post('/admin/channel-sets/remove', function (req, res) {
-  // TODO: handle invalid id, or lack thereof
-  ChannelSet.findOne({ _id: req.body.id }, function (err, set) {
-    set.remove();
+  api.channelSet.delete(req.body.id, function (response) {
     res.redirect('/admin/channel-sets/');
   });
 });
 
 // updates a channel set
 app.get('/admin/channel-sets/update', function (req, res) {
-  // TODO: handle invalid id, or lack thereof
-  
-  Channel.find(function (err, channels) {
-    ChannelSet
-      .findById(req.query.id)
-      .populate('channels.ref')
-      .run(function (err, channelSet) {
-        res.render('admin/channel-sets/update', {
-          layout: 'admin/layout',
-          channelSet: channelSet,
-          channels: channels
-        });
+  api.channel.read(function (response) {
+    var channels = response.channels;
+    
+    api.channelSet.read({ _id: req.query.id }, function (response) {
+      res.render('admin/channel-sets/update', {
+        layout: 'admin/layout',
+        channelSet: response.channelSet,
+        channels: channels
       });
+    });
   });
 });
 app.post('/admin/channel-sets/update', function (req, res) {
   var input = req.body;
-  
-  // TODO: Validation!!!
   
   // TODO: throw error if ids length isn't equal to delays length
   // create a new list of configured channels
@@ -179,27 +177,23 @@ app.post('/admin/channel-sets/update', function (req, res) {
     channels.push(thisChannel);
   }
   
-  ChannelSet.findById(input.id, function (err, channelSet) {
-    channelSet.title = input.title;
-    
-    channelSet.updateChannels(channels, function (err) {
-      res.redirect('/admin/channel-sets/update?id=' + input.id);
-    });
+  api.channelSet.update({
+    id: input.id,
+    title: input.title,
+    channels: channels
+  }, function (response) {
+    res.redirect('/admin/channel-sets/update?id=' + input.id);
   });
 });
 
 // lists all channels or a views single channel
 app.get('/admin/channels/', function (req, res) {
-  // fetch channels sorted by their index in ascending order
-  Channel
-    .find()
-    .sort('index', 1)
-    .run(function (err, channels) {
-      res.render('admin/channels/index', {
-        layout: 'admin/layout',
-        channels: channels
-      });
+  api.channel.read(function (response) {
+    res.render('admin/channels/index', {
+      layout: 'admin/layout',
+      channels: response.channels
     });
+  });
 });
 
 // creates a channel
@@ -210,7 +204,7 @@ app.post('/admin/channels/create', function (req, res) {
   var input = req.body;
   
   // TODO: Validation!!!
-  Channel.create(input, function (err) {
+  api.channel.create(input, function (response) {
     // redirect back to the listing page
     res.redirect('/admin/channels/');
   });
@@ -218,35 +212,30 @@ app.post('/admin/channels/create', function (req, res) {
 
 // removes a channel
 app.get('/admin/channels/remove', function (req, res) {
-  // TODO: handle invalid id, or lack thereof
-  Channel.findOne({ _id: req.query.id }, function (err, channel) {
-    channel.remove();
+  api.channel.delete(req.query.id, function (response) {
     res.redirect('/admin/channels/');
   });
 });
 app.post('/admin/channels/remove', function (req, res) {
-  // TODO: handle invalid id, or lack thereof
-  Channel.findOne({ _id: req.body.id }, function (err, channel) {
-    channel.remove();
+  api.channel.delete(req.body.id, function (response) {
     res.redirect('/admin/channels/');
   });
 });
 
 // updates a channel
 app.get('/admin/channels/update', function (req, res) {
-  // TODO: handle invalid id, or lack thereof
-  Channel.findById(req.query.id, function (err, channel) {
+  api.channel.read(req.query.id, function (response) {
     res.render('admin/channels/update', {
       layout: 'admin/layout',
-      channel: channel
+      channel: response.channel
     });
   });
 });
 app.post('/admin/channels/update', function (req, res) {
   var input = req.body;
   
-  // TODO: Validation!!!
-  Channel.update({ _id: input.id }, input, function (err) {
+  api.channel.update(input, function (response) {
+    console.log('response', response);
     res.redirect('/admin/channels/');
   });
 });

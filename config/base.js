@@ -5,5 +5,8 @@ module.exports = {
   database: {
     host: '127.0.0.1',
     name: 'broadcast'
+  },
+  security: {
+    secretKey: 'da433f0584d14134fa5058daed2d431e22943629'
   }
 };
