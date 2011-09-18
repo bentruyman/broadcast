@@ -376,9 +376,9 @@ app.get('/*', function (req, res) {
 
 app.error(function (err, req, res) {
   if (err instanceof NotFound) {
-    res.render('404', { error: err });
+    res.render('404', { error: err, status: 404 });
   } else {
-    res.render('500', { error: err });
+    res.render('500', { error: err, status: 500 });
   }
 });
 
