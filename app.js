@@ -258,5 +258,98 @@ app.post('/admin/channels/update', function (req, res) {
   });
 });
 
+// api routes
+////////////////////////////////////////////////////////////////////////////////
+
+// channel sets
+app.get(API_PATH + '/channel-sets', function (req, res) {
+  api.channelSet.read(function (response) {
+    res.send(response);
+  });
+});
+app.get(API_PATH + '/channel-sets/:id', function (req, res) {
+  api.channelSet.read({ _id: req.params.id }, function (response) {
+    res.send(response);
+  });
+});
+app.put(API_PATH + '/channel-sets', function (req, res) {
+  api.channelSet.update(req.body, function (response) {
+    res.send(response);
+  });
+});
+app.put(API_PATH + '/channel-sets/:id', function (req, res) {
+  var set = req.body;
+  set._id = req.params.id;
+  
+  api.channelSet.update(set, function (response) {
+    res.send(response);
+  });
+});
+app.post(API_PATH + '/channel-sets', function (req, res) {
+  api.channelSet.create(req.body, function (response) {
+    res.send(response);
+  });
+});
+app.post(API_PATH + '/channel-sets/:id', function (req, res) {
+  api.channelSet.create(req.body, function (response) {
+    res.send(response);
+  });
+});
+app.delete(API_PATH + '/channel-sets', function (req, res) {
+  api.channelSet.delete(req.body.id, function (response) {
+    res.send(response);
+  });
+});
+app.delete(API_PATH + '/channel-sets/:id', function (req, res) {
+  api.channelSet.delete(req.params.id, function (response) {
+    res.send(response);
+  });
+});
+
+// channels
+app.get(API_PATH + '/channels', function (req, res) {
+  api.channel.read(function (response) {
+    res.send(response);
+  });
+});
+app.get(API_PATH + '/channels/:id', function (req, res) {
+  api.channel.read(req.params.id, function (response) {
+    res.send(response);
+  });
+});
+app.put(API_PATH + '/channels', function (req, res) {
+  api.channel.update(req.body, function (response) {
+    res.send(response);
+  });
+});
+app.put(API_PATH + '/channels/:id', function (req, res) {
+  var channel = req.body;
+  channel._id = req.params.id;
+  
+  api.channel.update(channel, function (response) {
+    res.send(response);
+  });
+});
+app.post(API_PATH + '/channels', function (req, res) {
+  api.channel.create(req.body, function (response) {
+    res.send(response);
+  });
+});
+app.post(API_PATH + '/channels', function (req, res) {
+  api.channel.create(req.body, function (response) {
+    res.send(response);
+  });
+});
+app.delete(API_PATH + '/channels', function (req, res) {
+  api.channel.delete(req.body.id, function (response) {
+    res.send(response);
+  });
+});
+app.post(API_PATH + '/channels/:id', function (req, res) {
+  api.channel.create(req.params.id, function (response) {
+    res.send(response);
+  });
+});
+
 // listen for incoming connections
 app.listen(config.server.port);
