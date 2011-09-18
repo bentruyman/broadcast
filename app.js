@@ -359,5 +359,28 @@ app.post(API_PATH + '/channels/:id', function (req, res) {
   });
 });
 
+// error routes
+////////////////////////////////////////////////////////////////////////////////
+
+function NotFound(msg){
+  this.name = 'NotFound';
+  Error.call(this, msg);
+  Error.captureStackTrace(this, arguments.callee);
+}
+
+NotFound.prototype = new Error;
+
+app.get('/*', function (req, res) {
+  throw new NotFound;
+});
+
+app.error(function (err, req, res) {
+  if (err instanceof NotFound) {
+    res.render('404', { error: err });
+  } else {
+    res.render('500', { error: err });
+  }
+});
+
 // listen for incoming connections
 app.listen(config.server.port);
