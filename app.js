@@ -353,8 +353,8 @@ app.delete(API_PATH + '/channels', function (req, res) {
     res.send(response);
   });
 });
-app.post(API_PATH + '/channels/:id', function (req, res) {
-  api.channel.create(req.params.id, function (response) {
+app.delete(API_PATH + '/channels/:id', function (req, res) {
+  api.channel.delete(req.params.id, function (response) {
     res.send(response);
   });
 });
