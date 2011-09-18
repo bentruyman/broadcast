@@ -33,11 +33,6 @@ mongoose.model('Channel'          , require(BROADCAST_DIR + '/domain/channel'));
 mongoose.model('ChannelSet'       , require(BROADCAST_DIR + '/domain/channel-set'));
 mongoose.model('ConfiguredChannel', require(BROADCAST_DIR + '/domain/configured-channel'));
 
-// get models
-var Channel           = mongoose.model('Channel');
-var ChannelSet        = mongoose.model('ChannelSet');
-var ConfiguredChannel = mongoose.model('ConfiguredChannel');
-
 // connect to the database
 mongoose.connect(config.database.host, config.database.name);
 
@@ -112,12 +107,10 @@ app.get(ADMIN_PATH + '/channel-sets/', function (req, res) {
     var channels = response.channels;
     
     api.channelSet.read(function (response) {
-      ChannelSet.find(function (err, channelSets) {
-        res.render('admin/channel-sets/index', {
-          layout: 'admin/layout',
-          channelSets: response.channelSets,
-          channels: channels
-        });
+      res.render('admin/channel-sets/index', {
+        layout: 'admin/layout',
+        channelSets: response.channelSets,
+        channels: channels
       });
     });
   });
@@ -253,7 +246,6 @@ app.post(ADMIN_PATH + '/channels/update', function (req, res) {
   var input = req.body;
   
   api.channel.update(input, function (response) {
-    console.log('response', response);
     res.redirect(ADMIN_PATH + '/channels/');
   });
 });
