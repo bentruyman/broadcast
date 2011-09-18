@@ -261,6 +261,14 @@ app.post('/admin/channels/update', function (req, res) {
 // api routes
 ////////////////////////////////////////////////////////////////////////////////
 
+// overview
+app.get(API_PATH + '/', function (req, res) {
+  res.send({
+    channelSetsUri: API_PATH + '/channel-sets/',
+    channelsUri: API_PATH + '/channels/'
+  });
+});
+
 // channel sets
 app.get(API_PATH + '/channel-sets', function (req, res) {
   api.channelSet.read(function (response) {
