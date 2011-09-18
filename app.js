@@ -1,5 +1,3 @@
-// TODO: handle errors, especially mongo and "not found" errors
-
 // import node modules
 ////////////////////////////////////////////////////////////////////////////////
 var express  = require('./node_modules/express'),
@@ -175,8 +173,6 @@ app.get(ADMIN_PATH + '/channel-sets/update', function (req, res) {
 app.post(ADMIN_PATH + '/channel-sets/update', function (req, res) {
   var input = req.body;
   
-  // TODO: throw error if ids length isn't equal to delays length
-  // create a new list of configured channels
   var channels = [],
       thisChannel;
   for (var i = 0, j = input.channels.length; i < j; i++) {
@@ -214,7 +210,6 @@ app.get(ADMIN_PATH + '/channels/create', function (req, res) {
 app.post(ADMIN_PATH + '/channels/create', function (req, res) {
   var input = req.body;
   
-  // TODO: Validation!!!
   api.channel.create(input, function (response) {
     // redirect back to the listing page
     res.redirect(ADMIN_PATH + '/channels/');
