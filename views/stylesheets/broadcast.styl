@@ -1,15 +1,45 @@
 @import "nib/reset"
 @import "nib/clearfix"
+@import "css3/transitions"
 
 // resets
 global-reset()
 reset-html5()
 
+// variables
+
+cm-red = #aa1622
+
 // core
 
 html, body
+  font-family: "Helvetica Neue", helvetica, arial, sans-serif
+  -webkit-font-smoothing: antialiased
   height: 100%
   overflow: hidden
+
+p
+  line-height: 1.25em
+
+// buttons
+
+.button
+  display: inline-block
+  text-decoration: none
+
+.button-simple
+  color: #fff
+  font-size: 18px
+  font-weight: bold
+  text-align: center
+  background: #000
+  min-width: 108px
+  padding: 16px
+  transition: all 0.25s ease-in-out
+  
+  &:hover
+    background: #111
+    text-shadow: 0 0 5px #999
 
 // channel
 
@@ -17,3 +47,55 @@ html, body
   text-align: center
   height: 100%
   width: 100%
+
+// error views
+
+body.error
+  color: #fff
+  background-image: url("/assets/images/common/textures/noise.png")
+  background-image: url("/assets/images/common/textures/noise.png"), -webkit-linear-gradient(transparent, rgba(0,0,0,0.7))
+  background-image: url("/assets/images/common/textures/noise.png"),    -moz-linear-gradient(transparent, rgba(0,0,0,0.7))
+  background-image: url("/assets/images/common/textures/noise.png"),      -o-linear-gradient(transparent, rgba(0,0,0,0.7))
+  background-image: url("/assets/images/common/textures/noise.png"),         linear-gradient(transparent, rgba(0,0,0,0.7))
+  
+  #message
+    background-position: right top
+    background-repeat: no-repeat
+    position: absolute
+    top: 50%
+    left: 50%
+  
+  h1
+    color: rgba(255, 255, 255, 0.8)
+    font-size: 64px
+    font-weight: bold
+    text-shadow: 1px 2px 3px #000, 0 0 0 #fff, 1px 2px 3px #000;
+    margin: 25px 0
+  
+  p
+    font-size: 24px
+    text-shadow: 0 -2px 0 #000
+    width: 530px
+    margin-bottom: 35px
+
+// 404
+
+body#four_oh_four
+  background-color: #555
+  
+  #message
+    background-image: url("/assets/images/errors/404.png")
+    height: 250px
+    width: 700px
+    margin: -125px -350px
+
+// 500
+
+body#five_hundred
+  background-color: cm-red
+  
+  #message
+    background-image: url("/assets/images/errors/500.png")
+    height: 448px
+    width: 820px
+    margin: -195px -410px

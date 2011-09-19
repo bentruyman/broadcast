@@ -363,9 +363,9 @@ app.get('/*', function (req, res) {
 
 app.error(function (err, req, res) {
   if (err instanceof NotFound) {
-    res.render('404', { error: err, status: 404 });
+    res.render('errors/404', { error: err, status: 404, pageName: 'four_oh_four', referrer: req.headers.referer || null });
   } else {
-    res.render('500', { error: err, status: 500 });
+    res.render('errors/500', { error: err, status: 500, pageName: 'five_hundred', referrer: req.headers.referer || null });
   }
 });
 
