@@ -2,6 +2,20 @@
 html(lang="en")
   head
     title= "Broadcast Administration"
+    link(href="/stylesheets/admin.css", rel="stylesheet")
   body
-    h1= "Broadcast Administration"
-    != body
+    div#container
+     div#left-column
+      h1.broadcast-title= "broadcast"
+         span.broadcast-sub-title administration
+      ul
+       li
+         a(href="/")= "Dashboard"
+       li
+         a(href="/admin/channels/")= "Channels"
+       li
+         a(href="/admin/channel-sets/")= "Channel Sets"
+              
+
+      != body
+     //div#right-column
