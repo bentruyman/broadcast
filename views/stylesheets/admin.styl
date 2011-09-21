@@ -5,17 +5,16 @@ body
  margin 0
  background-color #dadada
  height 100%
- background-image:url('/assets/images/common/textures/broadcast-body-bg.png');
+ background-image:url('/assets/images/common/textures/broadcast-body-bg.png')
  background-repeat repeat
  
-
 #container
  width 1280px
  height 100%
 
 #left-column
  position absolute
- background-image:url('/assets/images/common/textures/left-col-bg.png');
+ background-image:url('/assets/images/common/textures/left-col-bg.png')
  background-repeat repeat y
  width 335px
  background-color #000
@@ -26,47 +25,97 @@ ul#left-nav li a
  text-decoration:none
  color #808080
  font-size 20px
+ font-weight: bold
+
+ul#left-nav li:hover
+ background: #aa1622 /* Old browsers */
+ background: -moz-linear-gradient(top, #aa1622 0%, #5a0c12 100%) /* FF3.6+ */
+ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#aa1622), color-stop(100%,#5a0c12)) /* Chrome,Safari4+ */
+ background: -webkit-linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* Chrome10+,Safari5.1+ */
+ background: -o-linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* Opera11.10+ */
+ background: -ms-linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* IE10+ */
+ background: linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* W3C */
+
+ul#left-nav li:hover a
+ color #fff
+
+ul#left-nav
+ margin 0
+ position absolute
+ top 160
+ left 85px
 
 ul#left-nav li
  list-style-type none
  padding 0
  margin 0
- float right
  position relative
  display inline-block
  width 196px
- height 50px
+ height 45px
  text-align right
  background-color #000
- line-height 3em
+ line-height 45px
  margin 0 0 5px 0
- padding-right 12px
- 
+ padding-right 14px
 
-ul#left-nav
- margin 0
+ul#left-nav li.on
+ background: #aa1622 /* Old browsers */
+ background: -moz-linear-gradient(top, #aa1622 0%, #5a0c12 100%) /* FF3.6+ */
+ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#aa1622), color-stop(100%,#5a0c12)) /* Chrome,Safari4+ */
+ background: -webkit-linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* Chrome10+,Safari5.1+ */
+ background: -o-linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* Opera11.10+ */
+ background: -ms-linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* IE10+ */
+ background: linear-gradient(top, #aa1622 0%,#5a0c12 100%) /* W3C */
+ z-index 1
+
+ul#left-nav li.on:after
+ content: ''
+ position: absolute
+ top: 6px
+ bottom: 8px
+ left: 193px
+ height 33px
+ width 33px
+ -moz-transform: rotate(-45deg)
+ -webkit-transform: rotate(-45deg)
+ -o-transform: rotate(-45deg)
+ -ms-transform: rotate(-45deg)
+ transform: rotate(-45deg)
+ z-index -1
+ background-image: -webkit-gradient(linear,left bottom,right top,from(#5a0c12),to(#aa1622))
+ background-image: -moz-linear-gradient(45deg, #5a0c12, #aa1622)
+
+ 
+ul#left-nav li.on a
+ color #fff
+ text-shadow: 0px -1px 0px #000
+ filter: dropshadow(color=#000, offx=0, offy=-1)
 
 #channel-right-column
- position relative
- bottom 189px
+ position absolute
+ top: 0
  width auto
- left 335px
+ left 392px
  border-style solid 1px
  border-style solid
  border-width 1px
  border-color 000
+
+#channel-right-column h2
+ color #000
  
 
 .broadcast-title
-  padding-left:80px;
+  padding-left:80px
   font-family Helvetica
   font-size 36px
   color #cbcbcb
-  font-weight 500
+  text-shadow: 0px -2px 0px #000
+  filter: dropshadow(color=#000, offx=0, offy=-1)
 
 span.broadcast-sub-title
   display block
   font-family Helvetica
   font-size 26px
   color #808080
-  font-weight 500

@@ -10,12 +10,13 @@ html(lang="en")
          span.broadcast-sub-title administration
       ul#left-nav
        li
-         a(href="/")= "Dashboard"
+         a(href="/")= "dashboard"
+       li.on
+         a(href="/admin/channels/")= "channels"
        li
-         a(href="/admin/channels/")= "Channels"
-       li
-         a(href="/admin/channel-sets/")= "Channel Sets"
+         a(href="/admin/channel-sets/")= "channel sets"
               
-
+       
       != body
+      script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
      //div#right-column
