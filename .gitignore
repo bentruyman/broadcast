@@ -2,19 +2,5 @@
 public/assets/channels/images/*
 public/assets/channels/videos/*
 public/stylesheets/broadcast.css
+public/stylesheets/admin.css
 
-<<<<<<< HEAD
-=======
-
-public/assets/images/common/textures/broadcast-body-bg.psd
-
-public/assets/images/common/textures/left-col-bg-large.psd
-
-public/assets/images/common/textures/left-col-bg.psd
-
-node_modules/stylus/editors/Stylus.tmbundle/info.plist
-
-node_modules/stylus/editors/Stylus.tmbundle/Syntaxes/Stylus.tmLanguage
-
-node_modules/stylus/editors/Stylus.tmbundle/Preferences/Comments.tmPreferences
->>>>>>> Updated styles to mirror PSD file
