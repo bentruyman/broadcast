@@ -4,15 +4,15 @@
   
   var API = this.API = {};
   
-  // RESTful resource class
+  // RESTful/CRUDful resource class
   function RestfulResource(resource) {
-    this.get = function (id) {
-      return $.ajax(API_URL + resource + (id ? '/' + id : ''), { type: 'GET' });
-    };
-    this.post = function (data) {
+    this.create = function (data) {
       return $.ajax(API_URL + resource, { type: 'POST', data: data });
     };
-    this.put = function (data) {
+    this.read = function (id) {
+      return $.ajax(API_URL + resource + (id ? '/' + id : ''), { type: 'GET' });
+    };
+    this.update = function (data) {
       return $.ajax(API_URL + resource + '/' + data._id, { type: 'PUT', data: data });
     };
     this.delete = function (id) {
