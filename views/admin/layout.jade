@@ -4,8 +4,8 @@ html(lang="en")
     title= "Broadcast Administration"
     link(href="/stylesheets/admin.css", rel="stylesheet")
   body
-    div#container
-     div#left-column
+    #container
+     #left-column
       h1.broadcast-title= "broadcast"
          span.broadcast-sub-title administration
       ul#left-nav
@@ -15,8 +15,8 @@ html(lang="en")
          a(href="/admin/channels/")= "channels"
        li
          a(href="/admin/channel-sets/")= "channel sets"
-              
-       
+      
       != body
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
-     //div#right-column
+      script(src="/javascripts/admin.js")
+      script(src="/javascripts/api.js")
