@@ -18,14 +18,7 @@ html(lang="en")
       
       #channel-right-column!= body
       
-      script(id="template-channels", type="text/x-jquery-tmpl")
-        ul
-          ="{{each channels}}"
-            li
-              = "${index} - ${title} - ${url} - ${type} - ${timeout}"
-              a(href="update/${_id}")= "[Edit]"
-              a(href="#", data-id="${_id}")= "[Delete]"
-          ="{{/each}}"
+      
       
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
       script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")

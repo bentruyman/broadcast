@@ -1,127 +1,179 @@
-gradient-color-top-left-nav = #9e9e9e
-gradient-color-bot-left-nav = #676767
-gradient-color-top-channel-list = #aa1622
-gradient-color-bot-channel-list = #5a0c12
-
+gradient-color-top-left-nav = #aa1622
+gradient-color-bot-left-nav = #5a0c12
+gradient-color-top-channel-list = #9e9e9e
+gradient-color-bot-channel-list = #676767
 
 body
- color #fff
- font-family arial
- padding 0
- margin 0
- background-color #dadada
- height 100%
- background-image:url('/assets/images/common/textures/broadcast-body-bg.png')
- background-repeat repeat
- 
+  color #333
+  font-family arial
+  padding 0
+  margin 0
+  background-color #dadada
+  height 100%
+  background-image:url('/assets/images/common/textures/broadcast-body-bg.png')
+  background-repeat repeat
+
 #container
- width 1280px
- height 100%
+  width 1280px
+  height 100%
 
 #left-column
- position absolute
- background-image:url('/assets/images/common/textures/left-col-bg.png')
- background-repeat repeat y
- width 335px
- background-color #000
- min-height 100%
- height auto
+  position absolute
+  background-image:url('/assets/images/common/textures/left-col-bg.png')
+  background-repeat repeat y
+  width 335px
+  background-color #000
+  min-height 100%
+  height auto
 
 ul#left-nav li a
- text-decoration:none
- color #808080
- font-size 20px
- font-weight: bold
+  text-decoration:none
+  color #808080
+  font-size 20px
+  font-weight: bold
 
 ul#left-nav li:hover
- background: gradient-color-top-left-nav
- background: -moz-linear-gradient(top, gradient-color-top-left-nav 0%, #5a0c12 100%) 
- background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,gradient-color-top-left-nav), color-stop(100%,#5a0c12)) 
- background: -webkit-linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
- background: -o-linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
- background: -ms-linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
- background: linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
+  background: gradient-color-top-left-nav
+  background: -moz-linear-gradient(top, gradient-color-top-left-nav 0%, gradient-color-bot-left-nav 100%) 
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,gradient-color-top-left-nav), color-stop(100%,gradient-color-bot-left-nav)) 
+  background: -webkit-linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
+  background: -o-linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
+  background: -ms-linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
+  background: linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
 
 ul#left-nav li:hover a
- color #fff
+  color #fff
 
 ul#left-nav
- margin 0
- position absolute
- top 160
- left 85px
+  margin 0
+  position absolute
+  top 160
+  left 85px
 
 ul#left-nav li
- list-style-type none
- padding 0
- margin 0
- position relative
- display inline-block
- width 196px
- height 45px
- text-align right
- background-color #000
- line-height 45px
- margin 0 0 5px 0
- padding-right 14px
+  list-style-type none
+  padding 0
+  margin 0
+  position relative
+  display inline-block
+  width 196px
+  height 45px
+  text-align right
+  background-color #000
+  line-height 45px
+  margin 0 0 5px 0
+  padding-right 14px
 
 ul#left-nav li.on
- background: gradient-color-top-left-nav
- background: -moz-linear-gradient(top, gradient-color-top-left-nav 0%, #5a0c12 100%)
- background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,gradient-color-top-left-nav), color-stop(100%,#5a0c12))
- background: -webkit-linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
- background: -o-linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
- background: -ms-linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
- background: linear-gradient(top, gradient-color-top-left-nav 0%,#5a0c12 100%)
- z-index 1
+  background: gradient-color-top-left-nav
+  background: -moz-linear-gradient(top, gradient-color-top-left-nav 0%, gradient-color-bot-left-nav 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,gradient-color-top-left-nav), color-stop(100%,gradient-color-bot-left-nav))
+  background: -webkit-linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
+  background: -o-linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
+  background: -ms-linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
+  background: linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
+  z-index 1
 
 ul#left-nav li.on:after
- content: ''
- position: absolute
- top: 6px
- bottom: 8px
- left: 193px
- height 33px
- width 33px
- -moz-transform: rotate(-45deg)
- -webkit-transform: rotate(-45deg)
- -o-transform: rotate(-45deg)
- -ms-transform: rotate(-45deg)
- transform: rotate(-45deg)
- z-index -1
- background-image: -webkit-gradient(linear,left bottom,right top,from(#5a0c12),to(gradient-color-top-left-nav))
- background-image: -moz-linear-gradient(45deg, #5a0c12, gradient-color-top-left-nav)
+  content: ''
+  position: absolute
+  top: 6px
+  bottom: 8px
+  left: 193px
+  height 33px
+  width 33px
+  -moz-transform: rotate(-45deg)
+  -webkit-transform: rotate(-45deg)
+  -o-transform: rotate(-45deg)
+  -ms-transform: rotate(-45deg)
+  transform: rotate(-45deg)
+  z-index -1
+  background-image: -webkit-gradient(linear,left bottom,right top,from(gradient-color-bot-left-nav),to(gradient-color-top-left-nav))
+  background-image: -moz-linear-gradient(45deg, gradient-color-bot-left-nav, gradient-color-top-left-nav)
 
- 
+
 ul#left-nav li.on a
- color #fff
- text-shadow: 0px -1px 0px #000
- filter: dropshadow(color=#000, offx=0, offy=-1)
+  color #fff
+  text-shadow: 0px -1px 0px #000
+  filter: dropshadow(color=#000, offx=0, offy=-1)
 
 #channel-right-column
- position absolute
- top: 0
- width auto
- left 392px
- border-style solid 1px
- border-style solid
- border-width 1px
- border-color 000
+  position absolute
+  top: 0
+  width 840px
+  left 392px
 
 #channel-right-column h2
- color #000
+  font-size 60px
+  text-shadow: 0px 1px 0px #fff
+  filter: dropshadow(color=#fff, offx=0, offy=-1)
 
+#channels-list-header
+  overflow hidden
+  margin-bottom 10px
+   
+#channels-list-header h3
+  float: left
+  margin 0
+  font-size 24px
+  text-shadow: 0px 1px 0px #fff
+  filter: dropshadow(color=#fff, offx=0, offy=-1)
+ 
+#channels-list-header a.channel-admin-button
+  float: right
+  font-size: 14px
+  color: #fff
+  display: inline-block
+  background-color: #2e2e2e
+  padding: 10px 15px
+  text-decoration: none
+  font-weight: bold
 
+#channel-list
+  width: 840px
 
 #channel-list th
- background: gradient-color-top-channel-list
- background: -moz-linear-gradient(top, gradient-color-top-channel-list 0%, gradient-color-bot-channel-list 100%)
- background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,gradient-color-top-channel-list), color-stop(100%,gradient-color-bot-channel-list))
- background: -webkit-linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
- background: -o-linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
- background: -ms-linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
- background: linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
- 
+  padding: 10px 20px
+  background: gradient-color-top-channel-list
+  background: -moz-linear-gradient(top, gradient-color-top-channel-list 0%, gradient-color-bot-channel-list 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,gradient-color-top-channel-list), color-stop(100%,gradient-color-bot-channel-list))
+  background: -webkit-linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
+  background: -o-linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
+  background: -ms-linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
+  background: linear-gradient(top, gradient-color-top-channel-list 0%,gradient-color-bot-channel-list 100%)
+  color: #fff
+  text-shadow: 0px -1px 0px #000
+  filter: dropshadow(color=#000, offx=0, offy=-1)
+  border-left: 1px solid #5d5d5d
+  
+#channel-list th:first-child
+#channel-list td:first-child
+  border: none
+  
+#channel-list tr
+  background-color: #f2f2f2
+
+#channel-list tr:nth-child(even)
+  background-color: #ededed
+
+#channel-list td
+  padding: 10px 20px
+  text-align: center
+  border-left: 1px solid #d9d9d9
+  
+#channel-list .title, #channel-list .url
+  text-align: left
+  
+#channel-list a.edit, #channel-list a.delete
+  background: url('/assets/images/common/buttons/admin.png') no-repeat
+  height: 16px
+  width: 15px
+  display: inline-block
+  
+#channel-list a.delete
+  background-position: top right
+  width: 14px
+  margin-left: 6px
 
 .broadcast-title
   padding-left:80px
@@ -129,7 +181,7 @@ ul#left-nav li.on a
   font-size 36px
   color #cbcbcb
   text-shadow: 0px -2px 0px #000
-  filter: dropshadow(color=#000, offx=0, offy=-1)
+  filter: dropshadow(color=#000, offx=0, offy=-2)
 
 span.broadcast-sub-title
   display block
