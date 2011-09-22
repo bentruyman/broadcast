@@ -27,7 +27,9 @@ h2= "Channels"
             a.edit(href="update/${_id}")= ""
             a.delete(href="#", data-id="${_id}")= ""
     ="{{/each}}"
-      
-p= "Page 1 of 6"
-a(href="#")= "Previous Page"
-a(href="#")= "Next Page"
+
+#channels-list-footer      
+  p.pagination= "Page 1 of 6"
+  a.channel-admin-button(href="#")= "Next Page"
+  a.channel-admin-button(href="#")= "Previous Page"
+  
