@@ -1,4 +1,53 @@
 include includes/form
 
 h2= "Channels"
+
 #channels
+  h3= "List of Available Channels"
+  a(href="/admin/channels/remove?id=")= "Create New Channel"
+ 
+  table#channel-list(border="0",cellspacing="0",cellpadding="0")
+    thead
+     tr
+      th= "Index"
+      th= "Title"
+      th= "URL"
+      th= "Type"
+      th= "Actions"
+    tbody
+     tr
+      td= "1"
+      td= "Lorem Ipsum Dolor"
+      td= "http://www.yourmom.com/"
+      td= "Page"
+      td  
+       a(href="/admin/channels/update?id=")= "[Edit]" 
+       a(href="/admin/channels/remove?id=")= "[Delete]"
+     tr
+      td= "2"
+      td= "Lorem Ipsum Dolor"
+      td= "http://www.yourmom.com/"
+      td= "Page"
+      td  
+       a(href="/admin/channels/update?id=")= "[Edit]" 
+       a(href="/admin/channels/remove?id=")= "[Delete]"
+     tr
+      td= "3"
+      td= "Lorem Ipsum Dolor"
+      td= "http://www.yourmom.com/"
+      td= "Page"
+      td  
+       a(href="/admin/channels/update?id=")= "[Edit]" 
+       a(href="/admin/channels/remove?id=")= "[Delete]"
+      tr
+      td= "4"
+      td= "Lorem Ipsum Dolor"
+      td= "http://www.yourmom.com/"
+      td= "Page"
+      td  
+       a(href="/admin/channels/update?id=")= "[Edit]" 
+       a(href="/admin/channels/remove?id=")= "[Delete]"
+  
+  p= "Page 1 of 6"
+  a(href="#")= "Previous Page"
+  a(href="#")= "Next Page"
