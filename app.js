@@ -101,95 +101,30 @@ app.get(ADMIN_PATH, function (req, res) {
 
 // lists all channel sets or a views single channel set
 app.get(ADMIN_PATH + '/channel-sets/', function (req, res) {
-  api.channel.read(function (response) {
-    var channels = response.channels;
-    
-    api.channelSet.read(function (response) {
-      res.render('admin/channel-sets/index', {
-        layout: 'admin/layout',
-        channelSets: response.channelSets,
-        channels: channels
-      });
+  api.channelSet.read(function (response) {
+    res.render('admin/channel-sets/index', {
+      layout: 'admin/layout',
+      type: 'channel-sets',
+      method: 'read'
     });
   });
 });
 
 // creates a channel set
 app.get(ADMIN_PATH + '/channel-sets/create', function (req, res) {
-  api.channel.read(function (response) {
-    res.render('admin/channel-sets/create', {
-      layout: 'admin/layout',
-      channels: response.channels
-    });
-  });
-});
-app.post(ADMIN_PATH + '/channel-sets/create', function (req, res) {
-  var input = req.body;
-  
-  // format channels data into usable array
-  var channels = [];
-  for (var i = 0, j = input.channels.length; i < j; i++) {
-    channels.push({
-      ref: input.channels[i],
-      timeout: input.timeouts[i]
-    });
-  }
-  
-  api.channelSet.create({
-    title: input.title,
-    channels: channels
-  }, function (response) {
-    // redirect back to the listing page
-    res.redirect(ADMIN_PATH + '/channel-sets/');
-  });
-});
-
-// removes a channel set
-app.get(ADMIN_PATH + '/channel-sets/remove', function (req, res) {
-  api.channelSet.delete(req.query.id, function (response) {
-    res.redirect(ADMIN_PATH + '/channel-sets/');
-  });
-});
-app.post(ADMIN_PATH + '/channel-sets/remove', function (req, res) {
-  api.channelSet.delete(req.body.id, function (response) {
-    res.redirect(ADMIN_PATH + '/channel-sets/');
+  res.render('admin/channel-sets/create', {
+    layout: 'admin/layout',
+    type: 'channel-sets',
+    method: 'create'
   });
 });
 
 // updates a channel set
-app.get(ADMIN_PATH + '/channel-sets/update', function (req, res) {
-  api.channel.read(function (response) {
-    var channels = response.channels;
-    
-    api.channelSet.read({ _id: req.query.id }, function (response) {
-      res.render('admin/channel-sets/update', {
-        layout: 'admin/layout',
-        channelSet: response.channelSet,
-        channels: channels
-      });
-    });
-  });
-});
-app.post(ADMIN_PATH + '/channel-sets/update', function (req, res) {
-  var input = req.body;
-  
-  var channels = [],
-      thisChannel;
-  for (var i = 0, j = input.channels.length; i < j; i++) {
-    thisChannel = {
-      ref: input.channels[i],
-      timeout: input.timeouts[i]
-    };
-    
-    channels.push(thisChannel);
-  }
-  
-  api.channelSet.update({
-    id: input.id,
-    title: input.title,
-    channels: channels
-  }, function (response) {
-    res.redirect(ADMIN_PATH + '/channel-sets/update?id=' + input.id);
+app.get(ADMIN_PATH + '/channel-sets/update/:id', function (req, res) {
+  res.render('admin/channel-sets/update', {
+    layout: 'admin/layout',
+    type: 'channel-sets',
+    method: 'update'
   });
 });
 
@@ -198,50 +133,27 @@ app.get(ADMIN_PATH + '/channels/', function (req, res) {
   api.channel.read(function (response) {
     res.render('admin/channels/index', {
       layout: 'admin/layout',
-      channels: response.channels
+      type: 'channels',
+      method: 'read'
     });
   });
 });
 
 // creates a channel
 app.get(ADMIN_PATH + '/channels/create', function (req, res) {
-  res.render('admin/channels/create', { layout: 'admin/layout' });
-});
-app.post(ADMIN_PATH + '/channels/create', function (req, res) {
-  var input = req.body;
-  
-  api.channel.create(input, function (response) {
-    // redirect back to the listing page
-    res.redirect(ADMIN_PATH + '/channels/');
-  });
-});
-
-// removes a channel
-app.get(ADMIN_PATH + '/channels/remove', function (req, res) {
-  api.channel.delete(req.query.id, function (response) {
-    res.redirect(ADMIN_PATH + '/channels/');
-  });
-});
-app.post(ADMIN_PATH + '/channels/remove', function (req, res) {
-  api.channel.delete(req.body.id, function (response) {
-    res.redirect(ADMIN_PATH + '/channels/');
+  res.render('admin/channels/create', {
+    layout: 'admin/layout',
+    type: 'channels',
+    method: 'create'
   });
 });
 
 // updates a channel
-app.get(ADMIN_PATH + '/channels/update', function (req, res) {
-  api.channel.read(req.query.id, function (response) {
-    res.render('admin/channels/update', {
-      layout: 'admin/layout',
-      channel: response.channel
-    });
-  });
-});
-app.post(ADMIN_PATH + '/channels/update', function (req, res) {
-  var input = req.body;
-  
-  api.channel.update(input, function (response) {
-    res.redirect(ADMIN_PATH + '/channels/');
+app.get(ADMIN_PATH + '/channels/update/:id', function (req, res) {
+  res.render('admin/channels/update', {
+    layout: 'admin/layout',
+    type: 'channels',
+    method: 'update'
   });
 });
 
@@ -357,17 +269,18 @@ function NotFound(msg){
 
 NotFound.prototype = new Error;
 
-app.get('/*', function (req, res) {
-  throw new NotFound;
-});
-
-app.error(function (err, req, res) {
-  if (err instanceof NotFound) {
-    res.render('errors/404', { error: err, status: 404, pageName: 'four_oh_four', referrer: req.headers.referer || null });
-  } else {
-    res.render('errors/500', { error: err, status: 500, pageName: 'five_hundred', referrer: req.headers.referer || null });
-  }
-});
+// app.get('/*', function (req, res) {
+//   throw new NotFound;
+// });
+// 
+// app.error(function (err, req, res, next) {
+//   if (err instanceof NotFound) {
+//     res.render('errors/404', { error: err, status: 404, pageName: 'four_oh_four', referrer: req.headers.referer || null });
+//   } else {
+//     console.error(err);
+//     res.render('errors/500', { error: err, status: 500, pageName: 'five_hundred', referrer: req.headers.referer || null });
+//   }
+// });
 
 // listen for incoming connections
 app.listen(config.server.port);

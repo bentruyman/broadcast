@@ -3,7 +3,7 @@ html(lang="en")
   head
     title= "Broadcast Administration"
     link(href="/stylesheets/admin.css", rel="stylesheet")
-  body
+  body(id=type + '-' + method, class=type)
     #container
      #left-column
       h1.broadcast-title= "broadcast"
@@ -16,7 +16,19 @@ html(lang="en")
        li
          a(href="/admin/channel-sets/")= "channel sets"
       
-      != body
+      #channel-right-column!= body
+      
+      script(id="template-channels", type="text/x-jquery-tmpl")
+        ul
+          ="{{each channels}}"
+            li
+              = "${index} - ${title} - ${url} - ${type} - ${timeout}"
+              a(href="update/${_id}")= "[Edit]"
+              a(href="#", data-id="${_id}")= "[Delete]"
+          ="{{/each}}"
+      
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
-      script(src="/javascripts/admin.js")
+      script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")
+      script(src="/javascripts/libs/sammy.js")
       script(src="/javascripts/api.js")
+      script(src="/javascripts/admin.js")

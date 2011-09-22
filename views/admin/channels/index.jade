@@ -1,12 +1,4 @@
 include includes/form
 
-div#channel-right-column
- h2= "Channels"
- ul
-  each channel in channels
-   li= "(" + channel.index + ") " + channel.title
-    a(href="/admin/channels/update?id=" + channel._id)= "[Edit]"
-    a(href="/admin/channels/remove?id=" + channel._id)= "[Delete]"
-
- h2= "Add a New Channel"
- mixin form('create')
+h2= "Channels"
+#channels
