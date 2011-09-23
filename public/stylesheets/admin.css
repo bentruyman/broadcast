@@ -2,7 +2,7 @@ body{color:#333;font-family:arial;padding:0;margin:0;background-color:#dadada;he
 a{color:#000}
 a:hover{color:#aa1622}
 #container{width:1280px;height:100%}
-#left-column{position:absolute;background-image:url("/assets/images/common/textures/left-col-bg.png");background-repeat:repeat y;width:335px;background-color:#000;min-height:100%;height:auto}
+#left-column{position:fixed;background-image:url("/assets/images/common/textures/left-col-bg.png");background-repeat:repeat y;width:335px;background-color:#000;min-height:100%;height:auto}
 ul#left-nav li a{text-decoration:none;color:#808080;font-size:20px;font-weight:bold}
 ul#left-nav li:hover{background:#aa1622;background:-moz-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#aa1622),color-stop(100%,#5a0c12));background:-webkit-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-o-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-ms-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:linear-gradient(top,#aa1622 0%,#5a0c12 100%)}
 ul#left-nav li:hover a{color:#fff}
@@ -11,8 +11,8 @@ ul#left-nav li{list-style-type:none;padding:0;margin:0;position:relative;display
 ul#left-nav li.on{background:#aa1622;background:-moz-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#aa1622),color-stop(100%,#5a0c12));background:-webkit-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-o-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-ms-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:linear-gradient(top,#aa1622 0%,#5a0c12 100%);z-index:1}
 ul#left-nav li.on:after{content:"";position:absolute;top:6px;bottom:8px;left:193px;height:33px;width:33px;-moz-transform:rotate(-45deg);-webkit-transform:rotate(-45deg);-o-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);z-index:-1;background-image:-webkit-gradient(linear,left bottom,right top,from(#5a0c12),to(#aa1622));background-image:-moz-linear-gradient(45deg,#5a0c12,#aa1622)}
 ul#left-nav li.on a{color:#fff;text-shadow:0 -1px 0 #000;filter:dropshadow(#000,0,-1)}
-#channel-right-column{position:absolute;top:0;width:840px;left:392px}
-#channel-right-column h2{font-size:60px;text-shadow:0 1px 0 #fff;filter:dropshadow(#fff,0,-1)}
+#main{position:absolute;top:0;width:840px;left:392px}
+#main h2{font-size:60px;text-shadow:0 1px 0 #fff;filter:dropshadow(#fff,0,-1)}
 #channels-list-header{overflow:hidden;margin-bottom:10px}
 #channels-list-header h3{float:left;margin:0;font-size:24px;text-shadow:0 1px 0 #fff;filter:dropshadow(#fff,0,-1)}
 a.channel-admin-button{float:right;font-size:14px;color:#fff;display:inline-block;background-color:#2e2e2e;padding:10px 15px;text-decoration:none;font-weight:bold}

@@ -13,13 +13,9 @@ left-nav-gradient()
   background: linear-gradient(top, gradient-color-top-left-nav 0%,gradient-color-bot-left-nav 100%)
   
 /* Grey gradient */ 
-gradient-color-top-channel-list = #9e9e9e  
-gradient-color-bot-channel-list = #676767  
+gradient-color-top-channel-list = #9e9e9e
+gradient-color-bot-channel-list = #676767
 
-
-
-  
-  
 /* Styles */
 body
   color #333
@@ -42,7 +38,7 @@ a:hover
   height 100%
 
 #left-column
-  position absolute
+  position fixed
   background-image:url('/assets/images/common/textures/left-col-bg.png')
   background-repeat repeat y
   width 335px
@@ -82,8 +78,6 @@ ul#left-nav li
   margin 0 0 5px 0
   padding-right 14px
 
-
-
 ul#left-nav li.on
   left-nav-gradient()
   z-index 1
@@ -105,34 +99,35 @@ ul#left-nav li.on:after
   background-image: -webkit-gradient(linear,left bottom,right top,from(gradient-color-bot-left-nav),to(gradient-color-top-left-nav))
   background-image: -moz-linear-gradient(45deg, gradient-color-bot-left-nav, gradient-color-top-left-nav)
 
-
 ul#left-nav li.on a
   color #fff
   text-shadow: 0px -1px 0px #000
   filter: dropshadow(color=#000, offx=0, offy=-1)
 
-#channel-right-column
+// main content area
+#main
   position absolute
   top: 0
   width 840px
   left 392px
 
-#channel-right-column h2
+#main h2
   font-size 60px
   text-shadow: 0px 1px 0px #fff
   filter: dropshadow(color=#fff, offx=0, offy=-1)
 
+// channels
 #channels-list-header
   overflow hidden
   margin-bottom 10px
-   
+
 #channels-list-header h3
   float: left
   margin 0
   font-size 24px
   text-shadow: 0px 1px 0px #fff
   filter: dropshadow(color=#fff, offx=0, offy=-1)
- 
+
 a.channel-admin-button
   float: right
   font-size: 14px
@@ -142,7 +137,6 @@ a.channel-admin-button
   padding: 10px 15px
   text-decoration: none
   font-weight: bold
-    
 
 a.channel-admin-button:hover
   left-nav-gradient()
@@ -188,19 +182,19 @@ a.channel-admin-button:hover
   height: 16px
   width: 15px
   display: inline-block
-  
+
 #channel-list a.delete
   background-position: top right
   width: 14px
   margin-left: 6px
-  
+
 #channels-list-footer
   overflow hidden
   margin-top 10px
 
 #channels-list-footer .pagination
   float: left
-  
+
 #channels-list-footer .prev
   float: right
   border-right: 1px solid #000
@@ -208,7 +202,7 @@ a.channel-admin-button:hover
 #channels-list-footer .next
   float: right
   border-left: 1px solid #4a4a4a
-    
+
 .broadcast-title
   padding-left:80px
   font-family Helvetica

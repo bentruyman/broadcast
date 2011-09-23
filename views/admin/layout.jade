@@ -15,13 +15,11 @@ html(lang="en")
          a(href="/admin/channels/")= "channels"
        li
          a(href="/admin/channel-sets/")= "channel sets"
-      
-      #channel-right-column!= body
-      
-      
-      
-      script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
-      script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")
-      script(src="/javascripts/libs/sammy.js")
-      script(src="/javascripts/api.js")
-      script(src="/javascripts/admin.js")
+    
+    #main!= body
+    
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+    script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")
+    script(src="/javascripts/libs/sammy.js")
+    script(src="/javascripts/api.js")
+    script(src="/javascripts/admin.js")
