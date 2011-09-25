@@ -12,14 +12,16 @@ a:hover{color:#aa1622}
 #navigation nav a:hover{background:#aa1622;background:-moz-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#aa1622),color-stop(100%,#5a0c12));background:-webkit-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-o-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-ms-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:linear-gradient(top,#aa1622 0%,#5a0c12 100%);color:#fff}
 body.dashboard #navigation-dashboard a,body.channels #navigation-channels a,body.channel-sets #navigation-channel-sets a{color:#fff;text-shadow:0 -1px 0 #000;filter:dropshadow(#000,0,-1);background:#aa1622;background:-moz-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#aa1622),color-stop(100%,#5a0c12));background:-webkit-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-o-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-ms-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:linear-gradient(top,#aa1622 0%,#5a0c12 100%);z-index:1;}
 body.dashboard #navigation-dashboard a:after,body.channels #navigation-channels a:after,body.channel-sets #navigation-channel-sets a:after{content:"";position:absolute;top:6px;bottom:8px;left:193px;height:33px;width:33px;-moz-transform:rotate(-45deg);-webkit-transform:rotate(-45deg);-o-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);z-index:-1;background-image:-webkit-gradient(linear,left bottom,right top,from(#5a0c12),to(#aa1622));background-image:-moz-linear-gradient(45deg,#5a0c12,#aa1622)}
-#main{position:absolute;top:0;width:930px;left:392px;}
+#main{position:absolute;top:0;width:930px;left:392px;margin-bottom:20px;}
 #main h2{font-size:60px;text-shadow:0 1px 0 #fff;filter:dropshadow(#fff,0,-1)}
 header{overflow:hidden;margin-bottom:10px;}
 header h3{float:left;margin:0;font-size:24px;text-shadow:0 1px 0 #fff;filter:dropshadow(#fff,0,-1)}
-footer{overflow:hidden;margin-top:10px;}
-footer .pagination{float:left}
-footer .prev{float:right;border-right:1px solid #000}
-footer .next{float:right;border-left:1px solid #4a4a4a}
+header .button{float:right}
+footer{overflow:hidden;}
+footer .pagination{font-size:14px;font-weight:bold;line-height:42px;float:left}
+footer .buttons{float:right;}
+footer .buttons .prev{border-right:1px solid #000}
+footer .buttons .next{border-left:1px solid #4a4a4a}
 .data-list{width:100%;}
 .data-list th{padding:10px 20px;background:#9e9e9e;background:-moz-linear-gradient(top,#9e9e9e 0%,#676767 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#9e9e9e),color-stop(100%,#676767));background:-webkit-linear-gradient(top,#9e9e9e 0%,#676767 100%);background:-o-linear-gradient(top,#9e9e9e 0%,#676767 100%);background:-ms-linear-gradient(top,#9e9e9e 0%,#676767 100%);background:linear-gradient(top,#9e9e9e 0%,#676767 100%);color:#fff;font-weight:bold;text-align:center;text-shadow:0 -1px 0 #000;filter:dropshadow(#000,0,-1);border-left:1px solid #5d5d5d}
 .data-list th:first-child,.data-list td:first-child{border:none}

@@ -108,6 +108,9 @@ function adminRender(res, viewName, locals) {
   res.render(viewName, locals);
 }
 
+// how many items to list per page
+const ITEMS_PER_PAGE = 10;
+
 // lists all channels and channel sets
 app.get(ADMIN_PATH, function (req, res) {
   adminRender(res, 'admin/index', { type: 'dashboard', method: '' });
@@ -115,49 +118,36 @@ app.get(ADMIN_PATH, function (req, res) {
 
 // lists all channel sets or a views single channel set
 app.get(ADMIN_PATH + '/channel-sets/', function (req, res) {
-  api.channelSet.read(function (response) {
-    adminRender(res, 'admin/channel-sets/index', { type: 'channel-sets', method: 'read' });
-  });
+  adminRender(res, 'admin/channel-sets/index', { type: 'channel-sets', method: 'read' });
 });
 
 // creates a channel set
 app.get(ADMIN_PATH + '/channel-sets/create', function (req, res) {
-  res.render('admin/channel-sets/create', {
-    layout: 'admin/layout',
-    type: 'channel-sets',
-    method: 'create'
-  });
+  adminRender(res, 'admin/channel-sets/create', { type: 'channel-sets', method: 'create' });
 });
 
 // updates a channel set
 app.get(ADMIN_PATH + '/channel-sets/update/:id', function (req, res) {
-  res.render('admin/channel-sets/update', {
-    layout: 'admin/layout',
-    type: 'channel-sets',
-    method: 'update'
-  });
+  adminRender(res, 'admin/channel-sets/update', { type: 'channel-sets', method: 'update' });
 });
 
 // lists all channels or a views single channel
 app.get(ADMIN_PATH + '/channels/', function (req, res) {
-  api.channel.read(function (response) {
+  var currentPage = req.params.page || 0;
+  
+  api.channel.read({ limit: ITEMS_PER_PAGE }, function (response) {
     adminRender(res, 'admin/channels/index', { type: 'channels', method: 'read' });
   });
 });
 
 // creates a channel
 app.get(ADMIN_PATH + '/channels/create', function (req, res) {
-  res.render('admin/channels/create', {
-    layout: 'admin/layout',
-    type: 'channels',
-    method: 'create'
-  });
+  adminRender(res, 'admin/channels/create', { type: 'channels', method: 'create' });
 });
 
 // updates a channel
 app.get(ADMIN_PATH + '/channels/update/:id', function (req, res) {
-  res.render('admin/channels/update', {
-    layout: 'admin/layout',
+  adminRender(res, 'admin/channels/update', {
     type: 'channels',
     method: 'update'
   });
@@ -182,7 +172,11 @@ app.get(API_PATH + '/channelSets', function (req, res) {
 });
 app.get(API_PATH + '/channelSets/:id', function (req, res) {
   api.channelSet.read({ _id: req.params.id }, function (response) {
-    res.send(response);
+    if (response.channelSets && response.channelSets.length === 1) { // one channel set
+      res.send({ channelSet: response.channelSets[0] });
+    } else { // error
+      res.send(response);
+    }
   });
 });
 app.put(API_PATH + '/channelSets', function (req, res) {
@@ -226,8 +220,12 @@ app.get(API_PATH + '/channels', function (req, res) {
   });
 });
 app.get(API_PATH + '/channels/:id', function (req, res) {
-  api.channel.read(req.params.id, function (response) {
-    res.send(response);
+  api.channel.read({ _id: req.params.id }, function (response) {
+    if (response.channels && response.channels.length === 1) { // one channel
+      res.send({ channel: response.channels[0]});
+    } else { // error
+      res.send(response);
+    }
   });
 });
 app.put(API_PATH + '/channels', function (req, res) {

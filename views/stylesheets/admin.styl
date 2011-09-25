@@ -118,43 +118,50 @@ body.channel-sets #navigation-channel-sets
 
 // main content area
 #main
-  position absolute
+  position: absolute
   top: 0
-  width 930px
-  left 392px
-
+  width: 930px
+  left: 392px
+  margin-bottom: 20px
+  
   h2
-    font-size 60px
+    font-size: 60px
     text-shadow: 0px 1px 0px #fff
     filter: dropshadow(color=#fff, offx=0, offy=-1)
 
 header
-  overflow hidden
-  margin-bottom 10px
-
+  overflow: hidden
+  margin-bottom: 10px
+  
   h3
     float: left
-    margin 0
-    font-size 24px
+    margin: 0
+    font-size: 24px
     text-shadow: 0px 1px 0px #fff
     filter: dropshadow(color=#fff, offx=0, offy=-1)
+  
+  .button
+    float: right
 
 // footer
 
 footer
-  overflow hidden
-  margin-top 10px
+  overflow: hidden
   
   .pagination
+    font-size: 14px
+    font-weight: bold
+    line-height: 42px
     float: left
   
-  .prev
+  .buttons
     float: right
-    border-right: 1px solid #000
-  
-  .next
-    float: right
-    border-left: 1px solid #4a4a4a
+    
+    .prev
+      border-right: 1px solid #000
+    
+    .next
+      border-left: 1px solid #4a4a4a
 
 // data list table
 
