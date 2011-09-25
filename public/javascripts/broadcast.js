@@ -7,12 +7,6 @@
     Broadcast.Tuner.init();
   };
   
-  Broadcast.getChannelSet = function () {
-    // loads the JSON document of this page's channel set
-    // transforms the url from "/channel-set/foo-bar" to "/channel-set/foo-bar.json"
-    return $.ajax(window.location.toString().split('?')[0] + '.json');
-  };
-  
   Broadcast.Tuner = (function () {
     var channelSet = null, // copy of the page's current channel set
         container = null, // main container where channels are inserted
@@ -65,13 +59,19 @@
       $(container).empty();
     }
     
+    function getChannelSet() {
+      // loads the JSON document of this page's channel set
+      // transforms the url from "/channel-set/foo-bar" to "/channel-set/foo-bar.json"
+      return $.ajax(window.location.toString().split('?')[0] + '.json');
+    }
+    
     var Tuner = {
       init: function () {
         container = $('#channel').get(0);
         Tuner.refresh();
       },
       refresh: function () {
-        Broadcast.getChannelSet().then(function (data) {
+        getChannelSet().then(function (data) {
           channelSet = data;
           Tuner.nextChannel();
         });
@@ -131,6 +131,33 @@
   }());
   
   Broadcast.utils = {
+    parseUrl: function (url) {
+      var regexp = /^(([^:\/\?#]+):)?(\/\/([^\/\?#]*))?([^\.\?#]*)(\.([^\?#]*))?(\?([^#]*))?(#(.*))?/,
+          exploded = regexp.exec(url),
+          urlFragments = {
+            scheme: exploded[2],
+            authority: exploded[4],
+            path: exploded[5],
+            extension: exploded[7],
+            query: {},
+            fragment: exploded[11]
+          };
+      
+      var queryPieces = exploded[9];
+      
+      if (queryPieces) {
+        var chunk;
+        
+        queryPieces = queryPieces.split('&');
+        
+        for (var i = 0, j = queryPieces.length; i < j; i = i + 1) {
+          chunk = queryPieces[i].split('=');
+          urlFragments.query[chunk[0]] = chunk[1];
+        }
+      }
+      
+      return urlFragments;
+    },
     preloadImages: function (imagePaths) {
       var promises = [];
       
@@ -165,7 +192,4 @@
       }
     }
   };
-  
-  // initialize on document ready
-  $(Broadcast.init);
 }());

@@ -133,11 +133,7 @@ app.get(ADMIN_PATH + '/channel-sets/update/:id', function (req, res) {
 
 // lists all channels or a views single channel
 app.get(ADMIN_PATH + '/channels/', function (req, res) {
-  var currentPage = req.params.page || 0;
-  
-  api.channel.read({ limit: ITEMS_PER_PAGE }, function (response) {
-    adminRender(res, 'admin/channels/index', { type: 'channels', method: 'read' });
-  });
+  adminRender(res, 'admin/channels/index', { type: 'channels', method: 'read' });
 });
 
 // creates a channel
