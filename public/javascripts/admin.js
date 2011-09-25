@@ -1,8 +1,10 @@
 (function (Broadcast, Sammy) {
-  
   Broadcast.Admin = {
     init: function () {
       var containerSelector = '#main';
+      
+      // how many items to list per page
+      var ITEMS_PER_PAGE = 15;
       
       Sammy(containerSelector, function (app) {
         var $main = $(containerSelector);
@@ -40,10 +42,22 @@
         });
         
         // list channels
-        this.get('/admin/channels/', function () {
+        this.get('/admin/channels/', function (app) {
           this.renderPage().then(function () {
             // load all channels
             API.channels.read().then(function (data) {
+              console.log(data.channels.length);
+              // determine current, next, and previous page indexes
+              data.currentPage = parseInt(app.params.page, 10) || 1;
+              data.totalPages  = Math.ceil(data.channels.length / ITEMS_PER_PAGE);
+              data.prevPage    = (data.currentPage - 1 > 0) ? data.currentPage - 1 : null;
+              data.nextPage    = (data.currentPage < data.totalPages) ? data.currentPage + 1 : null;
+              
+              // slice out current page's channels
+              data.channels = data.channels.slice((data.currentPage - 1) * ITEMS_PER_PAGE, ((data.currentPage - 1) * ITEMS_PER_PAGE) + ITEMS_PER_PAGE);
+              
+              console.log(data);
+              
               // inject channels data into channels template
               $('#channels').append(
                 $('#template-channels').tmpl(data)

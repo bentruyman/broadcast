@@ -108,9 +108,6 @@ function adminRender(res, viewName, locals) {
   res.render(viewName, locals);
 }
 
-// how many items to list per page
-const ITEMS_PER_PAGE = 10;
-
 // lists all channels and channel sets
 app.get(ADMIN_PATH, function (req, res) {
   adminRender(res, 'admin/index', { type: 'dashboard', method: '' });

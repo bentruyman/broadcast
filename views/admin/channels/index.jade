@@ -5,28 +5,32 @@ header
 
 section#channels
   script(id="template-channels", type="text/x-jquery-tmpl")
-   table.data-list(border="0",cellspacing="0",cellpadding="0")
-    thead
-      tr
-        th= "Index"
-        th.title= "Title"
-        th.url= "URL"
-        th= "Type"
-        th.actions= "Actions"
-    ="{{each channels}}"
+    table.data-list(border="0",cellspacing="0",cellpadding="0")
+      thead
         tr
-          td= "${index}"
-          td.title= "${title}"
-          td.url 
-            a(href="${url}")= "${url}"
-          td= "${type}"
-          td.actions
-            a.edit(href="update/${_id}")= ""
-            a.delete(href="#", data-id="${_id}")= ""
-    ="{{/each}}"
-
-footer
-  p.pagination= "Page 1 of 6"
-  nav.buttons
-    a.button.button-simple.prev(href="#")= "Previous Page"
-    a.button.button-simple.next(href="#")= "Next Page"
+          th= "Index"
+          th.title= "Title"
+          th.url= "URL"
+          th= "Type"
+          th.actions= "Actions"
+      tbody
+        ="{{each channels}}"
+          tr
+            td= "${index}"
+            td.title= "${title}"
+            td.url 
+              a(href="${url}")= "${url}"
+            td= "${type}"
+            td.actions
+              a.edit(href="update/${_id}")= ""
+              a.delete(href="#", data-id="${_id}")= ""
+        ="{{/each}}"
+    footer
+      p.pagination= "Page ${currentPage} of ${totalPages}"
+      nav.buttons
+        ="{{if prevPage !== null}}"
+          a.button.button-simple.prev(href="?page=${prevPage}")= "Previous Page"
+        ="{{/if}}"
+        ="{{if nextPage !== null}}"
+          a.button.button-simple.next(href="?page=${nextPage}")= "Next Page"
+        ="{{/if}}"
