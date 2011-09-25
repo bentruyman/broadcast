@@ -16,7 +16,9 @@ html, body
   font-family: "Helvetica Neue", helvetica, arial, sans-serif
   -webkit-font-smoothing: antialiased
   height: 100%
-  overflow: hidden
+
+h1,h2,h3
+  font-weight: bold
 
 p
   line-height: 1.25em
@@ -29,17 +31,17 @@ p
 
 .button-simple
   color: #fff
-  font-size: 18px
+  font-size: 14px
   font-weight: bold
   text-align: center
   background: #000
-  min-width: 108px
-  padding: 16px
+  min-width: 6em
+  padding: 1em
   transition: all 0.25s ease-in-out
   
   &:hover
-    background: #111
-    text-shadow: 0 0 5px #999
+    color: #fff
+    background: #222
 
 // channel
 
@@ -77,6 +79,9 @@ body.error
     text-shadow: 0 -2px 0 #000
     width: 530px
     margin-bottom: 35px
+  
+  .button-simple
+    font-size: 18px
 
 // 404
 
@@ -99,5 +104,3 @@ body#five_hundred
     height: 448px
     width: 820px
     margin: -195px -410px
-
-

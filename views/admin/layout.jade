@@ -2,21 +2,20 @@
 html(lang="en")
   head
     title= "Broadcast Administration"
+    link(href="/stylesheets/broadcast.css", rel="stylesheet")
     link(href="/stylesheets/admin.css", rel="stylesheet")
-  body(id=type + '-' + method, class=type)
-    #container
-     #left-column
-      h1.broadcast-title= "broadcast"
-         span.broadcast-sub-title administration
-      ul#left-nav
-       li
-         a(href="/")= "dashboard"
-       li.on
-         a(href="/admin/channels/")= "channels"
-       li
-         a(href="/admin/channel-sets/")= "channel sets"
-    
-    #main!= body
+    body(id=type + '-' + method, class=type)
+      #container
+        #navigation
+          h1.broadcast-title= "broadcast"
+             span.broadcast-sub-title administration
+          nav
+            ul
+              each item in navItems
+                li(id="navigation-" + item.name)
+                  a(href=item.href)= item.label
+      
+        #main!= body
     
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
     script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")

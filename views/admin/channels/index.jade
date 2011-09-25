@@ -1,12 +1,11 @@
-h2= "Channels"
-
-#channels-list-header
+header
+  h2= "Channels"
   h3= "List of Available Channels"
-  a.channel-admin-button(href="/admin/channels/remove?id=")= "Create New Channel"
+  a.button.button-simple(href="/admin/channels/create")= "Create New Channel"
 
-#channels
+section#channels
   script(id="template-channels", type="text/x-jquery-tmpl")
-   table#channel-list(border="0",cellspacing="0",cellpadding="0")
+   table.data-list(border="0",cellspacing="0",cellpadding="0")
     thead
       tr
         th= "Index"
@@ -21,13 +20,13 @@ h2= "Channels"
           td.url 
             a(href="${url}")= "${url}"
           td= "${type}"
-          td.actions  
+          td.actions
             a.edit(href="update/${_id}")= ""
             a.delete(href="#", data-id="${_id}")= ""
     ="{{/each}}"
 
-#channels-list-footer      
+footer
   p.pagination= "Page 1 of 6"
-  a.channel-admin-button(href="#")= "Next Page"
-  a.channel-admin-button(href="#")= "Previous Page"
-  
+  nav.buttons
+    a.button.button-simple(href="#")= "Next Page"
+    a.button.button-simple(href="#")= "Previous Page"

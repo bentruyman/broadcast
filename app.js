@@ -94,19 +94,29 @@ app.get('/channel-sets/:slug', function (req, res) {
 // private routes
 ////////////////////////////////////////////////////////////////////////////////
 
+// responsible for rendering a view and setting common locals
+function adminRender(res, viewName, locals) {
+  locals = locals || {};
+  
+  locals.layout = 'admin/layout';
+  locals.navItems = [
+    { label: 'Dashboard',    name: "dashboard",    href: '/admin/' },
+    { label: 'Channels',     name: "channels",     href: '/admin/channels/' },
+    { label: 'Channel Sets', name: "channel-sets", href: '/admin/channel-sets/' }
+  ];
+  
+  res.render(viewName, locals);
+}
+
 // lists all channels and channel sets
 app.get(ADMIN_PATH, function (req, res) {
-  res.render('admin/index', { layout: 'admin/layout' });
+  adminRender(res, 'admin/index', { type: 'dashboard', method: '' });
 });
 
 // lists all channel sets or a views single channel set
 app.get(ADMIN_PATH + '/channel-sets/', function (req, res) {
   api.channelSet.read(function (response) {
-    res.render('admin/channel-sets/index', {
-      layout: 'admin/layout',
-      type: 'channel-sets',
-      method: 'read'
-    });
+    adminRender(res, 'admin/channel-sets/index', { type: 'channel-sets', method: 'read' });
   });
 });
 
@@ -131,11 +141,7 @@ app.get(ADMIN_PATH + '/channel-sets/update/:id', function (req, res) {
 // lists all channels or a views single channel
 app.get(ADMIN_PATH + '/channels/', function (req, res) {
   api.channel.read(function (response) {
-    res.render('admin/channels/index', {
-      layout: 'admin/layout',
-      type: 'channels',
-      method: 'read'
-    });
+    adminRender(res, 'admin/channels/index', { type: 'channels', method: 'read' });
   });
 });
 
@@ -169,22 +175,22 @@ app.get(API_PATH + '/', function (req, res) {
 });
 
 // channel sets
-app.get(API_PATH + '/channel-sets', function (req, res) {
+app.get(API_PATH + '/channelSets', function (req, res) {
   api.channelSet.read(function (response) {
     res.send(response);
   });
 });
-app.get(API_PATH + '/channel-sets/:id', function (req, res) {
+app.get(API_PATH + '/channelSets/:id', function (req, res) {
   api.channelSet.read({ _id: req.params.id }, function (response) {
     res.send(response);
   });
 });
-app.put(API_PATH + '/channel-sets', function (req, res) {
+app.put(API_PATH + '/channelSets', function (req, res) {
   api.channelSet.update(req.body, function (response) {
     res.send(response);
   });
 });
-app.put(API_PATH + '/channel-sets/:id', function (req, res) {
+app.put(API_PATH + '/channelSets/:id', function (req, res) {
   var set = req.body;
   set._id = req.params.id;
   
@@ -192,22 +198,22 @@ app.put(API_PATH + '/channel-sets/:id', function (req, res) {
     res.send(response);
   });
 });
-app.post(API_PATH + '/channel-sets', function (req, res) {
+app.post(API_PATH + '/channelSets', function (req, res) {
   api.channelSet.create(req.body, function (response) {
     res.send(response);
   });
 });
-app.post(API_PATH + '/channel-sets/:id', function (req, res) {
+app.post(API_PATH + '/channelSets/:id', function (req, res) {
   api.channelSet.create(req.body, function (response) {
     res.send(response);
   });
 });
-app.delete(API_PATH + '/channel-sets', function (req, res) {
+app.delete(API_PATH + '/channelSets', function (req, res) {
   api.channelSet.delete(req.body.id, function (response) {
     res.send(response);
   });
 });
-app.delete(API_PATH + '/channel-sets/:id', function (req, res) {
+app.delete(API_PATH + '/channelSets/:id', function (req, res) {
   api.channelSet.delete(req.params.id, function (response) {
     res.send(response);
   });
