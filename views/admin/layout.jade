@@ -17,8 +17,26 @@ html(lang="en")
       
         #main!= body
     
+    ////////////////////////////////////////////////////////////////////////////
+    // Mixins
+    ////////////////////////////////////////////////////////////////////////////
+    
+    mixin pagination
+      p.pagination= "Page ${currentPage} of ${totalPages}"
+      nav.buttons
+        ="{{if prevPage !== null}}"
+          a.button.button-simple.prev(href="?page=${prevPage}")= "Previous Page"
+        ="{{/if}}"
+        ="{{if nextPage !== null}}"
+          a.button.button-simple.next(href="?page=${nextPage}")= "Next Page"
+        ="{{/if}}"
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // Channels
+    ////////////////////////////////////////////////////////////////////////////
+    
     script(id="template-channels", type="text/x-jquery-tmpl")
-      table.data-list(border="0",cellspacing="0",cellpadding="0")
+      table.data-list(border="0", cellspacing="0", cellpadding="0")
         thead
           tr
             th= "Index"
@@ -39,14 +57,7 @@ html(lang="en")
                 a.delete(href="#", data-id="${_id}")= ""
           ="{{/each}}"
       footer
-        p.pagination= "Page ${currentPage} of ${totalPages}"
-        nav.buttons
-          ="{{if prevPage !== null}}"
-            a.button.button-simple.prev(href="?page=${prevPage}")= "Previous Page"
-          ="{{/if}}"
-          ="{{if nextPage !== null}}"
-            a.button.button-simple.next(href="?page=${nextPage}")= "Next Page"
-          ="{{/if}}"
+        mixin pagination
     
     script(id="template-channels-form", type="text/x-jquery-tmpl")
       form(method="post")
@@ -71,6 +82,29 @@ html(lang="en")
             input(id="channel-timeout", name="timeout", type="number")
           li
             button.button.button-simple(type="submit")= "Create New Channel"
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // Channels Sets
+    ////////////////////////////////////////////////////////////////////////////
+    
+    script(id="template-channel-sets", type="text/x-jquery-tmpl")
+      table.data-list(border="0", cellspacing="0", cellpadding="0")
+        thead
+          tr
+            th.title= "Title"
+            th.channels= "Channels"
+            th.actions= "Actions"
+        tbody
+          ="{{each channelSets}}"
+            tr
+              td.title= "${title}"
+              td.channels= "${channels.length}"
+              td.actions
+                a.edit(href="update/${_id}")= ""
+                a.delete(href="#", data-id="${_id}")= ""
+          ="{{/each}}"
+      footer
+        mixin pagination
     
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
     script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")

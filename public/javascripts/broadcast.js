@@ -6,6 +6,16 @@
   Broadcast.init = function () {};
   
   Broadcast.utils = {
+    calculatePagination: function (numberOfItems, itemsPerPage, currentPage) {
+      var totalPages = Math.ceil(numberOfItems / itemsPerPage);
+      
+      return {
+        currentPage: currentPage,
+        totalPages: totalPages,
+        prevPage: (currentPage - 1 > 0) ? currentPage - 1 : null,
+        nextPage: (currentPage < totalPages) ? currentPage + 1 : null
+      };
+    },
     parseUrl: function (url) {
       var regexp = /^(([^:\/\?#]+):)?(\/\/([^\/\?#]*))?([^\.\?#]*)(\.([^\?#]*))?(\?([^#]*))?(#(.*))?/,
           exploded = regexp.exec(url),

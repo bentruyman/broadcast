@@ -47,13 +47,21 @@
             // load all channels
             API.channels.read().then(function (data) {
               // determine current, next, and previous page indexes
-              data.currentPage = parseInt(app.params.page, 10) || 1;
-              data.totalPages  = Math.ceil(data.channels.length / ITEMS_PER_PAGE);
-              data.prevPage    = (data.currentPage - 1 > 0) ? data.currentPage - 1 : null;
-              data.nextPage    = (data.currentPage < data.totalPages) ? data.currentPage + 1 : null;
+              var pagination = Broadcast.utils.calculatePagination(
+                data.channels.length, // number of items
+                ITEMS_PER_PAGE, // items per page
+                parseInt(app.params.page, 10) || 1 // current page
+              );
+              data.currentPage = pagination.currentPage;
+              data.totalPages  = pagination.totalPages;
+              data.prevPage    = pagination.prevPage;
+              data.nextPage    = pagination.nextPage;
               
               // slice out current page's channels
-              data.channels = data.channels.slice((data.currentPage - 1) * ITEMS_PER_PAGE, ((data.currentPage - 1) * ITEMS_PER_PAGE) + ITEMS_PER_PAGE);
+              var startOfItems = (data.currentPage - 1) * ITEMS_PER_PAGE,
+                  endOfItems   = startOfItems + ITEMS_PER_PAGE;
+              
+              data.channels = data.channels.slice(startOfItems, endOfItems);
               
               // inject channels data into channels template
               $('#channels').append(
@@ -81,9 +89,31 @@
         });
         
         // list channel sets
-        this.get('/admin/channel-sets/', function () {
+        this.get('/admin/channel-sets/', function (app) {
           this.renderPage().then(function () {
-            
+            API.channelSets.read().then(function (data) {
+              // determine current, next, and previous page indexes
+              var pagination = Broadcast.utils.calculatePagination(
+                data.channelSets.length, // number of items
+                ITEMS_PER_PAGE, // items per page
+                parseInt(app.params.page, 10) || 1 // current page
+              );
+              data.currentPage = pagination.currentPage;
+              data.totalPages  = pagination.totalPages;
+              data.prevPage    = pagination.prevPage;
+              data.nextPage    = pagination.nextPage;
+              
+              // slice out current page's channels
+              var startOfItems = (data.currentPage - 1) * ITEMS_PER_PAGE,
+                  endOfItems   = startOfItems + ITEMS_PER_PAGE;
+              
+              data.channelSets = data.channelSets.slice(startOfItems, endOfItems);
+              console.log(data);
+              // inject channels data into channels template
+              $('#channel-sets').append(
+                $('#template-channel-sets').tmpl(data)
+              );
+            });
           });
         });
         
