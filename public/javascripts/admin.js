@@ -46,7 +46,6 @@
           this.renderPage().then(function () {
             // load all channels
             API.channels.read().then(function (data) {
-              console.log(data.channels.length);
               // determine current, next, and previous page indexes
               data.currentPage = parseInt(app.params.page, 10) || 1;
               data.totalPages  = Math.ceil(data.channels.length / ITEMS_PER_PAGE);
@@ -55,8 +54,6 @@
               
               // slice out current page's channels
               data.channels = data.channels.slice((data.currentPage - 1) * ITEMS_PER_PAGE, ((data.currentPage - 1) * ITEMS_PER_PAGE) + ITEMS_PER_PAGE);
-              
-              console.log(data);
               
               // inject channels data into channels template
               $('#channels').append(
@@ -69,7 +66,10 @@
         // create channels
         this.get('/admin/channels/create', function () {
           this.renderPage().then(function () {
-            
+            // inject form template
+            $('#channel-form').append(
+              $('#template-channels-form').tmpl()
+            );
           });
         });
         

@@ -17,6 +17,61 @@ html(lang="en")
       
         #main!= body
     
+    script(id="template-channels", type="text/x-jquery-tmpl")
+      table.data-list(border="0",cellspacing="0",cellpadding="0")
+        thead
+          tr
+            th= "Index"
+            th.title= "Title"
+            th.url= "URL"
+            th= "Type"
+            th.actions= "Actions"
+        tbody
+          ="{{each channels}}"
+            tr
+              td= "${index}"
+              td.title= "${title}"
+              td.url 
+                a(href="${url}")= "${url}"
+              td= "${type}"
+              td.actions
+                a.edit(href="update/${_id}")= ""
+                a.delete(href="#", data-id="${_id}")= ""
+          ="{{/each}}"
+      footer
+        p.pagination= "Page ${currentPage} of ${totalPages}"
+        nav.buttons
+          ="{{if prevPage !== null}}"
+            a.button.button-simple.prev(href="?page=${prevPage}")= "Previous Page"
+          ="{{/if}}"
+          ="{{if nextPage !== null}}"
+            a.button.button-simple.next(href="?page=${nextPage}")= "Next Page"
+          ="{{/if}}"
+    
+    script(id="template-channels-form", type="text/x-jquery-tmpl")
+      form(method="post")
+        ol
+          li
+            label(for="channel-index")= "Index"
+            input(id="channel-index", name="index", type="number")
+          li
+            label(for="channel-title")= "Title"
+            input(id="channel-title", name="title")
+          li
+            label(for="channel-url")= "URL"
+            input(id="channel-url", name="url")
+          li
+            label(for="channel-type")= "Type"
+            select(id="channel-type", name="type")
+              option(value="page")= "Page"
+              option(value="image")= "Image"
+              option(value="video")= "Video"
+          li
+            label(for="channel-timeout")= "Timeout"
+            input(id="channel-timeout", name="timeout", type="number")
+          li
+            button.button.button-simple(type="submit")= "Create New Channel"
+    
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
     script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")
     script(src="/javascripts/libs/sammy.js")
