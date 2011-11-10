@@ -11,7 +11,7 @@
       
       return {
         currentPage: currentPage,
-        totalPages: totalPages,
+        totalPages: Math.max(totalPages, 1),
         prevPage: (currentPage - 1 > 0) ? currentPage - 1 : null,
         nextPage: (currentPage < totalPages) ? currentPage + 1 : null
       };

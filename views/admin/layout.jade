@@ -54,34 +54,65 @@ html(lang="en")
               td= "${type}"
               td.actions
                 a.edit(href="update/${_id}")= ""
-                a.delete(href="#", data-id="${_id}")= ""
+                a.delete(href="delete/${_id}")= ""
           ="{{/each}}"
       footer
         mixin pagination
     
     script(id="template-channels-form", type="text/x-jquery-tmpl")
-      form(method="post")
+      form(action="${action}", method="${method}")
+        = "{{if channel}}"
+          input(name="id", type="hidden", value="${channel._id}")
+        = "{{/if}}"
         ol
           li
-            label(for="channel-index")= "Index"
-            input(id="channel-index", name="index", type="number")
+            label= "Index"
+              = "{{if channel}}"
+                input.small(id="channel-index", name="index", type="number", value="${channel.index}")
+              = "{{else}}"
+                input.small(id="channel-index", name="index", type="number")
+              = "{{/if}}"
           li
-            label(for="channel-title")= "Title"
-            input(id="channel-title", name="title")
+            label= "Title"
+              = "{{if channel}}"
+                input.large(id="channel-title", name="title", value="${channel.title}")
+              = "{{else}}"
+                input.large(id="channel-title", name="title")
+              = "{{/if}}"
           li
-            label(for="channel-url")= "URL"
-            input(id="channel-url", name="url")
+            label= "URL"
+              = "{{if channel}}"
+                input.large(id="channel-url", name="url", type="url", value="${channel.url}")
+              = "{{else}}"
+                input.large(id="channel-url", name="url", type="url")
+              = "{{/if}}"
           li
-            label(for="channel-type")= "Type"
-            select(id="channel-type", name="type")
-              option(value="page")= "Page"
-              option(value="image")= "Image"
-              option(value="video")= "Video"
+            label= "Type"
+              select(id="channel-type", name="type")
+                = "{{if channel}}"
+                  /* so fucking lame */
+                  <option value="page" {{if channel.type === 'page'}}selected{{/if}}>Page</option>
+                  <option value="image" {{if channel.type === 'image'}}selected{{/if}}>Image</option>
+                  <option value="video" {{if channel.type === 'video'}}selected{{/if}}>Video</option>
+                = "{{else}}"
+                  option(value="page")= "Page"
+                  option(value="image")= "Image"
+                  option(value="video")= "Video"
+                = "{{/if}}"
           li
-            label(for="channel-timeout")= "Timeout"
-            input(id="channel-timeout", name="timeout", type="number")
+            label= "Timeout (in milliseconds)"
+              = "{{if channel}}"
+                input.small(id="channel-timeout", name="timeout", type="number", value="${channel.timeout}")
+              = "{{else}}"
+                input.small(id="channel-timeout", name="timeout", type="number")
+              = "{{/if}}"
           li
-            button.button.button-simple(type="submit")= "Create New Channel"
+            button.button.button-simple(type="submit")
+              = "{{if method === 'POST'}}"
+                = "Create New Channel"
+              = "{{else}}"
+                = "Update Channel"
+              = "{{/if}}"
     
     ////////////////////////////////////////////////////////////////////////////
     // Channels Sets

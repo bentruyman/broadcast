@@ -6,14 +6,14 @@
   
   // RESTful/CRUDful resource class
   function RestfulResource(resource) {
-    this.create = function (data) {
-      return $.ajax(API_URL + resource, { type: 'POST', data: data });
+    this.create = function create (data) {
+      return $.ajax(API_URL + resource, { type: 'POST', data: data, dataType: 'json' });
     };
     this.read = function (id) {
       return $.ajax(API_URL + resource + (id ? '/' + id : ''), { type: 'GET' });
     };
     this.update = function (data) {
-      return $.ajax(API_URL + resource + '/' + data._id, { type: 'PUT', data: data });
+      return $.ajax(API_URL + resource + '/' + data.id, { type: 'PUT', data: data });
     };
     this.delete = function (id) {
       return $.ajax(API_URL + resource + '/' + id, { type: 'DELETE' });

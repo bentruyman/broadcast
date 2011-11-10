@@ -236,12 +236,7 @@ app.put(API_PATH + '/channels/:id', function (req, res) {
 });
 app.post(API_PATH + '/channels', function (req, res) {
   api.channel.create(req.body, function (response) {
-    res.send(response);
-  });
-});
-app.post(API_PATH + '/channels', function (req, res) {
-  api.channel.create(req.body, function (response) {
-    res.send(response);
+    res.json(response, response.error ? 500 : 200);
   });
 });
 app.delete(API_PATH + '/channels', function (req, res) {

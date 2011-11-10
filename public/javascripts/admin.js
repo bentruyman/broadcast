@@ -72,20 +72,91 @@
         });
         
         // create channels
-        this.get('/admin/channels/create', function () {
+        this.get('/admin/channels/create', function (app) {
           this.renderPage().then(function () {
+            var data = {
+              action: '/api/channels',
+              method: 'POST'
+            };
+            
             // inject form template
-            $('#channel-form').append(
-              $('#template-channels-form').tmpl()
-            );
+            $('#template-channels-form').tmpl(data).appendTo('#channel-form');
           });
+        });
+        this.post('/api/channels', function (app) {
+          var params = app.params,
+              channel = {
+                index: params.index,
+                title: params.title,
+                url: params.url,
+                type: params.type,
+                timeout: params.timeout
+              };
+          
+          API.channels.create(channel)
+            .done(function () {
+              // created channel successfully, redirect to channel listing
+              app.redirect('/admin/channels/');
+            })
+            .fail(function (response) {
+              // TODO: handle error
+              var error = JSON.parse(response.responseText);
+              console.error(error);
+            });
         });
         
         // update channels
-        this.get('/admin/channels/update/:id', function () {
+        this.get('/admin/channels/update/:id', function (app) {
           this.renderPage().then(function () {
-            
+            API.channels.read(app.params.id)
+              .done(function (response) {
+                var data = {
+                  action: '/api/channels',
+                  method: 'PUT',
+                  channel: response.channel
+                };
+                
+                // inject form template
+                $('#template-channels-form').tmpl(data).appendTo('#channel-form');
+              })
+              .fail(function () {
+                // TODO: handle error
+              });
           });
+        });
+        this.put('/api/channels', function (app) {
+          var params = app.params,
+              channel = {
+                id: params.id,
+                index: params.index,
+                title: params.title,
+                url: params.url,
+                type: params.type,
+                timeout: params.timeout
+              };
+          
+          API.channels.update(channel)
+            .done(function () {
+              // created channel successfully, redirect to channel listing
+              app.redirect('/admin/channels/');
+            })
+            .fail(function (response) {
+              // TODO: handle error
+              var error = JSON.parse(response.responseText);
+              console.error(error);
+            });
+        });
+        
+        // delete channels
+        this.get('/admin/channels/delete/:id', function (app) {
+          API.channels.delete(app.params.id)
+            .done(function () {
+              // deleted the channel successfully, redirect to channel listing
+              app.redirect('/admin/channels/');
+            })
+            .fail(function () {
+              // TODO: handle failure
+            });
         });
         
         // list channel sets
@@ -103,12 +174,12 @@
               data.prevPage    = pagination.prevPage;
               data.nextPage    = pagination.nextPage;
               
-              // slice out current page's channels
+              // slice out current page's channel sets
               var startOfItems = (data.currentPage - 1) * ITEMS_PER_PAGE,
                   endOfItems   = startOfItems + ITEMS_PER_PAGE;
               
               data.channelSets = data.channelSets.slice(startOfItems, endOfItems);
-              console.log(data);
+              
               // inject channels data into channels template
               $('#channel-sets').append(
                 $('#template-channel-sets').tmpl(data)
@@ -117,7 +188,7 @@
           });
         });
         
-        // create channels
+        // create channel sets
         this.get('/admin/channel-sets/create', function () {
           this.renderPage().then(function () {
             
