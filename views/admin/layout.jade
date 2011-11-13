@@ -54,7 +54,7 @@ html(lang="en")
               td= "${type}"
               td.actions
                 a.edit(href="update/${_id}")= ""
-                a.delete(href="delete/${_id}")= ""
+                a.remove(href="delete/${_id}")= ""
           ="{{/each}}"
       footer
         mixin pagination
@@ -132,14 +132,56 @@ html(lang="en")
               td.channels= "${channels.length}"
               td.actions
                 a.edit(href="update/${_id}")= ""
-                a.delete(href="#", data-id="${_id}")= ""
+                a.remove(href="delete/${_id}")= ""
           ="{{/each}}"
       footer
         mixin pagination
     
+    script(id="template-channel-sets-form", type="text/x-jquery-tmpl")
+      form(action="${action}", method="${method}")
+        = "{{if channelSet}}"
+          input(name="id", type="hidden", value="${channelSet._id}")
+        = "{{/if}}"
+        ol
+          li#channel-set-title
+            label= "Title"
+              = "{{if channelSet}}"
+                input.large(name="title", value="${channelSet.title}")
+              = "{{else}}"
+                input.large(name="title")
+              = "{{/if}}"
+          li#channel-set-channels
+            table.data-list
+              thead
+                tr
+                  th.actions= "Actions"
+                  th.channel= "Channel"
+                  th.timeout= "Timeout"
+              tbody
+                {{tmpl "#template-channel-sets-form-channel"}}
+          li#channel-set-submit
+            button.button.button-simple(type="submit")
+              = "{{if method === 'POST'}}"
+                = "Create New Channel Set"
+              = "{{else}}"
+                = "Update Channel Set"
+              = "{{/if}}"
+    
+    script(id="template-channel-sets-form-channel", type="text/x-jquery-tmpl")
+      tr.channel
+        td.actions
+          a.remove(href="delete/${_id}", title="Remove this channel")= ""
+        td.channel
+          select.full(name="channels")
+            = "{{each channels}}"
+              option(value="${_id}")= "${title}"
+            = "{{/each}}"
+        td.timeout
+          input.full(name="timeouts", type="number")
+    
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
     script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")
-    script(src="/javascripts/libs/sammy.js")
+    script(src="/javascripts/libs/sammy.min.js")
     script(src="/javascripts/broadcast.js")
     script(src="/javascripts/api.js")
     script(src="/javascripts/admin.js")

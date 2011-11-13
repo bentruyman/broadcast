@@ -6,6 +6,11 @@
       // how many items to list per page
       var ITEMS_PER_PAGE = 15;
       
+      // determines if the passed in value is an instance of an array
+      function isArray(val) {
+        return toString.call(val) === '[object Array]';
+      }
+      
       Sammy(containerSelector, function (app) {
         var $main = $(containerSelector);
         
@@ -189,10 +194,54 @@
         });
         
         // create channel sets
-        this.get('/admin/channel-sets/create', function () {
+        this.get('/admin/channel-sets/create', function (app) {
           this.renderPage().then(function () {
-            
+            API.channels.read().then(function (response) {
+              var data = {
+                action: '/api/channelSets',
+                method: 'POST',
+                channels: response.channels
+              };
+              
+              // inject form template
+              $('#template-channel-sets-form').tmpl(data).appendTo('#channel-set-form');
+            });
           });
+        });
+        this.post('/api/channelSets', function (app) {
+          var params = app.params,
+              channelSet = {
+                title: params.title,
+                channels: []
+              };
+          
+          // format channels from param data
+          if (isArray(params.channels)) {
+            // handle multiple channels
+            for (var i = 0, j = params.channels.length; i < j; i++) {
+              channelSet.channels.push({
+                ref: params.channels[i],
+                timeout: params.timeouts[i]
+              });
+            }
+          } else {
+            // just a single channel
+            channelSet.channels.push({
+              ref: params.channels,
+              timeout: params.timeouts
+            });
+          }
+          
+          API.channelSets.create(channelSet)
+            .done(function () {
+              // created channel successfully, redirect to channel listing
+              app.redirect('/admin/channel-sets/');
+            })
+            .fail(function (response) {
+              // TODO: handle error
+              var error = JSON.parse(response.responseText);
+              console.error(error);
+            });
         });
         
         // update channel sets
@@ -201,6 +250,19 @@
             
           });
         });
+        
+        // delete channel sets
+        this.get('/admin/channel-sets/delete/:id', function (app) {
+          API.channelSets.delete(app.params.id)
+            .done(function () {
+              // deleted the channel set successfully, redirect to channel set listing
+              app.redirect('/admin/channel-sets/');
+            })
+            .fail(function () {
+              // TODO: handle failure
+            });
+        });
+        
       }).run();
     }
   };
