@@ -3,8 +3,40 @@
   // application namespace
   var Broadcast = this.Broadcast = {};
   
-  Broadcast.init = function () {};
+  Broadcast.init = function () {
+    Broadcast.Templates.init();
+  };
   
+  // templating system
+  Broadcast.Templates = (function () {
+    var 
+      // reference to the jade template engine
+      jade = require('jade'),
+      // a collection of all templates
+      templates = {};
+    
+    var Templates = {
+      init: function () {
+        // find all templates on a page, import them
+        $('script[type="text/x-jade-template"]').each(function () {
+          Templates.set($(this).data('name'), this.innerHTML);
+        });
+      },
+      get: function (name) {
+        return templates[name];
+      },
+      set: function (name, template) {
+        templates[name] = jade.compile(template);
+      },
+      apply: function (name, locals) {
+        return templates[name](locals);
+      }
+    };
+    
+    return Templates;
+  }());
+  
+  // utilities
   Broadcast.utils = {
     calculatePagination: function (numberOfItems, itemsPerPage, currentPage) {
       var totalPages = Math.ceil(numberOfItems / itemsPerPage);
@@ -15,33 +47,6 @@
         prevPage: (currentPage - 1 > 0) ? currentPage - 1 : null,
         nextPage: (currentPage < totalPages) ? currentPage + 1 : null
       };
-    },
-    parseUrl: function (url) {
-      var regexp = /^(([^:\/\?#]+):)?(\/\/([^\/\?#]*))?([^\.\?#]*)(\.([^\?#]*))?(\?([^#]*))?(#(.*))?/,
-          exploded = regexp.exec(url),
-          urlFragments = {
-            scheme: exploded[2],
-            authority: exploded[4],
-            path: exploded[5],
-            extension: exploded[7],
-            query: {},
-            fragment: exploded[11]
-          };
-      
-      var queryPieces = exploded[9];
-      
-      if (queryPieces) {
-        var chunk;
-        
-        queryPieces = queryPieces.split('&');
-        
-        for (var i = 0, j = queryPieces.length; i < j; i = i + 1) {
-          chunk = queryPieces[i].split('=');
-          urlFragments.query[chunk[0]] = chunk[1];
-        }
-      }
-      
-      return urlFragments;
     },
     preloadImages: function (imagePaths) {
       var promises = [];
@@ -77,4 +82,6 @@
       }
     }
   };
+  
+  $(Broadcast.init);
 }());

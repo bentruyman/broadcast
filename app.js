@@ -99,11 +99,6 @@ function adminRender(res, viewName, locals) {
   locals = locals || {};
   
   locals.layout = 'admin/layout';
-  locals.navItems = [
-    { label: 'Dashboard',    name: "dashboard",    href: '/admin/' },
-    { label: 'Channels',     name: "channels",     href: '/admin/channels/' },
-    { label: 'Channel Sets', name: "channel-sets", href: '/admin/channel-sets/' }
-  ];
   
   res.render(viewName, locals);
 }

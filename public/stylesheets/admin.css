@@ -7,7 +7,7 @@ table thead th{font-weight:bold}
 #container{width:1280px;height:100%}
 .broadcast-title{padding-left:80px;font-size:36px;color:#cbcbcb;text-shadow:0 -2px 0 #000;filter:dropshadow(#000,0,-2)}
 .broadcast-sub-title{display:block;font-size:26px;color:#808080}
-#navigation{position:fixed;background-image:url("/assets/images/common/textures/left-col-bg.png");background-repeat:repeat y;width:335px;background-color:#000;min-height:100%;height:auto;}
+#navigation{position:fixed;background-image:url("/assets/images/common/textures/left-col-bg.png");background-repeat:repeat y;width:335px;background-color:#000;min-height:100%;height:auto;z-index:10;}
 #navigation nav{position:absolute;top:160;left:125px}
 #navigation nav a{text-decoration:none;color:#808080;font-size:20px;font-weight:bold;line-height:45px;text-align:right;text-transform:lowercase;background-color:#000;position:relative;display:inline-block;width:196px;height:45px;margin:0 0 5px 0;padding-right:14px}
 #navigation nav a:hover{background:#aa1622;background:-moz-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#aa1622),color-stop(100%,#5a0c12));background:-webkit-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-o-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:-ms-linear-gradient(top,#aa1622 0%,#5a0c12 100%);background:linear-gradient(top,#aa1622 0%,#5a0c12 100%);color:#fff}
@@ -18,8 +18,10 @@ body.dashboard #navigation-dashboard a:after,body.channels #navigation-channels 
 header{overflow:hidden;margin-bottom:10px;}
 header h3{float:left;margin:0;font-size:24px;text-shadow:0 1px 0 #fff;filter:dropshadow(#fff,0,-1)}
 header .button{float:right}
-a.edit,a.remove{background:url("/assets/images/common/buttons/admin.png") no-repeat;height:16px;width:15px;display:inline-block}
-a.remove{background-position:top right;width:14px;margin-left:6px}
+a.action{background-image:url("/assets/images/common/buttons/admin.png");background-repeat:no-repeat;height:16px;width:15px;margin-right:6px;display:inline-block}
+a.action:last-child{margin-right:0}
+a.remove{background-position:-35px top;width:14px}
+a.add{background-position:-69px top;width:14px}
 footer{overflow:hidden;}
 footer .pagination{font-size:14px;font-weight:bold;line-height:42px;float:left}
 footer .buttons{float:right;}

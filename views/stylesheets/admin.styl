@@ -68,6 +68,7 @@ table
   background-color: #000
   min-height: 100%
   height: auto
+  z-index: 10
   
   nav
     position: absolute
@@ -148,16 +149,24 @@ header
   .button
     float: right
 
-a.edit, a.remove
-  background: url('/assets/images/common/buttons/admin.png') no-repeat
+a.action
+  background-image: url('/assets/images/common/buttons/admin.png')
+  background-repeat: no-repeat
   height: 16px
   width: 15px
+  margin-right: 6px
   display: inline-block
 
+a.action:last-child
+  margin-right: 0
+
 a.remove
-  background-position: top right
+  background-position: -35px top
   width: 14px
-  margin-left: 6px
+
+a.add
+  background-position: -69px top
+  width: 14px
 
 // footer
 

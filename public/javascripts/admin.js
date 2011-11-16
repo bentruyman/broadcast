@@ -70,7 +70,7 @@
               
               // inject channels data into channels template
               $('#channels').append(
-                $('#template-channels').tmpl(data)
+                Broadcast.Templates.apply('channels', data)
               );
             });
           });
@@ -85,7 +85,9 @@
             };
             
             // inject form template
-            $('#template-channels-form').tmpl(data).appendTo('#channel-form');
+            $('#channel-form').append(
+              Broadcast.Templates.apply('channels-form', data)
+            );
           });
         });
         this.post('/api/channels', function (app) {
@@ -122,7 +124,9 @@
                 };
                 
                 // inject form template
-                $('#template-channels-form').tmpl(data).appendTo('#channel-form');
+                $('#channel-form').append(
+                  Broadcast.Templates.apply('channels-form', data)
+                );
               })
               .fail(function () {
                 // TODO: handle error
@@ -187,7 +191,7 @@
               
               // inject channels data into channels template
               $('#channel-sets').append(
-                $('#template-channel-sets').tmpl(data)
+                Broadcast.Templates.apply('channel-sets', data)
               );
             });
           });
@@ -199,12 +203,27 @@
             API.channels.read().then(function (response) {
               var data = {
                 action: '/api/channelSets',
-                method: 'POST',
-                channels: response.channels
+                method: 'POST'
               };
               
               // inject form template
-              $('#template-channel-sets-form').tmpl(data).appendTo('#channel-set-form');
+              $('#channel-set-form').append(
+                Broadcast.Templates.apply('channel-sets-form', data)
+              );
+              
+              // append an empty add channel row
+              $('#channel-set-add-channel').click(function (event) {
+                $('#channel-set-channels tbody').append(
+                  Broadcast.Templates.apply('channel-sets-form-channel', {
+                    channels: response.channels
+                  })
+                );
+              });
+              
+              // handle channel removals
+              $('#channel-set-channels').delegate('.remove', 'click', function (event) {
+                $(this).parent().parent().remove();
+              });
             });
           });
         });
@@ -212,25 +231,8 @@
           var params = app.params,
               channelSet = {
                 title: params.title,
-                channels: []
+                channels: formatChannelSetChannels(params.channels, params.timeouts)
               };
-          
-          // format channels from param data
-          if (isArray(params.channels)) {
-            // handle multiple channels
-            for (var i = 0, j = params.channels.length; i < j; i++) {
-              channelSet.channels.push({
-                ref: params.channels[i],
-                timeout: params.timeouts[i]
-              });
-            }
-          } else {
-            // just a single channel
-            channelSet.channels.push({
-              ref: params.channels,
-              timeout: params.timeouts
-            });
-          }
           
           API.channelSets.create(channelSet)
             .done(function () {
@@ -245,10 +247,68 @@
         });
         
         // update channel sets
-        this.get('/admin/channel-sets/update/:id', function () {
+        this.get('/admin/channel-sets/update/:id', function (app) {
           this.renderPage().then(function () {
-            
+            API.channelSets.read(app.params.id).then(function (setResponse) {
+              API.channels.read().then(function (channelResponse) {
+                var data = {
+                  action: '/api/channelSets',
+                  method: 'PUT',
+                  channelSet: setResponse.channelSet
+                };
+                
+                // inject form template
+                $('#channel-set-form').append(
+                  Broadcast.Templates.apply('channel-sets-form', data)
+                );
+                
+                // populate existing channels
+                $(setResponse.channelSet.channels).each(function () {
+                  console.log(this);
+                  $('#channel-set-channels tbody').append(
+                    Broadcast.Templates.apply('channel-sets-form-channel', {
+                      id: this.ref._id,
+                      timeout: this.timeout,
+                      channels: channelResponse.channels
+                    })
+                  );
+                });
+                
+                // handle adding new channels
+                $('#channel-set-add-channel').click(function (event) {
+                  $('#channel-set-channels tbody').append(
+                    Broadcast.Templates.apply('channel-sets-form-channel', {
+                      channels: channelResponse.channels
+                    })
+                  );
+                });
+                
+                // handle channel removals
+                $('#channel-set-channels').delegate('.remove', 'click', function (event) {
+                  $(this).parent().parent().remove();
+                });
+              });
+            });
           });
+        });
+        this.put('/api/channelSets', function (app) {
+          var params = app.params,
+              channelSet = {
+                id: params.id,
+                title: params.title,
+                channels: formatChannelSetChannels(params.channels, params.timeouts)
+              };
+          
+          API.channelSets.update(channelSet)
+            .done(function () {
+              // created channel successfully, redirect to channel listing
+              app.redirect('/admin/channel-sets/');
+            })
+            .fail(function (response) {
+              // TODO: handle error
+              var error = JSON.parse(response.responseText);
+              console.error(error);
+            });
         });
         
         // delete channel sets
@@ -262,6 +322,29 @@
               // TODO: handle failure
             });
         });
+        
+        function formatChannelSetChannels(ids, timeouts) {
+          var channels = [];
+          
+          // format channels from param data
+          if (isArray(ids)) {
+            // handle multiple channels
+            for (var i = 0, j = ids.length; i < j; i++) {
+              channels.push({
+                ref: ids[i],
+                timeout: timeouts[i]
+              });
+            }
+          } else {
+            // just a single channel
+            channels.push({
+              ref: ids,
+              timeout: timeouts
+            });
+          }
+          
+          return channels;
+        }
         
       }).run();
     }
