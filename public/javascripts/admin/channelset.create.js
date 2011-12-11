@@ -10,6 +10,17 @@
     var id = '#' + sandbox.getOption('id'),
         addChannelButton;
     
+    // given a collection of channels, return one by a specified ID
+    function findChannelById(channels, id) {
+      for (var i = 0, j = channels.length; i < j; i++) {
+        if (channels[i]._id === id) {
+          return channels[i];
+        }
+      }
+      
+      return null;
+    }
+    
     return {
       create: function () {
         API.channels.read().then(function (response) {
