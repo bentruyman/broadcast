@@ -3,25 +3,15 @@
   // application namespace
   var Broadcast = this.Broadcast = {};
   
-  Broadcast.init = function () {
-    Broadcast.Templates.init();
-  };
-  
-  // templating system
-  Broadcast.Templates = (function () {
+  // templating service
+  var template = (function () {
     var 
       // reference to the jade template engine
       jade = require('jade'),
       // a collection of all templates
       templates = {};
     
-    var Templates = {
-      init: function () {
-        // find all templates on a page, import them
-        $('script[type="text/x-jade-template"]').each(function () {
-          Templates.set($(this).data('name'), this.innerHTML);
-        });
-      },
+    var service = {
       get: function (name) {
         return templates[name];
       },
@@ -33,11 +23,18 @@
       }
     };
     
-    return Templates;
+    // find all templates on a page, import them
+    $(function () {
+      $('script[type="text/x-jade-template"]').each(function () {
+        service.set($(this).data('name'), this.innerHTML);
+      });
+    });
+    
+    return service;
   }());
   
-  // utilities
-  Broadcast.utils = {
+  // utilities service
+  var utils = {
     calculatePagination: function (numberOfItems, itemsPerPage, currentPage) {
       var totalPages = Math.ceil(numberOfItems / itemsPerPage);
       
@@ -47,6 +44,28 @@
         prevPage: (currentPage - 1 > 0) ? currentPage - 1 : null,
         nextPage: (currentPage < totalPages) ? currentPage + 1 : null
       };
+    },
+    serializeForm: function (form) {
+      var serialized = {},
+          inputs = $(form).serializeArray();
+      
+      inputs.forEach(function (input) {
+        // if an input of this name already exists, make it an array of values
+        if (typeof serialized[input.name] !== 'undefined') {
+          if (isArray(serialized[input.name])) {
+            serialized[input.name].push(input.value);
+          } else {
+            serialized[input.name] = [serialized[input.name], input.value];
+          }
+        }
+        // if an input of this name doesn't exist, add it to the object as a
+        // simple key/value pair
+        else {
+          serialized[input.name] = input.value;
+        }
+      });
+      
+      return serialized;
     },
     preloadImages: function (imagePaths) {
       var promises = [];
@@ -83,5 +102,18 @@
     }
   };
   
-  $(Broadcast.init);
+  // determines if the passed in value is an instance of an array
+  function isArray(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  }
+  
+  // weld application instance
+  Broadcast.App = new Weld.App({
+    services: {
+      query: jQuery,
+      template: template,
+      utils: utils
+    },
+    defaultServices: ['api', 'query', 'template', 'utils']
+  });
 }());

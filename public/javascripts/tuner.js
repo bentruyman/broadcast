@@ -1,124 +1,104 @@
-(function (Broadcast) {
-  Broadcast.Tuner = (function () {
-    var channelSet = null, // copy of the page's current channel set
-        container = null, // main container where channels are inserted
-        currentChannelIndex = null, // index of the currently showing channel
-        timeout = null; // reference to the id of the current timeout
+(function (Weld, App) {
+  var Tuner = new Weld.Widget('tuner', function (sandbox) {
+    // service references
+    var API = sandbox.getService('api'),
+        $   = sandbox.getService('query');
     
-    // map of functions used to create channel elements
-    var creators = {
-      page: function (channel, next) {
-        var element = $('<iframe></iframe>')
-          .attr('src', channel.ref.url)
-          .height('100%')
-          .width('100%');
-        
-        next(element);
-      },
-      image: function (channel, next) {
-        // preload the image to get it's dimensions to determine how it
-        // should be sized
-        Broadcast.utils.preloadImages(channel.ref.url).then(function (image) {
-          if (image.height > image.width) {
-            $(image).height('100%');
-          } else {
-            $(image).width('100%');
-          }
-          
-          next(image);
-        });
-      },
-      video: function (channel, next) {
-        var element = $('<video></video>')
-          .attr('src', channel.ref.url)
-          .prop('autoplay', true)
-          .height('100%')
-          .width('100%');
-        
-        next(element);
-      }
-    };
+    // dom references
+    var container = document.getElementById(sandbox.getOption('id'));
     
-    function createNewChannel(channel) {
-      var type = channel.ref.type;
+    // tuner state
+    var 
+      // reference to the current channel set object
+      channelSet = null,
+      // a collection of channel modules for the current channel set
+      channelModules = [],
+      // the currently viewed channel's index
+      currentChannelIndex = null,
+      // reference to the current channel's timeout
+      timeout = null;
+    
+    // retreives a channel set by slug using the API
+    function getChannelSet() {
+      var deferred = $.Deferred();
       
-      creators[type](channel, function (element) {
-        $(container).append(element);
+      // load channel set by slug
+      API.channelSets.read({ slug: sandbox.getOption('slug') })
+        .done(function (resp) {
+          if (resp.channelSets && resp.channelSets.length === 1) {
+            deferred.resolve(resp.channelSets[0]);
+          } else {
+            // TODO: handle error
+            deferred.reject();
+          }
+        })
+        .fail(function () {
+          // TODO: handle error
+          deferred.reject();
+        });
+      
+      return deferred.promise();
+    }
+    
+    // reloads the channel set and starts from the first channel
+    function refresh() {
+      getChannelSet().then(function (set) {
+        // store the current channel set
+        channelSet = set;
+        
+        // go to the first channel
+        goToChannel(0);
       });
     }
     
-    function destroyCurrentChannel() {
-      $(container).empty();
+    // stops any existing channel, starts a new one
+    function goToChannel(index) {
+      var channel;
+      
+      if (channelSet !== null) {
+        
+      }
     }
     
-    function getChannelSet() {
-      // loads the JSON document of this page's channel set
-      // transforms the url from "/channel-set/foo-bar" to "/channel-set/foo-bar.json"
-      return $.ajax(window.location.toString().split('?')[0] + '.json');
+    // navigates to the previous channel
+    function previousChannel() {
+      
     }
     
-    var Tuner = {
-      init: function () {
-        container = $('#channel').get(0);
-        Tuner.refresh();
+    // navigates to the next channel
+    function nextChannel() {
+      
+    }
+    
+    return {
+      create: function () {
+        // listen for tuner refresh messages
+        App.subscribe('/tuner/refresh', refresh);
+        
+        // listen for channel messages
+        App.subscribe('/tuner/previous-channel', previousChannel);
+        App.subscribe('/tuner/next-channel', nextChannel);
+        
+        // trigger initial refresh
+        App.publish('/tuner/refresh');
       },
-      refresh: function () {
-        getChannelSet().then(function (data) {
-          channelSet = data;
-          Tuner.nextChannel();
-        });
-      },
-      // TODO: handle out of bounds error
-      goTo: function (index) {
-        if (currentChannelIndex !== null) {
-          destroyCurrentChannel();
-        }
-        
-        // update the current channel index
-        currentChannelIndex = index;
-        
-        // create the next channel
-        var nextChannel = channelSet.channels[currentChannelIndex];
-        createNewChannel(nextChannel);
-        
-        // clear any past timeout
-        if (timeout !== null) {
-          window.clearTimeout(timeout);
-        }
-        
-        // set new timeout
-        timeout = window.setTimeout(function () {
-          Tuner.nextChannel();
-        }, nextChannel.timeout);
-      },
-      nextChannel: function () {
-        var nextIndex = null;
-        
-        // if there's no current channel or the current channel is the last, set
-        // the next channel to be the first one in the list
-        if (currentChannelIndex === null || currentChannelIndex + 1 >= channelSet.channels.length) {
-          nextIndex = 0;
-        } else {
-          nextIndex = currentChannelIndex + 1;
-        }
-        
-        Tuner.goTo(nextIndex);
-      },
-      prevChannel: function () {
-        var nextIndex = null;
-        
-        // if there's no current channel or the current channel is at 0, set the
-        // next channel to be the last one in the list
-        if (currentChannelIndex === null || currentChannelIndex === 0) {
-          currentChannelIndex = channelSet.channels.length - 1;
-        } else {
-          nextIndex = currentChannelIndex - 1;
-        }
-        
-        Tuner.goTo(nextIndex);
+      destroy: function () {
+        $(container).empty();
       }
     };
-    
-    return Tuner;
-  }());
-}(this.Broadcast));
+  });
+  
+  var Channel = new Weld.Widget('tuner-channel', function (sandbox) {
+    return {
+      create: function () {
+        
+      },
+      destroy: function () {
+        
+      }
+    };
+  });
+  
+  App.register(Channel);
+  App.register(Tuner);
+}(this.Weld, this.Broadcast.App));

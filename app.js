@@ -11,14 +11,14 @@ var express  = require('./node_modules/express'),
 ////////////////////////////////////////////////////////////////////////////////
 
 // local directories
-const BROADCAST_DIR = __dirname + '/lib/broadcast';
-const CONFIG_DIR    = __dirname + '/config';
-const PUBLIC_DIR    = __dirname + '/public';
-const VIEWS_DIR     = __dirname + '/views';
+var BROADCAST_DIR = __dirname + '/lib/broadcast';
+var CONFIG_DIR    = __dirname + '/config';
+var PUBLIC_DIR    = __dirname + '/public';
+var VIEWS_DIR     = __dirname + '/views';
 
 // route prefixes
-const ADMIN_PATH = '/admin';
-const API_PATH   = '/api';
+var ADMIN_PATH = '/admin';
+var API_PATH   = '/api';
 
 // get user config
 var config = require(CONFIG_DIR + '/base');
@@ -80,15 +80,13 @@ app.get('/', function (req, res) {
   });
 });
 
-// retrieves a channel set and cylces through its channels
-app.get('/channel-sets/:slug.json', function (req, res) {
-  // attempt to find a channel set by the slug parameter in the url
-  api.channelSet.read({ slug: req.params.slug}, function (response) {
-    res.send(response.channelSet);
-  });
-});
+// renders an empty channel set template
 app.get('/channel-sets/:slug', function (req, res) {
-  res.render('channel-set');
+  res.render('channel-set', {
+    modules: [
+      { name: 'tuner', options: { id: 'channel', slug: req.params.slug } }
+    ]
+  });
 });
 
 // private routes
@@ -154,9 +152,15 @@ app.get(API_PATH + '/', function (req, res) {
 
 // channel sets
 app.get(API_PATH + '/channelSets', function (req, res) {
-  api.channelSet.read(function (response) {
-    res.send(response);
-  });
+  if (req.query.query) {
+    api.channelSet.read(req.query.query, function (response) {
+      res.json(response, response.error ? 500 : 200);
+    });
+  } else {
+    api.channelSet.read(function (response) {
+      res.json(response, response.error ? 500 : 200);
+    });
+  }
 });
 app.get(API_PATH + '/channelSets/:id', function (req, res) {
   api.channelSet.read({ _id: req.params.id }, function (response) {
@@ -249,7 +253,7 @@ function NotFound(msg){
   Error.captureStackTrace(this, arguments.callee);
 }
 
-NotFound.prototype = new Error;
+NotFound.prototype = new Error();
 
 // app.get('/*', function (req, res) {
 //   throw new NotFound;

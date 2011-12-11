@@ -43,7 +43,7 @@ html(lang="en")
       |         td= channel.type
       |         td.actions
       |           a.action.edit(href="update/" + channel._id)= ""
-      |           a.action.remove(href="delete/" + channel._id)= ""
+      |           a.action.remove(href="#", "data-id"=channel._id)= ""
       | footer
       |   p.pagination= "Page " + currentPage + "of " + totalPages
       |   nav.buttons
@@ -118,7 +118,7 @@ html(lang="en")
       |         td.channels= set.channels.length
       |         td.actions
       |           a.action.edit(href="update/" + set._id)= ""
-      |           a.action.remove(href="delete/" + set._id)= ""
+      |           a.action.remove(href="#", "data-id"=set._id)= ""
       | footer
       |   p.pagination= "Page " + currentPage + " of " + totalPages
       |   nav.buttons
@@ -171,12 +171,19 @@ html(lang="en")
       |     - if (typeof timeout !== 'undefined')
       |       input.full(name="timeouts", type="number", value=timeout)
       |     - else
-      |       input.full(name="timeouts", type="number")
+      |       input.full(name="timeouts", type="number", value=channels[0].timeout)
     
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js")
-    script(src="https://raw.github.com/visionmedia/jade/master/jade.js")
-    // script(src="/javascripts/libs/jade.min.js")
+    script(src="/javascripts/libs/jquery.min.js")
+    script(src="/javascripts/libs/jade.min.js")
     script(src="/javascripts/libs/sammy.min.js")
+    script(src="/javascripts/libs/weld.min.js")
     script(src="/javascripts/broadcast.js")
     script(src="/javascripts/api.js")
+    script(src="/javascripts/admin/channel.create.js")
+    script(src="/javascripts/admin/channel.list.js")
+    script(src="/javascripts/admin/channel.update.js")
+    script(src="/javascripts/admin/channelset.create.js")
+    script(src="/javascripts/admin/channelset.list.js")
+    script(src="/javascripts/admin/channelset.update.js")
+    script(src="/javascripts/admin/redirector.js")
     script(src="/javascripts/admin.js")

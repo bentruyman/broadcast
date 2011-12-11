@@ -6,7 +6,24 @@ html(lang="eng")
     link(href="/favicon.png", rel="icon")
   body
     != body
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+    script(src="/javascripts/libs/jquery.min.js")
+    script(src="/javascripts/libs/jade.min.js")
+    script(src="/javascripts/libs/sammy.min.js")
+    script(src="/javascripts/libs/weld.min.js")
     script(src="/javascripts/broadcast.js")
     script(src="/javascripts/api.js")
     script(src="/javascripts/tuner.js")
+    - if (typeof modules !== "undefined")
+      - each module in modules
+        - if (module.options)
+          script
+            Broadcast.App.start(
+              Broadcast.App.create(
+                "#{module.name}", !{JSON.stringify(module.options)}
+              )
+            );
+        - else
+          script
+            Broadcast.App.start(
+              Broadcast.App.create("#{module.name}")
+            );
