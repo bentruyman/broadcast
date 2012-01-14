@@ -36,5 +36,5 @@
   });
   
   // add this service to the app
-  App.addService('api', API);
+  App.setService('api', API);
 }(this.Broadcast.App));

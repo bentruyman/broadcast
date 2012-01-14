@@ -1,5 +1,5 @@
 (function (App, Widgets, Widget) {
-  App.register(new Widget('channelset-update-form', function (sandbox) {
+  App.register(new Widget('channelset-create-form', function (sandbox) {
     // services
     var $        = sandbox.getService('query'),
         API      = sandbox.getService('api'),
@@ -8,7 +8,6 @@
     
     // locals
     var id = '#' + sandbox.getOption('id'),
-        channelSetId = sandbox.getOption('channelSetId'),
         addChannelButton;
     
     // given a collection of channels, return one by a specified ID
@@ -24,37 +23,26 @@
     
     return {
       create: function () {
-        API.channelSets.read({ id: channelSetId }).then(function (setResponse) {
-          API.channels.read().then(function (channelResponse) {
-            var channels = channelResponse.channels,
-                data = {
-                  action: '/api/channelSets',
-                  method: 'PUT',
-                  channelSet: setResponse.channelSet
-                };
+        API.channels.read().then(function (response) {
+          var channels = response.channels,
+              data = {
+                action: '/api/channelSets',
+                method: 'POST'
+              };
+          
+          // inject form template
+          template.apply('admin.channel-sets.form', data).then(function (content) {
+            $(id).append(content);
             
-            // inject form template
-            $(id).append(template.apply('channel-sets-form', data));
             addChannelButton = $('#channel-set-add-channel', id).get(0);
             
-            // populate existing channels
-            $(setResponse.channelSet.channels).each(function () {
-              $('tbody', id).append(
-                template.apply('channel-sets-form-channel', {
-                  id: this.ref._id,
-                  timeout: this.timeout,
-                  channels: channels
-                })
-              );
-            });
-            
-            // handle adding new channels
+            // append an empty add channel row
             $(addChannelButton).click(function (event) {
-              $('tbody', id).append(
-                template.apply('channel-sets-form-channel', {
-                  channels: channelResponse.channels
-                })
-              );
+              template.apply('admin.channel-sets.form.channel', {
+                channels: channels
+              }).then(function (content) {
+                $('tbody', id).append(content);
+              });
             });
             
             // handle channel removals
@@ -68,12 +56,11 @@
               
               var params = utils.serializeForm(this),
                   channelSet = {
-                    id: params.id,
                     title: params.title,
                     channels: formatChannelSetChannels(params.channels, params.timeouts)
                   };
               
-              API.channelSets.update(channelSet)
+              API.channelSets.create(channelSet)
                 .done(function () {
                   // created channel successfully, redirect to channel listing
                   App.publish('/redirect', '/admin/channel-sets/');
@@ -98,6 +85,7 @@
         });
       },
       destroy: function () {
+        $(id).remove();
         $(id).undelegate();
         $('form', id).unbind();
         $(addChannelButton).unbind();

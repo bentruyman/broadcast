@@ -102,7 +102,8 @@
       this.createPageWidget('channel-list', {
         id: 'channels',
         currentPage: app.params.page,
-        limit: ITEMS_PER_PAGE
+        limit: ITEMS_PER_PAGE,
+        templates: ['admin.channels']
       });
     });
     

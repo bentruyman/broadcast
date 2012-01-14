@@ -1,0 +1,15 @@
+tr.channel
+  td.actions
+    a.action.remove(href="#", title="Remove this channel")= ""
+  td.channel
+    select.full(name="channels")
+      - each channel in channels
+        - if (typeof id !== 'undefined' && id == channel._id)
+          option(value=channel._id, selected)= channel.title
+        - else
+          option(value=channel._id)= channel.title
+  td.timeout
+    - if (typeof timeout !== 'undefined')
+      input.full(name="timeouts", type="number", value=timeout)
+    - else
+      input.full(name="timeouts", type="number", value=channels[0].timeout)

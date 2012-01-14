@@ -1,0 +1,27 @@
+form(action=action, method=method)
+  - if (typeof channelSet !== 'undefined')
+    input(name="id", type="hidden", value=channelSet._id)
+  ol
+    li#channel-set-title
+      label= "Title"
+        - if (typeof channelSet !== 'undefined')
+          input.large(name="title", value=channelSet.title)
+        - else
+          input.large(name="title")
+    li#channel-set-channels
+      label= "Channels"
+      button#channel-set-add-channel.button.button-simple(type="button")
+        = "Add New Channel"
+      table.data-list
+        thead
+          tr
+            th.actions= "Actions"
+            th.channel= "Channel"
+            th.timeout= "Timeout"
+        tbody
+    li#channel-set-buttons
+      button.button.button-simple(type="submit")
+        - if (method === "POST")
+          = "Create New Channel Set"
+        - else
+          = "Update Channel Set"

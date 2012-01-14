@@ -16,7 +16,9 @@
         };
         
         // inject form template
-        $(id).append(template.apply('channels-form', data));
+        template.apply('admin.channels.form', data).then(function (content) {
+          $(id).append(content);
+        });
         
         // handle form submission
         $('form', id).submit(function (event) {

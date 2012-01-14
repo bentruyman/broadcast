@@ -1,37 +1,7 @@
 // TODO: consider using an ES5 shim
-(function () {
+(function (undefined) {
   // application namespace
   var Broadcast = this.Broadcast = {};
-  
-  // templating service
-  var template = (function () {
-    var 
-      // reference to the jade template engine
-      jade = require('jade'),
-      // a collection of all templates
-      templates = {};
-    
-    var service = {
-      get: function (name) {
-        return templates[name];
-      },
-      set: function (name, template) {
-        templates[name] = jade.compile(template);
-      },
-      apply: function (name, locals) {
-        return templates[name](locals);
-      }
-    };
-    
-    // find all templates on a page, import them
-    $(function () {
-      $('script[type="text/x-jade-template"]').each(function () {
-        service.set($(this).data('name'), this.innerHTML);
-      });
-    });
-    
-    return service;
-  }());
   
   // utilities service
   var utils = {
@@ -111,7 +81,6 @@
   Broadcast.App = new Weld.App({
     services: {
       query: jQuery,
-      template: template,
       utils: utils
     },
     defaultServices: ['api', 'query', 'template', 'utils']

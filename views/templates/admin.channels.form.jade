@@ -1,0 +1,46 @@
+form(action=action, method=method)
+  - if (typeof channel !== 'undefined')
+    input(name="id", type="hidden", value=channel._id)
+  ol
+    li
+      label= "Index"
+        - if (typeof channel !== 'undefined')
+          input.small(id="channel-index", name="index", type="number", value=channel.index)
+        - else
+          input.small(id="channel-index", name="index", type="number")
+    li
+      label= "Title"
+        - if (typeof channel !== 'undefined')
+          input.large(id="channel-title", name="title", value=channel.title)
+        - else
+          input.large(id="channel-title", name="title")
+    li
+      label= "URL"
+        - if (typeof channel !== 'undefined')
+          input.large(id="channel-url", name="url", type="url", value=channel.url)
+        - else
+          input.large(id="channel-url", name="url", type="url")
+    li
+      label= "Type"
+        select(id="channel-type", name="type")
+          - if (typeof channel !== 'undefined')
+            /* so fucking lame */
+            <option value="page" {{if channel.type === 'page'}}selected{{/if}}>Page</option>
+            <option value="image" {{if channel.type === 'image'}}selected{{/if}}>Image</option>
+            <option value="video" {{if channel.type === 'video'}}selected{{/if}}>Video</option>
+          - else
+            option(value="page")= "Page"
+            option(value="image")= "Image"
+            option(value="video")= "Video"
+    li
+      label= "Timeout (in milliseconds)"
+        - if (typeof channel !== 'undefined')
+          input.small(id="channel-timeout", name="timeout", type="number", value=channel.timeout)
+        - else
+          input.small(id="channel-timeout", name="timeout", type="number")
+    li
+      button.button.button-simple(type="submit")
+        - if (method === "POST")
+          = "Create New Channel"
+        - else
+          = "Update Channel"

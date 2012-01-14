@@ -2,6 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 var express  = require('./node_modules/express'),
     faye     = require('./node_modules/faye'),
+    fs       = require('fs'),
     mongoose = require('./node_modules/mongoose'),
     nib      = require('./node_modules/nib'),
     stylus   = require('./node_modules/stylus'),
@@ -15,6 +16,7 @@ var BROADCAST_DIR = __dirname + '/lib/broadcast';
 var CONFIG_DIR    = __dirname + '/config';
 var PUBLIC_DIR    = __dirname + '/public';
 var VIEWS_DIR     = __dirname + '/views';
+var TEMPLATE_DIR  = VIEWS_DIR + '/templates';
 
 // route prefixes
 var ADMIN_PATH = '/admin';
@@ -80,12 +82,24 @@ app.get('/', function (req, res) {
   });
 });
 
-// renders an empty channel set template
+// renders an empty channel set
 app.get('/channel-sets/:slug', function (req, res) {
   res.render('channel-set', {
     modules: [
       { name: 'tuner', options: { id: 'channel', slug: req.params.slug } }
     ]
+  });
+});
+
+// retrieves a template
+app.get('/templates/:template', function (req, res) {
+  fs.readFile(TEMPLATE_DIR + '/' + req.params.template + '.jade', function (err, data) {
+    if (err) {
+      // TODO: handle it
+      res.send(404);
+    } else {
+      res.send(data);
+    }
   });
 });
 

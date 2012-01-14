@@ -1,0 +1,21 @@
+table.data-list(border="0", cellspacing="0", cellpadding="0")
+  thead
+    tr
+      th.title= "Title"
+      th.channels= "Channels"
+      th.actions= "Actions"
+  tbody
+    - each set in channelSets
+      tr
+        td.title= set.title
+        td.channels= set.channels.length
+        td.actions
+          a.action.edit(href="update/" + set._id)= ""
+          a.action.remove(href="#", "data-id"=set._id)= ""
+footer
+  p.pagination= "Page " + currentPage + " of " + totalPages
+  nav.buttons
+    - if (prevPage)
+      a.button.button-simple.prev(href="?page=" + prevPage)= "Previous Page"
+    - if (nextPage)
+      a.button.button-simple.next(href="?page=" + nextPage)= "Next Page"

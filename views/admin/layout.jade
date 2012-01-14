@@ -20,170 +20,18 @@ html(lang="en")
       
         #main!= body
     
-    ////////////////////////////////////////////////////////////////////////////
-    // Channels
-    ////////////////////////////////////////////////////////////////////////////
-    
-    script(data-name="channels", type="text/x-jade-template")
-      | table.data-list(border="0", cellspacing="0", cellpadding="0")
-      |   thead
-      |     tr
-      |       th= "Index"
-      |       th.title= "Title"
-      |       th.url= "URL"
-      |       th.type= "Type"
-      |       th.actions= "Actions"
-      |   tbody
-      |     each channel in channels
-      |       tr
-      |         td= channel.index
-      |         td.title= channel.title
-      |         td.url 
-      |           a(href=channel.url)= channel.url
-      |         td= channel.type
-      |         td.actions
-      |           a.action.edit(href="update/" + channel._id)= ""
-      |           a.action.remove(href="#", "data-id"=channel._id)= ""
-      | footer
-      |   p.pagination= "Page " + currentPage + "of " + totalPages
-      |   nav.buttons
-      |     - if (prevPage)
-      |       a.button.button-simple.prev(href="?page=" + prevPage)= "Previous Page"
-      |     - if (nextPage)
-      |       a.button.button-simple.next(href="?page=" + nextPage)= "Next Page"
-    
-    script(data-name="channels-form", type="text/x-jade-template")
-      | form(action=action, method=method)
-      |   - if (typeof channel !== 'undefined')
-      |     input(name="id", type="hidden", value=channel._id)
-      |   ol
-      |     li
-      |       label= "Index"
-      |         - if (typeof channel !== 'undefined')
-      |           input.small(id="channel-index", name="index", type="number", value=channel.index)
-      |         - else
-      |           input.small(id="channel-index", name="index", type="number")
-      |     li
-      |       label= "Title"
-      |         - if (typeof channel !== 'undefined')
-      |           input.large(id="channel-title", name="title", value=channel.title)
-      |         - else
-      |           input.large(id="channel-title", name="title")
-      |     li
-      |       label= "URL"
-      |         - if (typeof channel !== 'undefined')
-      |           input.large(id="channel-url", name="url", type="url", value=channel.url)
-      |         - else
-      |           input.large(id="channel-url", name="url", type="url")
-      |     li
-      |       label= "Type"
-      |         select(id="channel-type", name="type")
-      |           - if (typeof channel !== 'undefined')
-      |             /* so fucking lame */
-      |             <option value="page" {{if channel.type === 'page'}}selected{{/if}}>Page</option>
-      |             <option value="image" {{if channel.type === 'image'}}selected{{/if}}>Image</option>
-      |             <option value="video" {{if channel.type === 'video'}}selected{{/if}}>Video</option>
-      |           - else
-      |             option(value="page")= "Page"
-      |             option(value="image")= "Image"
-      |             option(value="video")= "Video"
-      |     li
-      |       label= "Timeout (in milliseconds)"
-      |         - if (typeof channel !== 'undefined')
-      |           input.small(id="channel-timeout", name="timeout", type="number", value=channel.timeout)
-      |         - else
-      |           input.small(id="channel-timeout", name="timeout", type="number")
-      |     li
-      |       button.button.button-simple(type="submit")
-      |         - if (method === "POST")
-      |           = "Create New Channel"
-      |         - else
-      |           = "Update Channel"
-    
-    ////////////////////////////////////////////////////////////////////////////
-    // Channels Sets
-    ////////////////////////////////////////////////////////////////////////////
-    
-    script(data-name="channel-sets", type="text/x-jade-template")
-      | table.data-list(border="0", cellspacing="0", cellpadding="0")
-      |   thead
-      |     tr
-      |       th.title= "Title"
-      |       th.channels= "Channels"
-      |       th.actions= "Actions"
-      |   tbody
-      |     - each set in channelSets
-      |       tr
-      |         td.title= set.title
-      |         td.channels= set.channels.length
-      |         td.actions
-      |           a.action.edit(href="update/" + set._id)= ""
-      |           a.action.remove(href="#", "data-id"=set._id)= ""
-      | footer
-      |   p.pagination= "Page " + currentPage + " of " + totalPages
-      |   nav.buttons
-      |     - if (prevPage)
-      |       a.button.button-simple.prev(href="?page=" + prevPage)= "Previous Page"
-      |     - if (nextPage)
-      |       a.button.button-simple.next(href="?page=" + nextPage)= "Next Page"
-    
-    script(data-name="channel-sets-form", type="text/x-jade-template")
-      | form(action=action, method=method)
-      |   - if (typeof channelSet !== 'undefined')
-      |     input(name="id", type="hidden", value=channelSet._id)
-      |   ol
-      |     li#channel-set-title
-      |       label= "Title"
-      |         - if (typeof channelSet !== 'undefined')
-      |           input.large(name="title", value=channelSet.title)
-      |         - else
-      |           input.large(name="title")
-      |     li#channel-set-channels
-      |       label= "Channels"
-      |       button#channel-set-add-channel.button.button-simple(type="button")
-      |         = "Add New Channel"
-      |       table.data-list
-      |         thead
-      |           tr
-      |             th.actions= "Actions"
-      |             th.channel= "Channel"
-      |             th.timeout= "Timeout"
-      |         tbody
-      |     li#channel-set-buttons
-      |       button.button.button-simple(type="submit")
-      |         - if (method === "POST")
-      |           = "Create New Channel Set"
-      |         - else
-      |           = "Update Channel Set"
-    
-    script(data-name="channel-sets-form-channel", type="text/x-jade-template")
-      | tr.channel
-      |   td.actions
-      |     a.action.remove(href="#", title="Remove this channel")= ""
-      |   td.channel
-      |     select.full(name="channels")
-      |       - each channel in channels
-      |         - if (typeof id !== 'undefined' && id == channel._id)
-      |           option(value=channel._id, selected)= channel.title
-      |         - else
-      |           option(value=channel._id)= channel.title
-      |   td.timeout
-      |     - if (typeof timeout !== 'undefined')
-      |       input.full(name="timeouts", type="number", value=timeout)
-      |     - else
-      |       input.full(name="timeouts", type="number", value=channels[0].timeout)
-    
     script(src="/javascripts/libs/jquery.min.js")
     script(src="/javascripts/libs/jade.min.js")
     script(src="/javascripts/libs/sammy.min.js")
     script(src="/javascripts/libs/weld.min.js")
     script(src="/javascripts/broadcast.js")
-    script(src="/javascripts/api.js")
-    script(src="/javascripts/admin/channel.create.js")
-    script(src="/javascripts/admin/channel.list.js")
-    script(src="/javascripts/admin/channel.update.js")
-    script(src="/javascripts/admin/channelset.create.js")
-    script(src="/javascripts/admin/channelset.list.js")
-    script(src="/javascripts/admin/channelset.update.js")
-    script(src="/javascripts/admin/redirector.js")
-    script(src="/javascripts/admin.js")
+    script(src="/javascripts/services/api.js")
+    script(src="/javascripts/services/template.js")
+    script(src="/javascripts/widgets/admin/channel.create.js")
+    script(src="/javascripts/widgets/admin/channel.list.js")
+    script(src="/javascripts/widgets/admin/channel.update.js")
+    script(src="/javascripts/widgets/admin/channelset.create.js")
+    script(src="/javascripts/widgets/admin/channelset.list.js")
+    script(src="/javascripts/widgets/admin/channelset.update.js")
+    script(src="/javascripts/widgets/admin/redirector.js")
+    script(src="/javascripts/widgets/admin.js")

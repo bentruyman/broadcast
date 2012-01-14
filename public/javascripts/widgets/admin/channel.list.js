@@ -1,5 +1,5 @@
 (function (App, Widgets, Widget) {
-  App.register(new Widget('channelset-list', function (sandbox) {
+  App.register(new Widget('channel-list', function (sandbox) {
     // services
     var $        = sandbox.getService('query'),
         API      = sandbox.getService('api'),
@@ -13,10 +13,11 @@
     
     return {
       create: function () {
-        API.channelSets.read().then(function (data) {
+        // load all channels
+        API.channels.read().then(function (data) {
           // determine current, next, and previous page indexes
           var pagination = utils.calculatePagination(
-            data.channelSets.length, // number of items
+            data.channels.length, // number of items
             limit, // items per page
             parseInt(currentPage, 10) || 1 // current page
           );
@@ -25,29 +26,36 @@
           data.prevPage    = pagination.prevPage;
           data.nextPage    = pagination.nextPage;
           
-          // slice out current page's channel sets
+          // slice out current page's channels
           var startOfItems = (data.currentPage - 1) * limit,
               endOfItems   = startOfItems + limit;
           
-          data.channelSets = data.channelSets.slice(startOfItems, endOfItems);
+          data.channels = data.channels.slice(startOfItems, endOfItems);
           
           // inject channels data into channels template
-          $(id).append(template.apply('channel-sets', data));
-          
-          $(id).delegate('.remove', 'click', function (event) {
-            API.channelSets.delete($(this).data('id'))
-              .done(function () {
-                // deleted the channel set successfully, remove the row
-                $element.parent().parent();
-              })
-              .fail(function () {
-                // TODO: handle failure
-              });
+          template.apply('admin.channels', data).then(function (content) {
+            $(id).append(content);
+            
+            // handle channel removal requests
+            $(id).delegate('.remove', 'click', function (event) {
+              var $element = $(this);
+              
+              API.channels.delete($element.data('id'))
+                .done(function () {
+                  // deleted the channel successfully, remove the row
+                  $element.parent().parent().remove();
+                })
+                .fail(function () {
+                  // TODO: handle failure
+                });
+            });
           });
         });
       },
       destroy: function () {
-        $(id).remove();
+        $(id)
+          .remove()
+          .undelegate();
       }
     };
   }));
