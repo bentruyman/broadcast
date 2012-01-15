@@ -10,9 +10,11 @@
     // tuner state
     var 
       // reference to the current channel set object
-      channelSet = null,
+      channelSet,
       // a collection of channel modules for the current channel set
       channelModules = [],
+      // reference to the current channels module ID
+      currentChannel = null,
       // the currently viewed channel's index
       currentChannelIndex = null,
       // reference to the current channel's timeout
@@ -51,23 +53,55 @@
       });
     }
     
+    // creates a new channel
+    function createChannel(channel) {
+      var id = App.create('tuner-channel', {
+        host: container,
+        index: channel.ref.index,
+        title: channel.ref.title,
+        type:  channel.ref.type,
+        url:   channel.ref.url
+      });
+      
+      App.start(id);
+      
+      return id;
+    }
+    
+    // destroys an existing channel
+    function destroyChannel(id) {
+      App.stop(id);
+    }
+    
     // stops any existing channel, starts a new one
     function goToChannel(index) {
       var channel;
       
-      if (channelSet !== null) {
-        
+      // if a channel is already running, stop it
+      if (currentChannelIndex !== null) {
+        destroyChannel(currentChannel);
+        window.clearTimeout(timeout);
       }
+      
+      currentChannelIndex = index;
+      channel = channelSet.channels[index];
+      
+      currentChannel = createChannel(channel);
+      window.setTimeout(nextChannel, channel.timeout);
     }
     
     // navigates to the previous channel
     function previousChannel() {
-      
+      goToChannel(
+        currentChannelIndex - 1 < 0 ? channelSet.channels.length : currentChannelIndex - 1
+      );
     }
     
     // navigates to the next channel
     function nextChannel() {
-      
+      goToChannel(
+        currentChannelIndex + 1 === channelSet.channels.length ? 0 : currentChannelIndex + 1
+      );
     }
     
     return {
@@ -88,17 +122,5 @@
     };
   });
   
-  var Channel = new Weld.Widget('tuner-channel', function (sandbox) {
-    return {
-      create: function () {
-        
-      },
-      destroy: function () {
-        
-      }
-    };
-  });
-  
-  App.register(Channel);
   App.register(Tuner);
 }(this.Weld, this.Broadcast.App));
