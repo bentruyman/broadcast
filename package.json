@@ -3,6 +3,13 @@
     "description": "",
     "version": "0.1.0",
     "author": "",
-    "dependencies": {},
-    "devDependencies": {}
+    "dependencies": {
+      "express": "2.5.5",
+      "faye": ">= 0.6.7",
+      "jade": ">= 0.20.0",
+      "mongoose": "2.3.13",
+      "nib": "0.2.0",
+      "qq": "0.3.3",
+      "stylus": ">= 0.22.4"
+    }
 }
