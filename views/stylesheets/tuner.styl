@@ -1,0 +1,34 @@
+@import "nib/vendor"
+
+// core
+body
+  background: #000
+  overflow: hidden
+
+// channels
+#channel
+  height: 100%
+  width: 100%
+
+.channel
+  position: absolute
+
+.channel-image
+  background-attachment: fixed
+  background-position: center center
+  background-repeat: no-repeat
+  background-size: contain
+  opacity: 0
+  transition: all 1s ease-in-out
+  height: 100%
+  width: 100% 
+  
+  &.active
+    opacity: 1
+
+.channel-page
+  height: 100%
+  width: 100%
+
+.channel-video
+  // 

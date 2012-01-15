@@ -16,14 +16,43 @@
         template.apply('channel.' + type, { url: url }).then(function (content) {
           container = $(content).get(0);
           $(host).append(container);
+          creators[type](container);
         });
       },
       destroy: function () {
-        console.log('Hello World');
-        $(container).remove();
+        destroyers[type](container);
       }
     };
   });
+  
+  // channel specific creator functions
+  var creators = {
+    image: function (container) {
+      // need to yield to allow CSS animation to happen
+      window.setTimeout(function () {
+        $(container).addClass('active');
+      }, 0);
+    },
+    page: function (container) {},
+    video: function (container) {}
+  };
+  
+  // channel specific destroyer functions
+  var destroyers = {
+    image: function (container) {
+      $(container).removeClass('active');
+      
+      setTimeout(function () {
+        $(container).remove();
+      }, 1000);
+    },
+    page: function (container) {
+      $(container).remove();
+    },
+    video: function (container) {
+      $(container).remove();
+    }
+  };
   
   App.register(Channel);
 }(this.Weld, this.Broadcast.App));

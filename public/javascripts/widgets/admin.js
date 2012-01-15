@@ -5,30 +5,6 @@
     // how many items to list per page
     ITEMS_PER_PAGE = 15;
   
-  // combines lists of ids and timeouts into a consumable format for the API
-  function formatChannelSetChannels(ids, timeouts) {
-    var channels = [];
-    
-    // format channels from param data
-    if (isArray(ids)) {
-      // handle multiple channels
-      for (var i = 0, j = ids.length; i < j; i++) {
-        channels.push({
-          ref: ids[i],
-          timeout: timeouts[i]
-        });
-      }
-    } else {
-      // just a single channel
-      channels.push({
-        ref: ids,
-        timeout: timeouts
-      });
-    }
-    
-    return channels;
-  }
-  
   // determines if the passed in value is an instance of an array
   function isArray(val) {
     return Object.prototype.toString.call(val) === '[object Array]';

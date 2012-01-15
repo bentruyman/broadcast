@@ -57,7 +57,7 @@
               var params = utils.serializeForm(this),
                   channelSet = {
                     title: params.title,
-                    channels: formatChannelSetChannels(params.channels, params.timeouts)
+                    channels: utils.formatChannelSetChannels(params.channels, params.timeouts)
                   };
               
               API.channelSets.create(channelSet)

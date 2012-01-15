@@ -15,6 +15,29 @@
         nextPage: (currentPage < totalPages) ? currentPage + 1 : null
       };
     },
+    // combines lists of ids and timeouts into a consumable format for the API
+    formatChannelSetChannels: function (ids, timeouts) {
+      var channels = [];
+      
+      // format channels from param data
+      if (isArray(ids)) {
+        // handle multiple channels
+        for (var i = 0, j = ids.length; i < j; i++) {
+          channels.push({
+            ref: ids[i],
+            timeout: timeouts[i]
+          });
+        }
+      } else {
+        // just a single channel
+        channels.push({
+          ref: ids,
+          timeout: timeouts
+        });
+      }
+      
+      return channels;
+    },
     serializeForm: function (form) {
       var serialized = {},
           inputs = $(form).serializeArray();

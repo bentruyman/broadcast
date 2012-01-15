@@ -73,7 +73,7 @@
                     channelSet = {
                       id: params.id,
                       title: params.title,
-                      channels: formatChannelSetChannels(params.channels, params.timeouts)
+                      channels: utils.formatChannelSetChannels(params.channels, params.timeouts)
                     };
                 
                 API.channelSets.update(channelSet)
