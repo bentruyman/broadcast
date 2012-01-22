@@ -75,6 +75,7 @@ var ctx = {
 };
 
 require('./routes/api')(ctx);
+require('./routes/index')(ctx);
 require('./routes/tuner')(ctx);
 require('./routes/admin')(ctx);
 require('./routes/misc')(ctx);

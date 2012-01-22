@@ -36,7 +36,17 @@
             
             addChannelButton = $('#channel-set-add-channel', id).get(0);
             
-            // append an empty add channel row
+            // make channel rows sortable via drag & drop
+            $('tbody', id).sortable({
+              helper: function(e, ui) {
+                ui.children().each(function() {
+                  $(this).width($(this).width());
+                });
+                return ui;
+              }
+            }).disableSelection();
+            
+            // handle channel additions
             $(addChannelButton).click(function (event) {
               template.apply('admin.channel-sets.form.channel', {
                 channels: channels

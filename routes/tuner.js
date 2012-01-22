@@ -3,18 +3,27 @@ module.exports = function (ctx) {
       app = ctx.app;
   
   // list all channel sets by title
-  app.get('/', function (req, res) {
+  app.get('/channel-sets', function (req, res) {
     // retrieve all channel sets
     api.channelSet.read(function (response) {
-      res.render('index', { channelSets: response.channelSets });
+      res.render('channel-sets/index', {
+        channelSets: response.channelSets,
+        layout: 'layout'
+      });
     });
   });
   
   // renders an empty channel set
   app.get('/channel-sets/:slug', function (req, res) {
-    res.render('channel-set', {
+    res.render('channel-sets/set', {
       modules: [
-        { name: 'tuner', options: { id: 'channel', slug: req.params.slug } }
+        {
+          name: 'tuner',
+          options: {
+            id: 'channel',
+            slug: req.params.slug
+          }
+        }
       ]
     });
   });

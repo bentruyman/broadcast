@@ -17,7 +17,7 @@ module.exports = function (ctx) {
     adminRender(res, 'admin/index', { type: 'dashboard', method: '' });
   });
   
-  // lists all channel sets or a views single channel set
+  // lists all channel sets
   app.get(ADMIN_PATH + '/channel-sets/', function (req, res) {
     adminRender(res, 'admin/channel-sets/index', { type: 'channel-sets', method: 'read' });
   });
@@ -32,7 +32,7 @@ module.exports = function (ctx) {
     adminRender(res, 'admin/channel-sets/update', { type: 'channel-sets', method: 'update' });
   });
   
-  // lists all channels or a views single channel
+  // lists all channels
   app.get(ADMIN_PATH + '/channels/', function (req, res) {
     adminRender(res, 'admin/channels/index', { type: 'channels', method: 'read' });
   });

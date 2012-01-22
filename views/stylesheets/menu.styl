@@ -1,0 +1,44 @@
+@import "nib/vendor"
+
+// core
+body
+  background: #aa1622
+  overflow: hidden
+
+#wrapper
+  margin: auto
+  width: 1024px
+
+#header
+  text-indent: -999em
+  background: url(/assets/images/menu/header.png) left top no-repeat
+  height: 33px
+  margin: 100px 0 50px 0
+
+// menu
+#menu 
+  li
+    list-style: none
+    padding: 0
+  a
+    color: #444
+    font-size: 62px
+    font-weight: bold
+    text-decoration: none
+    
+    background-color: #fff;
+    background-image: -webkit-linear-gradient(top, #fff, #d9d9d9)
+    background-image:    -moz-linear-gradient(top, #fff, #d9d9d9)
+    background-image:     -ms-linear-gradient(top, #fff, #d9d9d9)
+    background-image:      -o-linear-gradient(top, #fff, #d9d9d9)
+    background-image:         linear-gradient(top, #fff, #d9d9d9)
+    
+    display: block
+    margin-bottom: 5px
+    padding: 15px 30px
+    opacity: 0.5
+    
+    transition: opacity 0.15s ease-in-out
+    
+    &:hover
+      opacity: 1

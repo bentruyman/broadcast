@@ -51,7 +51,19 @@
                 });
               });
               
-              // handle adding new channels
+              // make channel rows sortable via drag & drop
+              $('tbody', id).sortable({
+                helper: function(e, ui) {
+                  console.log(arguments);
+                  ui.children().each(function() {
+                    console.log($(this).width());
+                    $(this).width($(this).width());
+                  });
+                  return ui;
+                }
+              }).disableSelection();
+              
+              // handle channel additions
               $(addChannelButton).click(function (event) {
                 template.apply('admin.channel-sets.form.channel', {
                   channels: channelResponse.channels
