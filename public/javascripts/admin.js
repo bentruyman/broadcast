@@ -10,14 +10,14 @@
     return Object.prototype.toString.call(val) === '[object Array]';
   }
   
-  // start the redirector widget
-  var redirector = App.create('admin/redirector', { app: this });
-  App.start(redirector);
-  
   // setup routes
   Sammy(CONTAINER_SELECTOR, function (app) {
     // a collection of running module IDs
     var runningModules = [];
+    
+    // start the redirector widget
+    var redirector = App.create('admin/redirector', { app: this });
+    App.start(redirector);
     
     // route widget creator
     app.helper('createPageWidget', function (name, settings) {
@@ -133,7 +133,7 @@
     });
     
     // update display
-    this.get('/admin/display/update/:id', function (app) {
+    this.get('/admin/displays/update/:id', function (app) {
       this.createPageWidget('display-update', {
         id: 'display-form',
         displayId: app.params.id

@@ -7,16 +7,23 @@ define(function () {
           template = sandbox.getService('template'),
           utils    = sandbox.getService('utils');
       
+      // constants
+      var MS = {
+        inDay: 86400000,
+        inHour: 3600000,
+        inMinute: 60000
+      };
+      
       // locals
       var id = '#' + sandbox.getOption('id'),
-          channelSetId = sandbox.getOption('channelSetId'),
-          addChannelButton;
+          displayId = sandbox.getOption('displayId'),
+          addChannelSetButton;
       
-      // given a collection of channels, return one by a specified ID
-      function findChannelById(channels, id) {
+      // given a collection of channel sets, return one by a specified ID
+      function findChannelSetById(channelSets, id) {
         for (var i = 0, j = channels.length; i < j; i++) {
-          if (channels[i]._id === id) {
-            return channels[i];
+          if (channelSets[i]._id === id) {
+            return channelSets[i];
           }
         }
         
@@ -25,28 +32,35 @@ define(function () {
       
       return {
         create: function () {
-          API.channelSets.read({ id: channelSetId }).then(function (setResponse) {
-            API.channels.read().then(function (channelResponse) {
-              var channels = channelResponse.channels,
+          API.displays.read({ id: displayId }).then(function (displayResponse) {
+            API.channelSets.read().then(function (setResponse) {
+              var sets = setResponse.channelSets,
                   data = {
-                    action: '/api/channelSets',
+                    action: '/api/displays',
                     method: 'PUT',
-                    channelSet: setResponse.channelSet,
-                    channels: channels
+                    display: displayResponse.display,
+                    channelSets: sets
                   };
               
               // inject form template
-              template.apply('admin.channel-sets.form', data).then(function (content) {
+              template.apply('admin.displays.form', data).then(function (content) {
                 $(id).append(content);
                 
-                var addChannelButton = $('#channel-set-add-channel', id).get(0);
+                var addChannelSetButton = $('#channel-set-add-channel', id).get(0);
                 
                 // populate existing channels
-                $(setResponse.channelSet.channels).each(function () {
-                  template.apply('admin.channel-sets.form.channel', {
+                $(displayResponse.display.channelSets).each(function () {
+                  // transform the start time into a human-readible format
+                  var day    = Math.floor(this.startTime / MS.inDay),
+                      hour   = Math.floor((this.startTime - day * MS.inDay) / MS.inHour),
+                      minute = Math.floor((this.startTime - day * MS.inDay - hour * MS.inHour) / MS.inMinute);
+                  
+                  template.apply('admin.displays.form.channel-set', {
                     id: this.ref._id,
-                    timeout: this.timeout,
-                    channels: channels
+                    dayIndex: day,
+                    hourIndex: hour,
+                    minuteIndex: minute,
+                    channelSets: sets
                   }).then(function (content) {
                     $('tbody', id).append(content);
                   });
@@ -64,16 +78,16 @@ define(function () {
                   }
                 }).disableSelection();
                 
-                // handle channel additions
-                $(addChannelButton).click(function (event) {
-                  template.apply('admin.channel-sets.form.channel', {
+                // handle channel set additions
+                $(addChannelSetButton).click(function (event) {
+                  template.apply('admin.displays.form.channel-set', {
                     channels: channelResponse.channels
                   }).then(function (content) {
                     $('tbody', id).append(content);
                   });
                 });
                 
-                // handle channel removals
+                // handle channel set removals
                 $(id).delegate('.remove', 'click', function (event) {
                   $(this).parent().parent().remove();
                 });
@@ -83,32 +97,31 @@ define(function () {
                   event.preventDefault();
                   
                   var params = utils.serializeForm(this),
-                      channelSet = {
+                      display = {
                         id: params.id,
                         title: params.title,
-                        channels: utils.formatChannelSetChannels(params.channels, params.timeouts)
+                        channelSets: []
                       };
                   
-                  API.channelSets.update(channelSet)
+                  if (params.channelSets) {
+                    display.channelSets = utils.formatDisplayChannelSets(
+                      params.channelSets,
+                      params.days,
+                      params.hours,
+                      params.minutes
+                    );
+                  }
+                  
+                  API.displays.update(display)
                     .done(function () {
-                      // created channel successfully, redirect to channel listing
-                      App.publish('/redirect', '/admin/channel-sets/');
+                      // created display successfully, redirect to display listing
+                      sandbox.app.publish('/redirect', '/admin/displays/');
                     })
                     .fail(function (response) {
                       // TODO: handle error
                       var error = JSON.parse(response.responseText);
                       console.error(error);
                     });
-                });
-                
-                // handle channel changes
-                $(id).delegate('.channel select', 'change', function (event) {
-                  var id = $(this).val(),
-                      channel = findChannelById(channels, id);
-                  
-                  // when a channel is changed in a dropdown, update the timeout to
-                  // the channel's default timeout
-                  $(this).parent().parent().find('.timeout input').val(channel.timeout);
                 });
               });
             });
@@ -117,7 +130,7 @@ define(function () {
         destroy: function () {
           $(id).undelegate();
           $('form', id).unbind();
-          $(addChannelButton).unbind();
+          $(addChannelSetButton).unbind();
         }
       };
     }

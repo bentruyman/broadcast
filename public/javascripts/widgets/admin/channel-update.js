@@ -41,7 +41,7 @@ define(function () {
                   API.channels.update(channel)
                     .done(function () {
                       // created channel successfully, redirect to channel listing
-                      App.publish('/redirect', '/admin/channels/');
+                      sandbox.app.publish('/redirect', '/admin/channels/');
                     })
                     .fail(function (response) {
                       // TODO: handle error

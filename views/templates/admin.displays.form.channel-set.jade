@@ -1,0 +1,29 @@
+tr.channel-set
+  td.actions
+    a.action.remove(href="#", title="Remove this channel set")= ""
+  td.channel-set
+    select.full(name="channelSets")
+      - each set in channelSets
+        - if (typeof id !== 'undefined' && id == set._id)
+          option(value=set._id, selected)= set.title
+        - else
+          option(value=set._id)= set.title
+  td.start-time
+    select(name="days")
+      - each day, index in ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        - if (typeof dayIndex !== 'undefined' && dayIndex === index)
+          option(value= 86400000 * index, selected)= day
+        - else
+          option(value= 86400000 * index)= day
+    select(name="hours")
+      - each hour, index in Array(24)
+        - if (typeof hourIndex !== 'undefined' && hourIndex === index)
+          option(value= 3600000 * index, selected)= index
+        - else
+          option(value= 3600000 * index)= index
+    select(name="minutes")
+      - each minute, index in Array(60)
+        - if (typeof minuteIndex !== 'undefined' && minuteIndex === index)
+          option(value= 60000 * index, selected)= index
+        - else
+          option(value= 60000 * index)= index

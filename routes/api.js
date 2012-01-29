@@ -104,7 +104,7 @@ module.exports = function (ctx) {
   app.get(API_PATH + '/displays/:id', function (req, res) {
     api.display.read({ _id: req.params.id }, function (response) {
       if (response.displays && response.displays.length === 1) { // one display
-        sendApiResponse(res, { display: response.display[0] }, response.error);
+        sendApiResponse(res, { display: response.displays[0] }, response.error);
       } else { // error
         sendApiResponse(res, response, response.error);
       }
@@ -124,7 +124,7 @@ module.exports = function (ctx) {
     });
   });
   app.delete(API_PATH + '/displays/:id', function (req, res) {
-    api.displays.delete(req.params.id, function (response) {
+    api.display.delete(req.params.id, function (response) {
       sendApiResponse(res, response, response.error);
     });
   });

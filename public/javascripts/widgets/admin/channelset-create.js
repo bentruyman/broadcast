@@ -68,13 +68,19 @@ define(function () {
                 var params = utils.serializeForm(this),
                     channelSet = {
                       title: params.title,
-                      channels: utils.formatChannelSetChannels(params.channels, params.timeouts)
+                      channels: []
                     };
+                
+                if (params.channels) {
+                  channelSet.channels = utils.formatChannelSetChannels(params.channels, params.timeouts);
+                }
+                
+                console.log('foo', utils.formatChannelSetChannels(params.channels, params.timeouts));
                 
                 API.channelSets.create(channelSet)
                   .done(function () {
                     // created channel successfully, redirect to channel listing
-                    App.publish('/redirect', '/admin/channel-sets/');
+                    sandbox.app.publish('/redirect', '/admin/channel-sets/');
                   })
                   .fail(function (response) {
                     // TODO: handle error

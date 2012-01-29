@@ -35,6 +35,29 @@
         
         return channels;
       },
+      // combines lists of ids and times into a consumable format for the API
+      formatDisplayChannelSets: function (ids, days, hours, minutes) {
+        var sets = [];
+        
+        // format channel sets from param data
+        if (isArray(ids)) {
+          // handle multiple channel sets
+          for (var i = 0, j = ids.length; i < j; i++) {
+            sets.push({
+              ref: ids[i],
+              startTime: parseInt(days[i], 10) + parseInt(hours[i], 10) + parseInt(minutes[i], 10)
+            });
+          }
+        } else {
+          // just a single display
+          sets.push({
+            ref: ids,
+            startTime: parseInt(days, 10) + parseInt(hours, 10) + parseInt(minutes, 10)
+          });
+        }
+        
+        return sets;
+      },
       serializeForm: function (form) {
         var serialized = {},
             inputs = $(form).serializeArray();

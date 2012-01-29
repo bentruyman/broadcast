@@ -9,7 +9,7 @@ define(function () {
       
       // locals
       var id = '#' + sandbox.getOption('id'),
-          addChannelButton;
+          addChannelSetButton;
       
       // given a collection of channel sets, return one by a specified ID
       function findChannelSetById(channelSets, id) {
@@ -48,9 +48,9 @@ define(function () {
               }).disableSelection();
               
               // handle channel additions
-              $(addChannelButton).click(function (event) {
-                template.apply('admin.channel-sets.form.channel', {
-                  channels: channels
+              $(addChannelSetButton).click(function (event) {
+                template.apply('admin.displays.form.channel-set', {
+                  channelSets: channelSets
                 }).then(function (content) {
                   $('tbody', id).append(content);
                 });
@@ -66,15 +66,24 @@ define(function () {
                 event.preventDefault();
                 
                 var params = utils.serializeForm(this),
-                    channelSet = {
+                    display = {
                       title: params.title,
-                      channels: utils.formatChannelSetChannels(params.channels, params.timeouts)
+                      channelSets: []
                     };
                 
-                API.channelSets.create(channelSet)
+                if (params.channelSets) {
+                  display.channelSets = utils.formatDisplayChannelSets(
+                    params.channelSets,
+                    params.days,
+                    params.hours,
+                    params.minutes
+                  );
+                }
+                
+                API.displays.create(display)
                   .done(function () {
-                    // created channel successfully, redirect to channel listing
-                    App.publish('/redirect', '/admin/channel-sets/');
+                    // created display successfully, redirect to display listing
+                    sandbox.app.publish('/redirect', '/admin/displays/');
                   })
                   .fail(function (response) {
                     // TODO: handle error
@@ -99,7 +108,7 @@ define(function () {
           $(id).remove();
           $(id).undelegate();
           $('form', id).unbind();
-          $(addChannelButton).unbind();
+          $(addChannelSetButton).unbind();
         }
       };
     }

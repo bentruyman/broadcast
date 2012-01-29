@@ -108,14 +108,14 @@ define(function () {
       return {
         create: function () {
           // listen for tuner refresh messages
-          App.subscribe('/tuner/refresh', refresh);
+          sandbox.app.subscribe('/tuner/refresh', refresh);
           
           // listen for channel messages
-          App.subscribe('/tuner/previous-channel', previousChannel);
-          App.subscribe('/tuner/next-channel', nextChannel);
+          sandbox.app.subscribe('/tuner/previous-channel', previousChannel);
+          sandbox.app.subscribe('/tuner/next-channel', nextChannel);
           
           // trigger initial refresh
-          App.publish('/tuner/refresh');
+          sandbox.app.publish('/tuner/refresh');
         },
         destroy: function () {
           $(container).empty();

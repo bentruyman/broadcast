@@ -5,7 +5,7 @@ form(action=action, method=method)
     li#display-title
       label= "Title"
         - if (typeof display !== 'undefined')
-          input.large(name="title", value=channelSet.title)
+          input.large(name="title", value=display.title)
         - else
           input.large(name="title")
     li#display-channels

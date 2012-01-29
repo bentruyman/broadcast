@@ -37,10 +37,12 @@ define(function () {
               $(id).append(content);
               
               $(id).delegate('.remove', 'click', function (event) {
+                var $element = $(this);
+                
                 API.channelSets.delete($(this).data('id'))
                   .done(function () {
                     // deleted the channel set successfully, remove the row
-                    $element.parent().parent();
+                    $element.parent().parent().remove();
                   })
                   .fail(function () {
                     // TODO: handle failure
