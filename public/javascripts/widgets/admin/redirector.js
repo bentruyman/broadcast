@@ -1,17 +1,19 @@
-(function (App, Widgets, Widget) {
-  App.register(new Widget('redirector', function (sandbox) {
-    var app = sandbox.getOption('app'),
-        handle;
-    
-    return {
-      create: function () {
-        handle = App.subscribe('/redirect', function (path) {
-          app.setLocation(path);
-        });
-      },
-      destroy: function () {
-        App.unsubscribe(handle);
-      }
-    };
-  }));
-}(this.Broadcast.App, this.Broadcast.Widgets, this.Weld.Widget));
+define(function () {
+  return {
+    creator: function (sandbox) {
+      var app = sandbox.getOption('app'),
+          handle;
+      
+      return {
+        create: function () {
+          handle = sandbox.app.subscribe('/redirect', function (path) {
+            app.setLocation(path);
+          });
+        },
+        destroy: function () {
+          sandbox.app.unsubscribe(handle);
+        }
+      };
+    }
+  };
+});

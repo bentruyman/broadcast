@@ -1,5 +1,5 @@
 (function (App, Sammy, Weld) {
-  var 
+  var
     // a selector to match the main container
     CONTAINER_SELECTOR = '#main',
     // how many items to list per page
@@ -10,18 +10,18 @@
     return Object.prototype.toString.call(val) === '[object Array]';
   }
   
+  // start the redirector widget
+  var redirector = App.create('admin/redirector', { app: this });
+  App.start(redirector);
+  
   // setup routes
   Sammy(CONTAINER_SELECTOR, function (app) {
-      // a collection of running module IDs
-      runningModules = [];
-    
-    // start the redirector widget
-    var redirector = App.create('redirector', { app: this });
-    App.start(redirector);
+    // a collection of running module IDs
+    var runningModules = [];
     
     // route widget creator
     app.helper('createPageWidget', function (name, settings) {
-      var module = App.create(name, settings);
+      var module = App.create('admin/' + name, settings);
       
       runningModules.push(module);
       
@@ -85,12 +85,12 @@
     
     // create channels
     this.get('/admin/channels/create', function (app) {
-      this.createPageWidget('channel-create-form', { id: 'channel-form' });
+      this.createPageWidget('channel-create', { id: 'channel-form' });
     });
     
     // update channels
     this.get('/admin/channels/update/:id', function (app) {
-      this.createPageWidget('channel-update-form', {
+      this.createPageWidget('channel-update', {
         id: 'channel-form',
         channelId: app.params.id
       });
@@ -107,16 +107,39 @@
     
     // create channel sets
     this.get('/admin/channel-sets/create', function (app) {
-      this.createPageWidget('channelset-create-form', { id: 'channel-set-form' });
+      this.createPageWidget('channelset-create', { id: 'channel-set-form' });
     });
     
     // update channel sets
     this.get('/admin/channel-sets/update/:id', function (app) {
-      this.createPageWidget('channelset-update-form', {
+      this.createPageWidget('channelset-update', {
         id: 'channel-set-form',
         channelSetId: app.params.id
       });
     });
+    
+    // list displays
+    this.get('/admin/displays/', function (app) {
+      this.createPageWidget('display-list', {
+        id: 'displays',
+        currentPage: app.params.page,
+        limit: ITEMS_PER_PAGE
+      });
+    });
+    
+    // create displays
+    this.get('/admin/displays/create', function (app) {
+      this.createPageWidget('display-create', { id: 'display-form' });
+    });
+    
+    // update display
+    this.get('/admin/display/update/:id', function (app) {
+      this.createPageWidget('display-update', {
+        id: 'display-form',
+        displayId: app.params.id
+      });
+    });
+    
   }).run();
   
 }(this.Broadcast.App, this.Sammy, this.Weld));

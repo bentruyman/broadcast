@@ -1,0 +1,14 @@
+!!! 5
+html(lang="eng")
+  head
+    title="Broadcast"
+    link(href="/stylesheets/broadcast.css", rel="stylesheet")
+    link(href="/stylesheets/menu.css", rel="stylesheet")
+    link(href="/favicon.png", rel="icon")
+  body
+    #wrapper
+      header#header= "Broadcast"
+      section#body!= body
+    script(src="/javascripts/libs/jquery.min.js")
+    script(src="/javascripts/libs/weld.min.js")
+    script(src="/javascripts/broadcast.js")

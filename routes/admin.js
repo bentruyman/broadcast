@@ -44,9 +44,21 @@ module.exports = function (ctx) {
   
   // updates a channel
   app.get(ADMIN_PATH + '/channels/update/:id', function (req, res) {
-    adminRender(res, 'admin/channels/update', {
-      type: 'channels',
-      method: 'update'
-    });
+    adminRender(res, 'admin/channels/update', { type: 'channels', method: 'update' });
+  });
+  
+  // lists all displays
+  app.get(ADMIN_PATH + '/displays/', function (req, res) {
+    adminRender(res, 'admin/displays/index', { type: 'displays', method: 'read' });
+  });
+  
+  // creates a display
+  app.get(ADMIN_PATH + '/displays/create', function (req, res) {
+    adminRender(res, 'admin/displays/create', { type: 'displays', method: 'create' });
+  });
+  
+  // updates a display
+  app.get(ADMIN_PATH + '/displays/update/:id', function (req, res) {
+    adminRender(res, 'admin/displays/update', { type: 'displays', method: 'update' });
   });
 };

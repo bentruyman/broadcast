@@ -46,6 +46,14 @@ Configured channels and Channel sets.
       title: String # name of the channel set
       slug: String # slug to be used in url to point to this channel set
       channels: [ConfiguredChannel] # list of configured channels
+    
+    ConfiguredChannelSet:
+      ref: ChannelSet # reference to a channel set
+      startTime: Number # the time, in milliseconds relative from the start of a week, a channel set should start
+    
+    Display:
+      title: String # name of the display
+      channels: [ConfiguredChannel] # list of configured channels
 
 ## License
 

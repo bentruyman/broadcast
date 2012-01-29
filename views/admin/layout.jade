@@ -17,23 +17,16 @@ html(lang="en")
                 a(href='/admin/channels/', accesskey="c")= "Channels"
               li(id="navigation-channel-sets")
                 a(href='/admin/channel-sets/', accesskey="s")= "Channel Sets"
+              li(id="navigation-displays")
+                a(href='/admin/displays/', accesskey="s")= "Displays"
         
         #main!= body
     
     script(src="/javascripts/libs/jquery.min.js")
     script(src="/javascripts/libs/jquery-ui-1.8.17.custom.min.js")
-    script(src="/javascripts/libs/jade.min.js")
+    script(src="/javascripts/libs/jade.js")
     script(src="/javascripts/libs/sammy.min.js")
+    script(src="/javascripts/libs/require.js")
     script(src="/javascripts/libs/weld.min.js")
     script(src="/javascripts/broadcast.js")
-    script(src="/javascripts/services/api.js")
-    script(src="/javascripts/services/template.js")
-    script(src="/javascripts/services/utils.js")
-    script(src="/javascripts/widgets/admin/channel.create.js")
-    script(src="/javascripts/widgets/admin/channel.list.js")
-    script(src="/javascripts/widgets/admin/channel.update.js")
-    script(src="/javascripts/widgets/admin/channelset.create.js")
-    script(src="/javascripts/widgets/admin/channelset.list.js")
-    script(src="/javascripts/widgets/admin/channelset.update.js")
-    script(src="/javascripts/widgets/admin/redirector.js")
-    script(src="/javascripts/widgets/admin.js")
+    script(src="/javascripts/admin.js")

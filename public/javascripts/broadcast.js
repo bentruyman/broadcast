@@ -5,9 +5,7 @@
   
   // weld application instance
   Broadcast.App = new Weld.App({
-    services: {
-      query: jQuery
-    },
-    defaultServices: ['api', 'query', 'template', 'utils']
+    defaultServices: ['api', 'query', 'template', 'utils'],
+    paths: { base: '/javascripts' }
   });
 }());

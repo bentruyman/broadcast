@@ -24,9 +24,11 @@ var config = require(CONFIG_DIR + '/base');
 ////////////////////////////////////////////////////////////////////////////////
 
 // set models
-mongoose.model('Channel'          , require(BROADCAST_DIR + '/domain/channel'));
-mongoose.model('ChannelSet'       , require(BROADCAST_DIR + '/domain/channel-set'));
-mongoose.model('ConfiguredChannel', require(BROADCAST_DIR + '/domain/configured-channel'));
+mongoose.model('Channel'             , require(BROADCAST_DIR + '/domain/channel'));
+mongoose.model('ConfiguredChannel'   , require(BROADCAST_DIR + '/domain/configured-channel'));
+mongoose.model('ChannelSet'          , require(BROADCAST_DIR + '/domain/channel-set'));
+mongoose.model('ConfiguredChannelSet', require(BROADCAST_DIR + '/domain/configured-channel-set'));
+mongoose.model('Display'             , require(BROADCAST_DIR + '/domain/display'));
 
 // connect to the database
 mongoose.connect(config.database.host, config.database.name);
