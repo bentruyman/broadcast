@@ -1,0 +1,29 @@
+!!! 5
+html(lang="eng")
+  head
+    title="Broadcast"
+    link(href="/stylesheets/broadcast.css", rel="stylesheet")
+    link(href="/stylesheets/tuner.css", rel="stylesheet")
+    link(href="/favicon.png", rel="icon")
+  body
+    != body
+    script(src="/javascripts/libs/jquery.min.js")
+    script(src="/javascripts/libs/jade.js")
+    script(src="/javascripts/libs/sammy.min.js")
+    script(src="/javascripts/libs/require.js")
+    script(src="/javascripts/libs/weld.min.js")
+    script(src="/javascripts/broadcast.js")
+    - if (typeof modules !== "undefined")
+      - each module in modules
+        - if (module.options)
+          script
+            Broadcast.App.start(
+              Broadcast.App.create(
+                "#{module.name}", !{JSON.stringify(module.options)}
+              )
+            );
+        - else
+          script
+            Broadcast.App.start(
+              Broadcast.App.create("#{module.name}")
+            );

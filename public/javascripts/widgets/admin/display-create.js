@@ -7,6 +7,13 @@ define(function () {
           template = sandbox.getService('template'),
           utils    = sandbox.getService('utils');
       
+      // constants
+      var MS = {
+        inDay: 86400000,
+        inHour: 3600000,
+        inMinute: 60000
+      };
+      
       // locals
       var id = '#' + sandbox.getOption('id'),
           addChannelSetButton;

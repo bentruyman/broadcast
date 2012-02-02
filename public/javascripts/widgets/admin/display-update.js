@@ -34,19 +34,19 @@ define(function () {
         create: function () {
           API.displays.read({ id: displayId }).then(function (displayResponse) {
             API.channelSets.read().then(function (setResponse) {
-              var sets = setResponse.channelSets,
+              var channelSets = setResponse.channelSets,
                   data = {
                     action: '/api/displays',
                     method: 'PUT',
                     display: displayResponse.display,
-                    channelSets: sets
+                    channelSets: channelSets
                   };
               
               // inject form template
               template.apply('admin.displays.form', data).then(function (content) {
                 $(id).append(content);
                 
-                var addChannelSetButton = $('#channel-set-add-channel', id).get(0);
+                var addChannelSetButton = $('#display-add-channel-set', id).get(0);
                 
                 // populate existing channels
                 $(displayResponse.display.channelSets).each(function () {
@@ -60,7 +60,7 @@ define(function () {
                     dayIndex: day,
                     hourIndex: hour,
                     minuteIndex: minute,
-                    channelSets: sets
+                    channelSets: channelSets
                   }).then(function (content) {
                     $('tbody', id).append(content);
                   });
@@ -81,7 +81,7 @@ define(function () {
                 // handle channel set additions
                 $(addChannelSetButton).click(function (event) {
                   template.apply('admin.displays.form.channel-set', {
-                    channels: channelResponse.channels
+                    channelSets: channelSets
                   }).then(function (content) {
                     $('tbody', id).append(content);
                   });

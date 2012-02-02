@@ -1,0 +1,5 @@
+ul#displays
+  each display in displays
+    li.display
+      a(href="/displays/" + display.slug)
+        = display.title

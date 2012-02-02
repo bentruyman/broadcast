@@ -2,25 +2,25 @@ module.exports = function (ctx) {
   var api = ctx.api,
       app = ctx.app;
   
-  // list all channel sets by title
-  app.get('/channel-sets', function (req, res) {
-    // retrieve all channel sets
-    api.channelSet.read(function (response) {
-      res.render('channel-sets/index', {
-        channelSets: response.channelSets,
+  // list all displays by title
+  app.get('/displays', function (req, res) {
+    // retrieve all displays
+    api.display.read(function (response) {
+      res.render('displays/index', {
+        displays: response.displays,
         layout: 'layout'
       });
     });
   });
   
-  // renders an empty channel set
-  app.get('/channel-sets/:slug', function (req, res) {
-    res.render('channel-sets/set', {
+  // renders an display
+  app.get('/displays/:slug', function (req, res) {
+    res.render('displays/display', {
       modules: [
         {
           name: 'tuner',
           options: {
-            id: 'channel',
+            id: 'display',
             slug: req.params.slug
           }
         }
