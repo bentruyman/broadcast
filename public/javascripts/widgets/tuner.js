@@ -78,7 +78,6 @@ define(function () {
       // determines the current channel set that should be present based on
       // start time based on a display
       function getDisplaysCurrentChannelSetId(display) {
-        console.log('display', display);
         var startOfWeek = getStartOfWeekTime(new Date),
             currentTime = (new Date).getTime(),
             timeDifference = currentTime - startOfWeek,
@@ -128,8 +127,6 @@ define(function () {
         getDisplayBySlug(displaySlug).then(function (display) {
           // store the current channel set
           channelSet = getDisplaysCurrentChannelSetId(display);
-          
-          console.log('New channel set: ', channelSet.title);
           
           // subscribe to update messages on the serverside to know when to
           // refresh the display again when data changes
@@ -185,7 +182,7 @@ define(function () {
         // FIXME
         createChannel(channel).then(function (thisChannel) {
           currentChannel = thisChannel;
-          window.setTimeout(nextChannel, channel.timeout);
+          timeout = window.setTimeout(nextChannel, channel.timeout);
         });
       }
       
