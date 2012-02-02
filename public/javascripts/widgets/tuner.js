@@ -1,9 +1,13 @@
 define(function () {
   return {
+    options: {
+      services: ['messenger']
+    },
     creator: function (sandbox) {
       // service references
-      var API = sandbox.getService('api'),
-          $   = sandbox.getService('query');
+      var API       = sandbox.getService('api'),
+          $         = sandbox.getService('query'),
+          messenger = sandbox.getService('messenger');
       
       // constants
       var MS = {
@@ -29,6 +33,8 @@ define(function () {
         display,
         // reference to the current display's slug
         displaySlug = sandbox.getOption('slug'),
+        // serverside messenger subscriptions
+        subscriptions = [],
         // reference to the current channel's timeout
         timeout = null;
       
@@ -72,6 +78,7 @@ define(function () {
       // determines the current channel set that should be present based on
       // start time based on a display
       function getDisplaysCurrentChannelSetId(display) {
+        console.log('display', display);
         var startOfWeek = getStartOfWeekTime(new Date),
             currentTime = (new Date).getTime(),
             timeDifference = currentTime - startOfWeek,
@@ -114,9 +121,20 @@ define(function () {
       
       // reloads the current channel set and starts from the first channel
       function refresh() {
+        // clear any serverside messenger subscriptions
+        cancelSubscriptions();
+        
+        // starts the display
         getDisplayBySlug(displaySlug).then(function (display) {
           // store the current channel set
           channelSet = getDisplaysCurrentChannelSetId(display);
+          
+          console.log('New channel set: ', channelSet.title);
+          
+          // subscribe to update messages on the serverside to know when to
+          // refresh the display again when data changes
+          createSubscription('/displays/' + display._id + '/update', refresh);
+          createSubscription('/channelSets/' + channelSet._id + '/update', refresh);
           
           // go to the first channel
           goToChannel(0);
@@ -183,6 +201,18 @@ define(function () {
         goToChannel(
           currentChannelIndex + 1 === channelSet.channels.length ? 0 : currentChannelIndex + 1
         );
+      }
+      
+      // creates a subscription to the serverside messenger
+      function createSubscription(channel, callback) {
+        subscriptions.push(messenger.subscribe(channel, callback));
+      }
+      
+      // cancels all subscriptions
+      function cancelSubscriptions() {
+        subscriptions.forEach(function (sub) {
+          sub.cancel();
+        });
       }
       
       return {

@@ -1,7 +1,8 @@
 module.exports = function (ctx) {
-  var API_PATH   = '/api',
-      api = ctx.api,
-      app = ctx.app;
+  var API_PATH = '/api',
+      api       = ctx.api,
+      app       = ctx.app,
+      messenger = ctx.messenger;
   
   function sendApiResponse (res, data, error) {
     res.json(data, error ? 500 : 200);
@@ -75,6 +76,7 @@ module.exports = function (ctx) {
         id      = req.params.id;
     
     api.channel.update(channel, id, function (response) {
+      messenger.getClient().publish('/channelSets/' + id + '/update', {});
       sendApiResponse(res, response, response.error);
     });
   });
@@ -115,6 +117,7 @@ module.exports = function (ctx) {
         id  = req.params.id;
     
     api.display.update(set, req.params.id, function (response) {
+      messenger.getClient().publish('/displays/' + id + '/update', {});
       sendApiResponse(res, response, response.error);
     });
   });

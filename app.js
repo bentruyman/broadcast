@@ -68,11 +68,17 @@ app.configure(function () {
   app.use(express['static'](PUBLIC_DIR));
 });
 
+// setup messenger
+////////////////////////////////////////////////////////////////////////////////
+var messenger = new faye.NodeAdapter({mount: '/faye', timeout: 45});
+messenger.attach(app);
+
 // routes
 ////////////////////////////////////////////////////////////////////////////////
 var ctx = {
   api: api,
   app: app,
+  messenger: messenger,
   VIEWS_DIR: VIEWS_DIR
 };
 
