@@ -42,6 +42,7 @@ module.exports = function (ctx) {
         id  = req.params.id;
     
     api.channelSet.update(set, req.params.id, function (response) {
+      messenger.getClient().publish('/channelSets/' + id + '/update', {});
       sendApiResponse(res, response, response.error);
     });
   });
@@ -76,7 +77,6 @@ module.exports = function (ctx) {
         id      = req.params.id;
     
     api.channel.update(channel, id, function (response) {
-      messenger.getClient().publish('/channelSets/' + id + '/update', {});
       sendApiResponse(res, response, response.error);
     });
   });
