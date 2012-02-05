@@ -1,6 +1,5 @@
 .DS_Store
-public/assets/channels/images/*
-public/assets/channels/videos/*
+node_modules
 public/stylesheets/broadcast.css
 public/stylesheets/admin.css
 public/stylesheets/tuner.css
