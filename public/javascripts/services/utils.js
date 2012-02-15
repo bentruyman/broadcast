@@ -21,14 +21,14 @@
           // handle multiple channels
           for (var i = 0, j = ids.length; i < j; i++) {
             channels.push({
-              ref: ids[i],
+              channel: ids[i],
               timeout: timeouts[i]
             });
           }
         } else {
           // just a single channel
           channels.push({
-            ref: ids,
+            channel: ids,
             timeout: timeouts
           });
         }
@@ -44,14 +44,14 @@
           // handle multiple channel sets
           for (var i = 0, j = ids.length; i < j; i++) {
             sets.push({
-              ref: ids[i],
+              channelSet: ids[i],
               startTime: parseInt(days[i], 10) + parseInt(hours[i], 10) + parseInt(minutes[i], 10)
             });
           }
         } else {
           // just a single display
           sets.push({
-            ref: ids,
+            channelSet: ids,
             startTime: parseInt(days, 10) + parseInt(hours, 10) + parseInt(minutes, 10)
           });
         }

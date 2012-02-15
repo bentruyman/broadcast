@@ -147,9 +147,8 @@ define(function () {
           var channel = channelResponse.channel;
               id = sandbox.app.create('tuner/channel', {
                 host: container,
-                index: channel.index,
-                title: channel.title,
-                type:  channel.type,
+                title: channel.name,
+                assetType: channel.assetType,
                 url:   channel.url
               });
           

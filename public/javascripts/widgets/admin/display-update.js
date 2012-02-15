@@ -32,13 +32,14 @@ define(function () {
       
       return {
         create: function () {
-          API.displays.read({ id: displayId }).then(function (displayResponse) {
-            API.channelSets.read().then(function (setResponse) {
-              var channelSets = setResponse.channelSets,
-                  data = {
+          API.displays.read({ id: displayId }).then(function (displays) {
+            var display = displays[0];
+            
+            API.channelSets.read().then(function (channelSets) {
+              var data = {
                     action: '/api/displays',
                     method: 'PUT',
-                    display: displayResponse.display,
+                    display: display,
                     channelSets: channelSets
                   };
               
@@ -49,14 +50,14 @@ define(function () {
                 var addChannelSetButton = $('#display-add-channel-set', id).get(0);
                 
                 // populate existing channels
-                $(displayResponse.display.channelSets).each(function () {
+                $(display.configuredChannelSets).each(function () {
                   // transform the start time into a human-readible format
                   var day    = Math.floor(this.startTime / MS.inDay),
                       hour   = Math.floor((this.startTime - day * MS.inDay) / MS.inHour),
                       minute = Math.floor((this.startTime - day * MS.inDay - hour * MS.inHour) / MS.inMinute);
                   
                   template.apply('admin.displays.form.channel-set', {
-                    id: this.ref._id,
+                    id: this.channelSet._id,
                     dayIndex: day,
                     hourIndex: hour,
                     minuteIndex: minute,
@@ -69,9 +70,7 @@ define(function () {
                 // make channel rows sortable via drag & drop
                 $('tbody', id).sortable({
                   helper: function(e, ui) {
-                    console.log(arguments);
                     ui.children().each(function() {
-                      console.log($(this).width());
                       $(this).width($(this).width());
                     });
                     return ui;
@@ -98,14 +97,15 @@ define(function () {
                   
                   var params = utils.serializeForm(this),
                       display = {
-                        id: params.id,
-                        title: params.title,
-                        channelSets: []
+                        _id: params.id,
+                        _rev: params.rev,
+                        name: params.name,
+                        configuredChannelSets: []
                       };
                   
-                  if (params.channelSets) {
-                    display.channelSets = utils.formatDisplayChannelSets(
-                      params.channelSets,
+                  if (params.configuredChannelSets) {
+                    display.configuredChannelSets = utils.formatDisplayChannelSets(
+                      params.configuredChannelSets,
                       params.days,
                       params.hours,
                       params.minutes

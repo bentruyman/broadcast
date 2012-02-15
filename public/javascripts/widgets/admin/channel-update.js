@@ -17,7 +17,7 @@ define(function () {
               var data = {
                 action: '/api/channels',
                 method: 'PUT',
-                channel: response.channel
+                channel: response[0]
               };
               
               // inject form template
@@ -30,11 +30,12 @@ define(function () {
                   
                   var params = utils.serializeForm(this),
                       channel = {
-                        id: params.id,
+                        _id: params.id,
+                        _rev: params.rev,
                         index: params.index,
-                        title: params.title,
+                        name: params.name,
                         url: params.url,
-                        type: params.type,
+                        assetType: params.assetType,
                         timeout: params.timeout
                       };
                   

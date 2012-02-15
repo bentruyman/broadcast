@@ -1,19 +1,19 @@
 table.data-list(border="0", cellspacing="0", cellpadding="0")
   thead
     tr
-      th.title= "Title"
+      th.name= "Name"
       th.actions= "Actions"
   tbody
     each display in displays
       tr
-        td.title= display.title
+        td.name= display.name
         td.actions
           a.action.edit(href="update/" + display._id)= ""
           a.action.remove(href="#", "data-id"=display._id)= ""
 footer
   p.pagination= "Page " + currentPage + "of " + totalPages
   nav.buttons
-    - if (prevPage)
+    if (prevPage)
       a.button.button-simple.prev(href="?page=" + prevPage)= "Previous Page"
-    - if (nextPage)
+    if (nextPage)
       a.button.button-simple.next(href="?page=" + nextPage)= "Next Page"

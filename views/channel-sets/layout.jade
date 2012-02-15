@@ -17,16 +17,16 @@ html(lang="eng")
     script(src="/javascripts/services/utils.js")
     script(src="/javascripts/widgets/tuner.js")
     script(src="/javascripts/widgets/tuner/channel.js")
-    - if (typeof modules !== "undefined")
+    if (typeof modules !== "undefined")
       - each module in modules
-        - if (module.options)
+        if (module.options)
           script
             Broadcast.App.start(
               Broadcast.App.create(
                 "#{module.name}", !{JSON.stringify(module.options)}
               )
             );
-        - else
+        else
           script
             Broadcast.App.start(
               Broadcast.App.create("#{module.name}")

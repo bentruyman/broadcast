@@ -2,16 +2,12 @@
 // BROADCAST
 ////////////////////////////////////////////////////////////////////////////////
 
-var db        = require('./lib/broadcast/services/db'),
-    messenger = require('./lib/broadcast/services/messenger'),
-    api       = require('./lib/broadcast/web/api'),
+var messenger = require('./lib/broadcast/services/messenger'),
     server    = require('./lib/broadcast/web/server'),
+    config    = require('./config/base'),
     routes    = require('./routes');
 
 server.init();
 routes.init();
-messenger.init();
 
-db.init().then(function () {
-  server.listen();
-});
+module.exports = server.app;

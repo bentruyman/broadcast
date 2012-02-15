@@ -14,16 +14,16 @@ html(lang="eng")
     script(src="/javascripts/libs/require.js")
     script(src="/javascripts/libs/weld.min.js")
     script(src="/javascripts/broadcast.js")
-    - if (typeof modules !== "undefined")
+    if (typeof modules !== "undefined")
       - each module in modules
-        - if (module.options)
+        if (module.options)
           script
             Broadcast.App.start(
               Broadcast.App.create(
                 "#{module.name}", !{JSON.stringify(module.options)}
               )
             );
-        - else
+        else
           script
             Broadcast.App.start(
               Broadcast.App.create("#{module.name}")

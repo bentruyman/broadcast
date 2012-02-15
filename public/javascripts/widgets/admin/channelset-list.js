@@ -14,13 +14,15 @@ define(function () {
       
       return {
         create: function () {
-          API.channelSets.read().then(function (data) {
+          API.channelSets.read().then(function (channelSets) {
             // determine current, next, and previous page indexes
-            var pagination = utils.calculatePagination(
-              data.channelSets.length, // number of items
-              limit, // items per page
-              parseInt(currentPage, 10) || 1 // current page
-            );
+            var data = {},
+                pagination = utils.calculatePagination(
+                  channelSets.length, // number of items
+                  limit, // items per page
+                  parseInt(currentPage, 10) || 1 // current page
+                );
+            
             data.currentPage = pagination.currentPage;
             data.totalPages  = pagination.totalPages;
             data.prevPage    = pagination.prevPage;
@@ -30,7 +32,7 @@ define(function () {
             var startOfItems = (data.currentPage - 1) * limit,
                 endOfItems   = startOfItems + limit;
             
-            data.channelSets = data.channelSets.slice(startOfItems, endOfItems);
+            data.channelSets = channelSets.slice(startOfItems, endOfItems);
             
             // inject channels data into channels template
             template.apply('admin.channel-sets', data).then(function (content) {

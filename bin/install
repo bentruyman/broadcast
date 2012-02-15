@@ -1,0 +1,71 @@
+#! /usr/bin/env node
+
+var config = require('../config/base').database,
+    nano   = require('nano')(config.url);
+
+function createDatabase(name, callback) {
+  nano.db.create(name, function (err) {
+    if (err) { throw err; }
+    callback();
+  });
+}
+
+function createDesignDocs(db, callback) {
+  var docs = [
+    {
+      _id: '_design/channels',
+      language: 'javascript',
+      views: {
+        byId: {
+          map: 'function (doc) { if (doc.type === "channel") { emit(doc._id, doc); } }'
+        }
+      }
+    },
+    {
+      _id: '_design/channelSets',
+      language: 'javascript',
+      views: {
+        byId: {
+          map: 'function (doc) { if (doc.type === "channelSet") { emit(doc._id, doc); } }'
+        }
+      }
+    },
+    {
+      _id: '_design/displays',
+      language: 'javascript',
+      views: {
+        byId: {
+          map: 'function (doc) { if (doc.type === "display") { emit(doc._id, doc); } }'
+        }
+      }
+    }
+  ];
+  
+  db.bulk({ docs: docs }, function (err) {
+    if (err) { throw err; }
+    callback();
+  });
+}
+
+// check to see if the database exists
+nano.db.get(config.name, function (err, resp) {
+  // no database exists, create it
+  if (err && err.error === 'not_found') {
+    console.log('No database exists. Creating one...');
+    createDatabase(config.name, function () {
+      createDesignDocs(nano.use(config.name), function () {
+        console.log('Done!');
+      });
+    });
+  }
+  // unhandled error, throw it
+  else if (err) {
+    throw err;
+  }
+  // database exists, create design docs
+  else {
+    createDesignDocs(nano.use(config.name), function () {
+      console.log('Done!');
+    });
+  }
+});

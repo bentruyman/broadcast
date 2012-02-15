@@ -25,15 +25,16 @@ define(function () {
       
       return {
         create: function () {
-          API.channelSets.read({ id: channelSetId }).then(function (setResponse) {
-            API.channels.read().then(function (channelResponse) {
-              var channels = channelResponse.channels,
-                  data = {
-                    action: '/api/channelSets',
-                    method: 'PUT',
-                    channelSet: setResponse.channelSet,
-                    channels: channels
-                  };
+          API.channelSets.read({ id: channelSetId }).then(function (channelSets) {
+            var channelSet = channelSets[0];
+            
+            API.channels.read().then(function (channels) {
+              var data = {
+                action: '/api/channelSets',
+                method: 'PUT',
+                channelSet: channelSet,
+                channels: channels
+              };
               
               // inject form template
               template.apply('admin.channel-sets.form', data).then(function (content) {
@@ -42,9 +43,9 @@ define(function () {
                 var addChannelButton = $('#channel-set-add-channel', id).get(0);
                 
                 // populate existing channels
-                $(setResponse.channelSet.channels).each(function () {
+                $(channelSet.configuredChannels).each(function () {
                   template.apply('admin.channel-sets.form.channel', {
-                    id: this.ref._id,
+                    id: this.channel._id,
                     timeout: this.timeout,
                     channels: channels
                   }).then(function (content) {
@@ -55,9 +56,7 @@ define(function () {
                 // make channel rows sortable via drag & drop
                 $('tbody', id).sortable({
                   helper: function(e, ui) {
-                    console.log(arguments);
                     ui.children().each(function() {
-                      console.log($(this).width());
                       $(this).width($(this).width());
                     });
                     return ui;
@@ -67,7 +66,7 @@ define(function () {
                 // handle channel additions
                 $(addChannelButton).click(function (event) {
                   template.apply('admin.channel-sets.form.channel', {
-                    channels: channelResponse.channels
+                    channels: channels
                   }).then(function (content) {
                     $('tbody', id).append(content);
                   });
@@ -84,17 +83,19 @@ define(function () {
                   
                   var params = utils.serializeForm(this),
                       channelSet = {
-                        id: params.id,
-                        title: params.title,
-                        channels: []
+                        _id: params.id,
+                        _rev: params.rev,
+                        name: params.name,
+                        configuredChannels: []
                       };
                   
                   if (params.channels) {
-                    channelSet.channels = utils.formatChannelSetChannels(params.channels, params.timeouts);
+                    channelSet.configuredChannels = utils.formatChannelSetChannels(params.channels, params.timeouts);
                   }
                   
                   API.channelSets.update(channelSet)
                     .done(function () {
+                      console.log('Hello World', channelSet);
                       // created channel successfully, redirect to channel listing
                       sandbox.app.publish('/redirect', '/admin/channel-sets/');
                     })

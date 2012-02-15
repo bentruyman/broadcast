@@ -1,13 +1,14 @@
 form(action=action, method=method)
-  - if (typeof display !== 'undefined')
+  if (typeof display !== 'undefined')
     input(name="id", type="hidden", value=display._id)
+    input(name="rev", type="hidden", value=display._rev)
   ol
-    li#display-title
-      label= "Title"
-        - if (typeof display !== 'undefined')
-          input.large(name="title", value=display.title)
-        - else
-          input.large(name="title")
+    li#display-name
+      label= "Name"
+        if (typeof display !== 'undefined')
+          input.large(name="name", value=display.name)
+        else
+          input.large(name="name")
     li#display-channels
       label= "Channels"
       button#display-add-channel-set.button.button-simple(type="button")
@@ -21,7 +22,7 @@ form(action=action, method=method)
         tbody
     li#display-buttons
       button.button.button-simple(type="submit")
-        - if (method === "POST")
+        if (method === "POST")
           = "Create New Display"
-        - else
+        else
           = "Update Display"

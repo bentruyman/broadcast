@@ -14,13 +14,15 @@ define(function () {
       
       return {
         create: function () {
-          API.displays.read().then(function (data) {
+          API.displays.read().then(function (displays) {
             // determine current, next, and previous page indexes
-            var pagination = utils.calculatePagination(
-              data.displays.length, // number of items
-              limit, // items per page
-              parseInt(currentPage, 10) || 1 // current page
-            );
+            var data = {},
+                pagination = utils.calculatePagination(
+                  displays.length, // number of items
+                  limit, // items per page
+                  parseInt(currentPage, 10) || 1 // current page
+                );
+            
             data.currentPage = pagination.currentPage;
             data.totalPages  = pagination.totalPages;
             data.prevPage    = pagination.prevPage;
@@ -30,7 +32,7 @@ define(function () {
             var startOfItems = (data.currentPage - 1) * limit,
                 endOfItems   = startOfItems + limit;
             
-            data.displays = data.displays.slice(startOfItems, endOfItems);
+            data.displays = displays.slice(startOfItems, endOfItems);
             
             // inject displays data into channels template
             template.apply('admin.displays', data).then(function (content) {

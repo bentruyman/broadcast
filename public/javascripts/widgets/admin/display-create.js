@@ -31,9 +31,8 @@ define(function () {
       
       return {
         create: function () {
-          API.channelSets.read().then(function (response) {
-            var channelSets = response.channelSets,
-                data = {
+          API.channelSets.read().then(function (channelSets) {
+            var data = {
                   action: '/api/displays',
                   method: 'POST'
                 };
@@ -74,13 +73,13 @@ define(function () {
                 
                 var params = utils.serializeForm(this),
                     display = {
-                      title: params.title,
-                      channelSets: []
+                      name: params.name,
+                      configuredChannelSets: []
                     };
                 
-                if (params.channelSets) {
-                  display.channelSets = utils.formatDisplayChannelSets(
-                    params.channelSets,
+                if (params.configuredChannelSets) {
+                  display.configuredChannelSets = utils.formatDisplayChannelSets(
+                    params.configuredChannelSets,
                     params.days,
                     params.hours,
                     params.minutes

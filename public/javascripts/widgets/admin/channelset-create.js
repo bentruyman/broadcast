@@ -67,15 +67,13 @@ define(function () {
                 
                 var params = utils.serializeForm(this),
                     channelSet = {
-                      title: params.title,
+                      name: params.name,
                       channels: []
                     };
                 
                 if (params.channels) {
                   channelSet.channels = utils.formatChannelSetChannels(params.channels, params.timeouts);
                 }
-                
-                console.log('foo', utils.formatChannelSetChannels(params.channels, params.timeouts));
                 
                 API.channelSets.create(channelSet)
                   .done(function () {

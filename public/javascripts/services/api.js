@@ -20,9 +20,7 @@
         }
       };
       this.update = function (data) {
-        // remove id attribute as it's not valid for updates
-        var id = '' + data.id;
-        delete data.id;
+        var id = data._id;
         
         return $.ajax(API_URL + resource + '/' + id, { type: 'PUT', data: data });
       };

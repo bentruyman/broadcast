@@ -1,26 +1,24 @@
 table.data-list(border="0", cellspacing="0", cellpadding="0")
   thead
     tr
-      th= "Index"
-      th.title= "Title"
+      th.name= "Name"
       th.url= "URL"
       th.type= "Type"
       th.actions= "Actions"
   tbody
     each channel in channels
       tr
-        td= channel.index
-        td.title= channel.title
+        td.name= channel.name
         td.url 
           a(href=channel.url)= channel.url
-        td= channel.type
+        td= channel.assetType
         td.actions
           a.action.edit(href="update/" + channel._id)= ""
           a.action.remove(href="#", "data-id"=channel._id)= ""
 footer
   p.pagination= "Page " + currentPage + "of " + totalPages
   nav.buttons
-    - if (prevPage)
+    if (prevPage)
       a.button.button-simple.prev(href="?page=" + prevPage)= "Previous Page"
-    - if (nextPage)
+    if (nextPage)
       a.button.button-simple.next(href="?page=" + nextPage)= "Next Page"

@@ -3,10 +3,12 @@ var path = require('path');
 var api       = require('../lib/broadcast/web/api'),
     messenger = require('../lib/broadcast/services/messenger'),
     server    = require('../lib/broadcast/web/server'),
-    VIEWS_DIR = path.normalize(__dirname + '../views');
+    VIEWS_DIR = path.normalize(__dirname + '/../views');
 
 module.exports = {
   init: function () {
+    messenger.init();
+    
     var ctx = {
       api: api,
       app: server.app,

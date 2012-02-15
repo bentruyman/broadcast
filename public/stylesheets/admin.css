@@ -42,7 +42,7 @@ form input:focus{outline:0}
 form input.small{width:85px}
 form input.large{width:300px}
 form label{font-weight:bold;display:block;margin-bottom:15px}
-#channels-read .data-list .title,#channels-read .data-list .url{text-align:left}
+#channels-read .data-list .name,#channels-read .data-list .url{text-align:left}
 #channel-set-form .channel label{margin-right:15px;float:left}
 #channel-set-form .channel select{margin:7px 0}
 .clearfix:before,.clearfix:after{content:"";display:table}

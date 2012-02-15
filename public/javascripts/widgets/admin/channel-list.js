@@ -15,13 +15,15 @@ define(function () {
       return {
         create: function () {
           // load all channels
-          API.channels.read().then(function (data) {
+          API.channels.read().then(function (channels) {
             // determine current, next, and previous page indexes
-            var pagination = utils.calculatePagination(
-              data.channels.length, // number of items
-              limit, // items per page
-              parseInt(currentPage, 10) || 1 // current page
-            );
+            var data = {},
+                pagination = utils.calculatePagination(
+                  channels.length, // number of items
+                  limit, // items per page
+                  parseInt(currentPage, 10) || 1 // current page
+                );
+            
             data.currentPage = pagination.currentPage;
             data.totalPages  = pagination.totalPages;
             data.prevPage    = pagination.prevPage;
@@ -31,7 +33,7 @@ define(function () {
             var startOfItems = (data.currentPage - 1) * limit,
                 endOfItems   = startOfItems + limit;
             
-            data.channels = data.channels.slice(startOfItems, endOfItems);
+            data.channels = channels.slice(startOfItems, endOfItems);
             
             // inject channels data into channels template
             template.apply('admin.channels', data).then(function (content) {
