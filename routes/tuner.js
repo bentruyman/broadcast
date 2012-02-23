@@ -5,9 +5,9 @@ module.exports = function (ctx) {
   // list all displays by title
   app.get('/displays', function (req, res) {
     // retrieve all displays
-    api.display.read(function (response) {
+    api.display.read().then(function (displays) {
       res.render('displays/index', {
-        displays: response.displays,
+        displays: displays,
         layout: 'layout'
       });
     });

@@ -2,7 +2,7 @@ tr.channel
   td.actions
     a.action.remove(href="#", title="Remove this channel")= ""
   td.channel
-    select.full(name="channels")
+    select.full(name="configuredChannels")
       - each channel in channels
         if (typeof id !== 'undefined' && id == channel._id)
           option(value=channel._id, selected)= channel.name

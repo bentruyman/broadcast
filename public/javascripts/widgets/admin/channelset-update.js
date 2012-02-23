@@ -25,9 +25,7 @@ define(function () {
       
       return {
         create: function () {
-          API.channelSets.read({ id: channelSetId }).then(function (channelSets) {
-            var channelSet = channelSets[0];
-            
+          API.channelSets.readOne(channelSetId).then(function (channelSet) {
             API.channels.read().then(function (channels) {
               var data = {
                 action: '/api/channelSets',
@@ -45,7 +43,7 @@ define(function () {
                 // populate existing channels
                 $(channelSet.configuredChannels).each(function () {
                   template.apply('admin.channel-sets.form.channel', {
-                    id: this.channel._id,
+                    id: this.channel,
                     timeout: this.timeout,
                     channels: channels
                   }).then(function (content) {
@@ -89,13 +87,12 @@ define(function () {
                         configuredChannels: []
                       };
                   
-                  if (params.channels) {
-                    channelSet.configuredChannels = utils.formatChannelSetChannels(params.channels, params.timeouts);
+                  if (params.configuredChannels) {
+                    channelSet.configuredChannels = utils.formatChannelSetChannels(params.configuredChannels, params.timeouts);
                   }
                   
                   API.channelSets.update(channelSet)
                     .done(function () {
-                      console.log('Hello World', channelSet);
                       // created channel successfully, redirect to channel listing
                       sandbox.app.publish('/redirect', '/admin/channel-sets/');
                     })

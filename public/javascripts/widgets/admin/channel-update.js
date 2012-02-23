@@ -12,12 +12,12 @@ define(function () {
       
       return {
         create: function () {
-          API.channels.read({ id: sandbox.getOption('channelId') })
-            .done(function (response) {
+          API.channels.readOne(sandbox.getOption('channelId'))
+            .done(function (channel) {
               var data = {
                 action: '/api/channels',
                 method: 'PUT',
-                channel: response[0]
+                channel: channel
               };
               
               // inject form template

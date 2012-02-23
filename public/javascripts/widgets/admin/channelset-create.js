@@ -24,12 +24,11 @@ define(function () {
       
       return {
         create: function () {
-          API.channels.read().then(function (response) {
-            var channels = response.channels,
-                data = {
-                  action: '/api/channelSets',
-                  method: 'POST'
-                };
+          API.channels.read().then(function (channels) {
+            var data = {
+              action: '/api/channelSets',
+              method: 'POST'
+            };
             
             // inject form template
             template.apply('admin.channel-sets.form', data).then(function (content) {
@@ -68,15 +67,16 @@ define(function () {
                 var params = utils.serializeForm(this),
                     channelSet = {
                       name: params.name,
-                      channels: []
+                      configuredChannels: []
                     };
                 
-                if (params.channels) {
-                  channelSet.channels = utils.formatChannelSetChannels(params.channels, params.timeouts);
+                if (params.configuredChannels) {
+                  channelSet.configuredChannels = utils.formatChannelSetChannels(params.configuredChannels, params.timeouts);
                 }
-                
+                console.log('pre', channelSet);
                 API.channelSets.create(channelSet)
                   .done(function () {
+                    console.log('post', channelSet);
                     // created channel successfully, redirect to channel listing
                     sandbox.app.publish('/redirect', '/admin/channel-sets/');
                   })

@@ -11,13 +11,14 @@
         return $.ajax(API_URL + resource, { type: 'POST', data: data, dataType: 'json' });
       };
       this.read = function (query) {
-        if (query !== undefined && query.id) {
-          return $.ajax(API_URL + resource + '/' + query.id, { type: 'GET' });
-        } else if (query !== undefined) {
+        if (query !== undefined) {
           return $.ajax(API_URL + resource, { data: { query: query }, type: 'GET' });
         } else {
           return $.ajax(API_URL + resource, { type: 'GET' });
         }
+      };
+      this.readOne = function (id) {
+        return $.ajax(API_URL + resource + '/' + id, { type: 'GET' });
       };
       this.update = function (data) {
         var id = data._id;

@@ -32,9 +32,7 @@ define(function () {
       
       return {
         create: function () {
-          API.displays.read({ id: displayId }).then(function (displays) {
-            var display = displays[0];
-            
+          API.displays.readOne(displayId).then(function (display) {
             API.channelSets.read().then(function (channelSets) {
               var data = {
                     action: '/api/displays',
@@ -57,7 +55,7 @@ define(function () {
                       minute = Math.floor((this.startTime - day * MS.inDay - hour * MS.inHour) / MS.inMinute);
                   
                   template.apply('admin.displays.form.channel-set', {
-                    id: this.channelSet._id,
+                    id: this.channelSet,
                     dayIndex: day,
                     hourIndex: hour,
                     minuteIndex: minute,

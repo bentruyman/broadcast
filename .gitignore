@@ -1,5 +1,2 @@
-.DS_Store
 node_modules
-public/stylesheets/broadcast.css
-public/stylesheets/admin.css
-public/stylesheets/tuner.css
+public/stylesheets
