@@ -17,16 +17,40 @@ function createDesignDocs(db, callback) {
       language: 'javascript',
       views: {
         byId: {
-          map: 'function (doc) { if (doc.type === "channel") { emit(doc._id, doc); } }'
+          map: (function(doc) {
+            if (doc.type === "channel") {
+              emit(doc._id, doc);
+            }
+          }).toString()
         }
-      }
+      },
+      validate_doc_update: (function (newDoc, oldDoc, userCtx) {
+        function require(field, message) {
+          message = message || 'Document must have a ' + field;
+          if (!newDoc[field]) {
+            throw({ forbidden : message });
+          }
+        }
+        
+        if (newDoc.type === 'channel') {
+          require('name');
+          require('description');
+          require('assetType');
+          require('url');
+          require('timeout');
+        }
+      }).toString()
     },
     {
       _id: '_design/channelSets',
       language: 'javascript',
       views: {
         byId: {
-          map: 'function (doc) { if (doc.type === "channelSet") { emit(doc._id, doc); } }'
+          map: (function(doc) {
+            if (doc.type === "channelSet") {
+              emit(doc._id, doc);
+            }
+          }).toString()
         }
       }
     },
@@ -35,7 +59,11 @@ function createDesignDocs(db, callback) {
       language: 'javascript',
       views: {
         byId: {
-          map: 'function (doc) { if (doc.type === "display") { emit(doc._id, doc); } }'
+          map: (function(doc) {
+            if (doc.type === "display") {
+              emit(doc._id, doc);
+            }
+          }).toString()
         }
       }
     }
