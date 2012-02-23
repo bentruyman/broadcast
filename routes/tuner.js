@@ -5,7 +5,7 @@ module.exports = function (ctx) {
   // list all displays by title
   app.get('/displays', function (req, res) {
     // retrieve all displays
-    api.display.read().then(function (displays) {
+    api.display.read(function (err, displays) {
       res.render('displays/index', {
         displays: displays,
         layout: 'layout'

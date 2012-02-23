@@ -73,10 +73,9 @@ define(function () {
                 if (params.configuredChannels) {
                   channelSet.configuredChannels = utils.formatChannelSetChannels(params.configuredChannels, params.timeouts);
                 }
-                console.log('pre', channelSet);
+                
                 API.channelSets.create(channelSet)
                   .done(function () {
-                    console.log('post', channelSet);
                     // created channel successfully, redirect to channel listing
                     sandbox.app.publish('/redirect', '/admin/channel-sets/');
                   })
