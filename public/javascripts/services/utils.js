@@ -80,6 +80,7 @@
         
         return serialized;
       },
+      // returns a list of items sorted by a specified property
       sortItemsByProperty: function (items, prop, desc) {
         items = items.sort(function (a, b) {
           var aProp = a[prop],
