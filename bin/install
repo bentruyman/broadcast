@@ -34,7 +34,6 @@ function createDesignDocs(db, callback) {
         
         if (newDoc.type === 'channel') {
           require('name');
-          require('description');
           require('assetType');
           require('url');
           require('timeout');
