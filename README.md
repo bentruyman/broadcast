@@ -2,29 +2,30 @@
 
 ## Installation
 
-**Windows**
+Install the node module dependencies by running the following from the root of
+the project:
 
-    To be added...
+    npm install
 
-**OSX**
+Install `up` globally to run the app:
 
-If you have [Homebrew](http://mxcl.github.com/homebrew/) installed:
+    npm install up -g
 
-    $ brew install node mongodb
+Run the database installation script from the root of the project:
 
-**Linux**
-
-    To be added...
+    ./bin/install
 
 ## Running
 
-    $ node app.js
+    $ up app
 
 That's it!
 
 For public channel set listing: [http://localhost:3000/](http://localhost:3000/)
 
 For administration: [http://localhost:3000/admin](http://localhost:3000/admin)
+
+(assuming you're using the default configuration)
 
 ## Domain Objects
 
@@ -34,25 +35,19 @@ Configured channels and Channel sets.
     Channel:
       index: Number # the channel's number
       name: String # name of the channel
+      description: String # description of the channel
       url: String # url of the channel's asset
       assetType: String # image, video, page (default)
       timeout: Number # the amount of time a channel should stay on screen (default, 30 seconds)
     
-    ConfiguredChannel:
-      channel: Channel # reference to a channel
-      timeout: Number # (defaults to Channel timeout)
-    
     ChannelSet:
       name: String # name of the channel set
-      slug: String # slug to be used in url to point to this channel set
+      description: String # description of the channel set
       channels: [ConfiguredChannel] # list of configured channels
-    
-    ConfiguredChannelSet:
-      channelSet: ChannelSet # reference to a channel set
-      startTime: Number # the time, in milliseconds relative from the start of a week, a channel set should start
     
     Display:
       name: String # name of the display
+      description: String # description of the display
       channels: [ConfiguredChannel] # list of configured channels
 
 ## License
