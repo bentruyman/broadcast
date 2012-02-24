@@ -55,11 +55,18 @@ define(function () {
               
               // handle channel additions
               $(addChannelSetButton).click(function (event) {
-                template.apply('admin.displays.form.channel-set', {
-                  channelSets: channelSets
-                }).then(function (content) {
-                  $('tbody', id).append(content);
-                });
+                // if there are no channel sets, throw up an alert
+                if (channelSets.length === 0) {
+                  alert('No channel sets are available.');
+                }
+                // otherwise, render a new channel set row
+                else {
+                  template.apply('admin.displays.form.channel-set', {
+                    channelSets: channelSets
+                  }).then(function (content) {
+                    $('tbody', id).append(content);
+                  });
+                }
               });
               
               // handle channel removals

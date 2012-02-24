@@ -22,7 +22,7 @@ define(function () {
       // tuner state
       var
         // reference to the current channel set object
-        channelSet,
+        currentChannelSet,
         // a collection of channel modules for the current channel set
         channelModules = [],
         // reference to the current channels module ID
@@ -59,9 +59,9 @@ define(function () {
         
         // load channel set by slug
         API.displays.read({ slug: slug })
-          .done(function (resp) {
-            if (resp.displays && resp.displays.length === 1) {
-              deferred.resolve(resp.displays[0]);
+          .done(function (displays) {
+            if (displays && displays.length === 1) {
+              deferred.resolve(displays[0]);
             } else {
               // TODO: handle error
               deferred.reject();
@@ -78,22 +78,27 @@ define(function () {
       // determines the current channel set that should be present based on
       // start time based on a display
       function getDisplaysCurrentChannelSetId(display) {
-        var startOfWeek = getStartOfWeekTime(new Date),
+        var deferred = $.Deferred(),
+            startOfWeek = getStartOfWeekTime(new Date),
             currentTime = (new Date).getTime(),
             timeDifference = currentTime - startOfWeek,
-            channelSets = display.channelSets,
-            currentChannelSet;
+            configuredChannelSets = display.configuredChannelSets,
+            channelSetId;
         
         // loop through all channel sets to find the current one
-        for (var i = 0, j = channelSets.length; i < j; i++) {
-          if (channelSets[i].startTime < timeDifference) {
-            currentChannelSet = channelSets[i];
+        for (var i = 0, j = configuredChannelSets.length; i < j; i++) {
+          if (configuredChannelSets[i].startTime < timeDifference) {
+            channelSetId = configuredChannelSets[i].channelSet;
           } else {
             break;
           }
         }
         
-        return currentChannelSet.ref;
+        API.channelSets.readOne(channelSetId).then(function (channelSet) {
+          deferred.resolve(channelSet);
+        });
+        
+        return deferred.promise();
       }
       
       // retreives a channel set by slug using the API
@@ -126,26 +131,26 @@ define(function () {
         // starts the display
         getDisplayBySlug(displaySlug).then(function (display) {
           // store the current channel set
-          channelSet = getDisplaysCurrentChannelSetId(display);
-          
-          // subscribe to update messages on the serverside to know when to
-          // refresh the display again when data changes
-          createSubscription('/displays/' + display._id + '/update', refresh);
-          createSubscription('/channelSets/' + channelSet._id + '/update', refresh);
-          
-          // go to the first channel
-          goToChannel(0);
+          getDisplaysCurrentChannelSetId(display).then(function (channelSet) {
+            currentChannelSet = channelSet;
+            // subscribe to update messages on the serverside to know when to
+            // refresh the display again when data changes
+            // createSubscription('/displays/' + display._id + '/update', refresh);
+            // createSubscription('/channelSets/' + channelSet._id + '/update', refresh);
+            
+            // go to the first channel
+            goToChannel(0);
+          });
         });
       }
       
       // creates a new channel
-      function createChannel(channel) {
+      function createChannel(channelId) {
         var deferred = $.Deferred();
         
         // FIXME: This shouldn't be necessary
-        API.channels.read({ id: channel.ref }).then(function (channelResponse) {
-          var channel = channelResponse.channel;
-              id = sandbox.app.create('tuner/channel', {
+        API.channels.readOne(channelId).then(function (channel) {
+          var id = sandbox.app.create('tuner/channel', {
                 host: container,
                 title: channel.name,
                 assetType: channel.assetType,
@@ -167,7 +172,7 @@ define(function () {
       
       // stops any existing channel, starts a new one
       function goToChannel(index) {
-        var channel;
+        var configuredChannel;
         
         // if a channel is already running, stop it
         if (currentChannelIndex !== null) {
@@ -176,26 +181,26 @@ define(function () {
         }
         
         currentChannelIndex = index;
-        channel = channelSet.channels[index];
+        configuredChannel = currentChannelSet.configuredChannels[index];
         
         // FIXME
-        createChannel(channel).then(function (thisChannel) {
-          currentChannel = thisChannel;
-          timeout = window.setTimeout(nextChannel, channel.timeout);
+        createChannel(configuredChannel.channel).then(function (id) {
+          currentChannel = id;
+          timeout = window.setTimeout(nextChannel, configuredChannel.timeout);
         });
       }
       
       // navigates to the previous channel
       function previousChannel() {
         goToChannel(
-          currentChannelIndex - 1 < 0 ? channelSet.channels.length : currentChannelIndex - 1
+          currentChannelIndex - 1 < 0 ? currentChannelSet.configuredChannels.length : currentChannelIndex - 1
         );
       }
       
       // navigates to the next channel
       function nextChannel() {
         goToChannel(
-          currentChannelIndex + 1 === channelSet.channels.length ? 0 : currentChannelIndex + 1
+          currentChannelIndex + 1 === currentChannelSet.configuredChannels.length ? 0 : currentChannelIndex + 1
         );
       }
       

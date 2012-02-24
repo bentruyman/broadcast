@@ -34,23 +34,23 @@ define (function () {
       var container;
       
       // import options
-      var host = sandbox.getOption('host'),
-          type = sandbox.getOption('type'),
-          url  = sandbox.getOption('url');
+      var host      = sandbox.getOption('host'),
+          assetType = sandbox.getOption('assetType'),
+          url       = sandbox.getOption('url');
       
       // import services
       var template = sandbox.getService('template');
       
       return {
         create: function () {
-          template.apply('channel.' + type, { url: url }).then(function (content) {
+          template.apply('channel.' + assetType, { url: url }).then(function (content) {
             container = $(content).get(0);
             $(host).append(container);
-            creators[type](container);
+            creators[assetType](container);
           });
         },
         destroy: function () {
-          destroyers[type](container);
+          destroyers[assetType](container);
         }
       };
     }

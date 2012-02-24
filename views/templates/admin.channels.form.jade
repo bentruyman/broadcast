@@ -10,6 +10,12 @@ form(action=action, method=method)
         else
           input.large(id="channel-name", name="name")
     li
+      label= "Description"
+        if (typeof channel !== 'undefined')
+          input.large(id="channel-description", name="description", value=channel.description)
+        else
+          input.large(id="channel-description", name="description")
+    li
       label= "URL"
         if (typeof channel !== 'undefined')
           input.large(id="channel-url", name="url", type="url", value=channel.url)

@@ -48,11 +48,18 @@ define(function () {
               
               // handle channel additions
               $(addChannelButton).click(function (event) {
-                template.apply('admin.channel-sets.form.channel', {
-                  channels: channels
-                }).then(function (content) {
-                  $('tbody', id).append(content);
-                });
+                // if there are no channels, throw up an alert
+                if (channels.length === 0) {
+                  alert('No channels are available.');
+                }
+                // otherwise, render a new channel row
+                else {
+                  template.apply('admin.channel-sets.form.channel', {
+                    channels: channels
+                  }).then(function (content) {
+                    $('tbody', id).append(content);
+                  });
+                }
               });
               
               // handle channel removals
