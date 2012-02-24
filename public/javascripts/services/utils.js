@@ -82,7 +82,20 @@
       },
       sortItemsByProperty: function (items, prop, desc) {
         items = items.sort(function (a, b) {
-          return (desc) ? a[prop] < b[prop] : a[prop] > b[prop];
+          var aProp = a[prop],
+              bProp = b[prop];
+          
+          if (isString(aProp) && isString(bProp)) {
+            aProp = aProp.toLowerCase();
+            bProp = bProp.toLowerCase();
+          }
+          if (aProp < bProp) {
+            return (desc) ? 1 : -1;
+          } else if (aProp > bProp) {
+            return (desc) ? -1 : 1;
+          } else {
+            return 0;
+          }
         });
         
         return items;
@@ -125,6 +138,11 @@
     // determines if the passed in value is an instance of an array
     function isArray(val) {
       return Object.prototype.toString.call(val) === '[object Array]';
+    }
+    
+    // determines if the passed in value is an instance of a string
+    function isString(val) {
+      return Object.prototype.toString.call(val) === '[object String]';
     }
     
     return utils;
