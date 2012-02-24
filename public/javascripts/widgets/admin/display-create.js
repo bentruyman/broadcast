@@ -46,16 +46,6 @@ define(function () {
               
               addChannelSetButton = $('#display-add-channel-set', id).get(0);
               
-              // make channel rows sortable via drag & drop
-              $('tbody', id).sortable({
-                helper: function(e, ui) {
-                  ui.children().each(function() {
-                    $(this).width($(this).width());
-                  });
-                  return ui;
-                }
-              }).disableSelection();
-              
               // handle channel additions
               $(addChannelSetButton).click(function (event) {
                 // if there are no channel sets, throw up an alert
