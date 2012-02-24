@@ -82,8 +82,13 @@ define(function () {
             startOfWeek = getStartOfWeekTime(new Date),
             currentTime = (new Date).getTime(),
             timeDifference = currentTime - startOfWeek,
-            configuredChannelSets = display.configuredChannelSets,
+            configuredChannelSets = [].concat(display.configuredChannelSets),
             channelSetId;
+        
+        // sort the channel sets by start time
+        configuredChannelSets = configuredChannelSets.sort(function (a, b) {
+          return a.startTime - b.startTime;
+        });
         
         // loop through all channel sets to find the current one
         for (var i = 0, j = configuredChannelSets.length; i < j; i++) {
@@ -135,8 +140,8 @@ define(function () {
             currentChannelSet = channelSet;
             // subscribe to update messages on the serverside to know when to
             // refresh the display again when data changes
-            // createSubscription('/displays/' + display._id + '/update', refresh);
-            // createSubscription('/channelSets/' + channelSet._id + '/update', refresh);
+            createSubscription('/display/' + display._id + '/update', refresh);
+            createSubscription('/channelSet/' + channelSet._id + '/update', refresh);
             
             // go to the first channel
             goToChannel(0);
