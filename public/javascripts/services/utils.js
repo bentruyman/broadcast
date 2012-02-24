@@ -80,6 +80,13 @@
         
         return serialized;
       },
+      sortItemsByProperty: function (items, prop, desc) {
+        items = items.sort(function (a, b) {
+          return (desc) ? a[prop] < b[prop] : a[prop] > b[prop];
+        });
+        
+        return items;
+      },
       preloadImages: function (imagePaths) {
         var promises = [];
         

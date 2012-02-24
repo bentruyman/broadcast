@@ -35,6 +35,11 @@ define(function () {
             
             data.channels = channels.slice(startOfItems, endOfItems);
             
+            // sort channels by name
+            data.channels = utils.sortItemsByProperty(data.channels, 'name');
+            
+            console.log(data.channels);
+            
             // inject channels data into channels template
             template.apply('admin.channels', data).then(function (content) {
               $(id).append(content);

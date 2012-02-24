@@ -34,6 +34,9 @@ define(function () {
             
             data.displays = displays.slice(startOfItems, endOfItems);
             
+            // sort displays by name
+            data.displays = utils.sortItemsByProperty(data.displays, 'name');
+            
             // inject displays data into channels template
             template.apply('admin.displays', data).then(function (content) {
               $(id).append(content);

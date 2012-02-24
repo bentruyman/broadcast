@@ -37,6 +37,9 @@ define(function () {
                   method: 'POST'
                 };
             
+            // sort channel sets by name
+            channelSets = utils.sortItemsByProperty(channelSets, 'name');
+            
             // inject form template
             template.apply('admin.displays.form', data).then(function (content) {
               $(id).append(content);

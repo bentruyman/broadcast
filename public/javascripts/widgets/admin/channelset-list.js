@@ -34,6 +34,9 @@ define(function () {
             
             data.channelSets = channelSets.slice(startOfItems, endOfItems);
             
+            // sort channel sets by name
+            data.channelSets = utils.sortItemsByProperty(data.channelSets, 'name');
+            
             // inject channels data into channels template
             template.apply('admin.channel-sets', data).then(function (content) {
               $(id).append(content);
