@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-var config = require('../config/base').database,
+var config = require('../config').database,
     nano   = require('nano')(config.url);
 
 function createDatabase(name, callback) {

@@ -5,7 +5,7 @@ module.exports = function (ctx) {
       app       = ctx.app,
       messenger = ctx.messenger;
   
-  new RestfulResource('channel',    api.channel,    app);
-  new RestfulResource('channelSet', api.channelSet, app);
-  new RestfulResource('display',    api.display,    app);
+  new RestfulResource('channel',    api.channel,    app, messenger);
+  new RestfulResource('channelSet', api.channelSet, app, messenger);
+  new RestfulResource('display',    api.display,    app, messenger);
 };
