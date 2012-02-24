@@ -41,6 +41,9 @@ define(function () {
                     channelSets: channelSets
                   };
               
+              // sort display configured channel sets by start time
+              display.configuredChannelSets = utils.sortItemsByProperty(display.configuredChannelSets, 'startTime');
+              
               // sort channel sets by name
               channelSets = utils.sortItemsByProperty(channelSets, 'name');
               

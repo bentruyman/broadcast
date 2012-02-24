@@ -42,12 +42,13 @@ define(function () {
       // week as a starting point
       function getStartOfWeekTime(date) {
         // set the date object's date to Sunday
-        date.setDate(-date.getDay() + 1);
+        date.setDate(date.getDate() - date.getDay());
         
         // set hours, minutes, and seconds to zero
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
+        date.setMilliseconds(0);
         
         // return the date in milliseconds
         return date.getTime();
