@@ -1,3 +1,3 @@
 define(function () {
-  return new Faye.Client('http://localhost:3000/faye');
+  return new Faye.Client('http://localhost/faye');
 });

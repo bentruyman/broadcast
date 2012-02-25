@@ -17,7 +17,7 @@ Install `up` globally to run the app:
 
     npm install up -g
 
-Run the database installation script from the root of the project:
+Run the installation script:
 
     ./bin/install
 
@@ -30,31 +30,6 @@ That's it!
 For public channel set listing: [http://localhost:3000/](http://localhost:3000/)
 
 For administration: [http://localhost:3000/admin](http://localhost:3000/admin)
-
-(assuming you're using the default configuration)
-
-## Domain Objects
-
-A Broadcast application consists of three main domain objects: Channels,
-Configured channels and Channel sets.
-
-    Channel:
-      index: Number # the channel's number
-      name: String # name of the channel
-      description: String # description of the channel
-      url: String # url of the channel's asset
-      assetType: String # image, video, page (default)
-      timeout: Number # the amount of time a channel should stay on screen (default, 30 seconds)
-    
-    ChannelSet:
-      name: String # name of the channel set
-      description: String # description of the channel set
-      channels: [ConfiguredChannel] # list of configured channels
-    
-    Display:
-      name: String # name of the display
-      description: String # description of the display
-      channels: [ConfiguredChannel] # list of configured channels
 
 ## License
 

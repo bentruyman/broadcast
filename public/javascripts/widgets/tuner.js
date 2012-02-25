@@ -58,12 +58,20 @@ define(function () {
       function getDisplayBySlug(slug) {
         var deferred = $.Deferred();
         
-        // load channel set by slug
-        API.displays.read({ slug: slug })
+        // load all displays
+        API.displays.read()
           .done(function (displays) {
-            if (displays && displays.length === 1) {
-              deferred.resolve(displays[0]);
-            } else {
+            var display;
+            
+            // find the display that matches the specified slug
+            for (var i = 0, j = displays.length; i < j; i++) {
+              if (displays[i].slug === slug) {
+                deferred.resolve(displays[i]);
+                break;
+              }
+            }
+            
+            if (!display) {
               // TODO: handle error
               deferred.reject();
             }
@@ -147,6 +155,8 @@ define(function () {
             // go to the first channel
             goToChannel(0);
           });
+        }, function () {
+          alert('This display does not exist.');
         });
       }
       

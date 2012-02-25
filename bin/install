@@ -87,7 +87,11 @@ nano.db.get(config.name, function (err, resp) {
   }
   // unhandled error, throw it
   else if (err) {
-    throw err;
+    if (err.code === 'ECONNREFUSED') {
+      console.log('Couldn\'t connect to CouchDB. Ensure couchdb has been started and the database url in config.json is correct.');
+    } else {
+      throw err;
+    }
   }
   // database exists, create design docs
   else {
