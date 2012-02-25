@@ -2,6 +2,12 @@
 
 ## Installation
 
+Install and start [CouchDB](http://couchdb.apache.org/) for your platform. On OS
+X with Homebrew, it's as simple as:
+
+    brew install couchdb
+    couchdb -b
+
 Install the node module dependencies by running the following from the root of
 the project:
 
@@ -17,7 +23,7 @@ Run the database installation script from the root of the project:
 
 ## Running
 
-    $ up app
+    up app
 
 That's it!
 
