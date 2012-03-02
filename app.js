@@ -2,9 +2,7 @@
 // BROADCAST
 ////////////////////////////////////////////////////////////////////////////////
 
-var messenger = require('./lib/broadcast/services/messenger'),
-    server    = require('./lib/broadcast/web/server'),
-    config    = require('./config'),
+var server    = require('./lib/broadcast/web/server'),
     routes    = require('./routes');
 
 server.init();
